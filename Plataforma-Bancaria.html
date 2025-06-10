@@ -1,0 +1,155 @@
+Claro, aquí tienes el código HTML modificado. He reemplazado los enlaces de los botones "Conocer Más" para UglyCash y Lulubit con las rutas de archivo que me proporcionaste.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataformas de Transacciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+        .platform-card {
+            background: linear-gradient(145deg, #1e1e3f 0%, #2d2d4a 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+        @media (max-width: 768px) {
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+            .gallery-image {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <header class="py-8 text-center">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                Plataformas de Transacciones
+            </h1>
+            <p class="text-xl text-gray-300">Las mejores plataformas para tus transacciones digitales</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-16">
+            <div class="platform-card rounded-2xl p-8 shadow-2xl">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold mb-4 text-blue-400">UglyCash</h2>
+                    <p class="text-gray-300 text-lg">Plataforma de transacciones digitales innovadora</p>
+                    <div class="mt-6">
+                        <a href="uglycash.html" 
+                           class="btn-primary inline-flex items-center px-8 py-4 rounded-full text-white font-semibold text-lg shadow-lg">
+                            <i class="fas fa-arrow-right mr-2"></i>
+                            Conocer Más
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="image-gallery mt-8">
+                    <img src="https://framerusercontent.com/images/qE5QextNmVZT16TRLVFMszeo.png" 
+                         alt="UglyCash Platform" class="gallery-image">
+                    <img src="https://framerusercontent.com/images/s6NgyAaAHFOIM40LU53jp60DvOE.jpg" 
+                         alt="UglyCash Interface" class="gallery-image">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/50/e0/38/50e0386f-da7b-3c00-71c3-763ed0e8a837/1.jpg/300x0w.jpg" 
+                         alt="UglyCash App Screenshot 1" class="gallery-image">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/8d/2e/8f/8d2e8fad-a291-d24a-f3f5-bf435898a216/5.jpg/300x0w.jpg" 
+                         alt="UglyCash App Screenshot 2" class="gallery-image">
+                    <img src="https://framerusercontent.com/images/yhsrApyHyI5JmCTVYsolShZVvu4.png" 
+                         alt="UglyCash UI/UX" class="gallery-image">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/0d/fb/26/0dfb2634-b725-f572-ed02-9ed4733331d2/2.jpg/300x0w.jpg" 
+                         alt="UglyCash App Screenshot 3" class="gallery-image">
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="platform-card rounded-2xl p-8 shadow-2xl">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold mb-4 text-purple-400">Lulubit</h2>
+                    <p class="text-gray-300 text-lg">Exchange de criptomonedas confiable y seguro</p>
+                    <div class="mt-6">
+                        <a href="lulubit.html" 
+                           class="btn-primary inline-flex items-center px-8 py-4 rounded-full text-white font-semibold text-lg shadow-lg">
+                            <i class="fas fa-arrow-right mr-2"></i>
+                            Conocer Más
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="image-gallery mt-8">
+                    <img src="https://static.wixstatic.com/media/41db3d_bd97af0695564266bf8cec2c85b4cdca~mv2.png/v1/crop/x_673,y_621,w_4155,h_3778/fill/w_642,h_584,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Mockup%20Landing%20Page.png" 
+                         alt="Lulubit Landing Page" class="gallery-image">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/ff/52/2d/ff522d52-7925-a15b-1f7c-e85adfb08cce/6.png/300x0w.jpg" 
+                         alt="Lulubit App Screenshot 1" class="gallery-image">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/5b/52/19/5b5219f1-81b0-485f-120c-98f13b73bf83/5.png/300x0w.jpg" 
+                         alt="Lulubit App Screenshot 2" class="gallery-image">
+                    <img src="https://static.wixstatic.com/media/41db3d_bfb0b49da50a4b939b285355518e586e~mv2.png/v1/crop/x_1593,y_316,w_3887,h_4326/fill/w_320,h_356,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Lulucard_Landing%20Page.png" 
+                         alt="Lulubit Card" class="gallery-image">
+                    <img src="https://static.wixstatic.com/media/6eae58_132d85dc46704abeb63ac5d1dc50f486~mv2.jpg" 
+                         alt="Lulubit Logo" class="gallery-image">
+                    <img src="https://static.wixstatic.com/media/6eae58_72502f7b67554797aaa104fa3dffe54b~mv2.png/v1/fill/w_980,h_551,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/6eae58_72502f7b67554797aaa104fa3dffe54b~mv2.png" 
+                         alt="Lulubit Tutorial" class="gallery-image">
+                </div>
+            </div>
+        </section>
+
+        <section class="text-center mb-16">
+            <div class="platform-card rounded-2xl p-8 shadow-2xl">
+                <h3 class="text-3xl font-bold mb-6 text-green-400">Únete a Nuestra Comunidad</h3>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
+                    <a href="https://chat.whatsapp.com/EyJWncjIkXoAjhLDGVYZYm" 
+                       class="bg-green-500 hover:bg-green-600 inline-flex items-center px-8 py-4 rounded-full text-white font-semibold text-lg shadow-lg transition-all duration-300 hover:transform hover:-translate-y-1">
+                        <i class="fab fa-whatsapp mr-3 text-2xl"></i>
+                        WhatsApp
+                    </a>
+                    <a href="https://t.me/+QC90Va2yvRVmNDU5" 
+                       class="bg-blue-500 hover:bg-blue-600 inline-flex items-center px-8 py-4 rounded-full text-white font-semibold text-lg shadow-lg transition-all duration-300 hover:transform hover:-translate-y-1">
+                        <i class="fab fa-telegram mr-3 text-2xl"></i>
+                        Telegram
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-8 text-center border-t border-gray-700">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400">
+                © 2025 Sneyder Estudio - Todos los derechos reservados
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
+
+

@@ -1,0 +1,536 @@
+Claro, aquí tienes el código HTML con los enlaces actualizados según tus instrucciones.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDT.clan - Portal Cryptocurrency</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #000811, #001122);
+            overflow-x: hidden;
+        }
+
+        /* Optimized Stars Background */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: twinkle 4s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        /* Loading Screen with Crypto Theme */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000811, #001122);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Crypto Coins Animation */
+        .crypto-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 30px;
+        }
+
+        .crypto-coin {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .coin-btc {
+            background: linear-gradient(135deg, #f7931a, #ff9500);
+            color: white;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 0s;
+        }
+
+        .coin-eth {
+            background: linear-gradient(135deg, #627eea, #3c3c3d);
+            color: white;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            animation-delay: 0.5s;
+        }
+
+        .coin-usdt {
+            background: linear-gradient(135deg, #26a17b, #009688);
+            color: white;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            animation-delay: 1s;
+        }
+
+        .coin-bnb {
+            background: linear-gradient(135deg, #f3ba2f, #fcd535);
+            color: #000;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+            }
+        }
+
+        .loading-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00ff88;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .transport-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            color: #0088ff;
+            letter-spacing: 2px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.5; }
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #0088ff, #ffaa00);
+            border-radius: 3px;
+            animation: loadProgress 4s ease-out forwards;
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Main Content - Optimized */
+        .main-content {
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 20px 40px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #00ff88;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+            100% { text-shadow: 0 0 40px rgba(0, 255, 136, 0.8); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #0088ff;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* Services Grid - Simplified */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: linear-gradient(145deg, rgba(0, 17, 34, 0.9), rgba(0, 8, 17, 0.9));
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00ff88;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .service-card:nth-child(2):hover { border-color: #0088ff; box-shadow: 0 20px 40px rgba(0, 136, 255, 0.3); }
+        .service-card:nth-child(3):hover { border-color: #ffaa00; box-shadow: 0 20px 40px rgba(255, 170, 0, 0.3); }
+        .service-card:nth-child(4):hover { border-color: #ff00aa; box-shadow: 0 20px 40px rgba(255, 0, 170, 0.3); }
+        .service-card:nth-child(5):hover { border-color: #38bdf8; box-shadow: 0 20px 40px rgba(56, 189, 248, 0.3); }
+        .service-card:nth-child(6):hover { border-color: #fb923c; box-shadow: 0 20px 40px rgba(251, 146, 60, 0.3); } /* Orange */
+        .service-card:nth-child(7):hover { border-color: #f472b6; box-shadow: 0 20px 40px rgba(244, 114, 182, 0.3); } /* Pink */
+        .service-card:nth-child(8):hover { border-color: #a78bfa; box-shadow: 0 20px 40px rgba(167, 139, 250, 0.3); } /* Purple */
+
+
+        .service-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        /* New styles for IA Eva Card */
+        .ia-icon-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 180px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+        .service-card:hover .ia-icon-container {
+            transform: scale(1.05);
+        }
+        .ia-icon {
+            font-size: 6rem;
+            color: #c0c0c0; /* Silver color */
+            margin-bottom: 15px;
+        }
+        .ia-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #c0c0c0; /* Silver color */
+        }
+
+        .service-card:hover .service-image {
+            transform: scale(1.05);
+        }
+
+        .service-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .service-description {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .service-button {
+            background: linear-gradient(45deg, #00ff88, #0088ff);
+            color: #000;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .service-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .service-card:nth-child(2) .service-button { background: linear-gradient(45deg, #0088ff, #00ff88); }
+        .service-card:nth-child(3) .service-button { background: linear-gradient(45deg, #ffaa00, #ff6600); }
+        .service-card:nth-child(4) .service-button { background: linear-gradient(45deg, #ff00aa, #aa00ff); }
+        .service-card:nth-child(5) .service-button { background: linear-gradient(45deg, #38bdf8, #0ea5e9); }
+        .service-card:nth-child(6) .service-button { background: linear-gradient(45deg, #fb923c, #f97316); } /* Orange Gradient */
+        .service-card:nth-child(7) .service-button { background: linear-gradient(45deg, #f472b6, #ec4899); } /* Pink Gradient */
+        .service-card:nth-child(8) .service-button { background: linear-gradient(45deg, #a78bfa, #8b5cf6); } /* Purple Gradient */
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 8, 17, 0.9);
+            color: #888;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        .footer p {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; letter-spacing: 3px; }
+            .loading-text { font-size: 2rem; }
+            .transport-text { font-size: 1.2rem; }
+            .crypto-container { width: 150px; height: 150px; }
+            .crypto-coin { width: 45px; height: 45px; font-size: 18px; }
+            .services-grid { grid-template-columns: 1fr; padding: 30px 15px; }
+            .service-card { padding: 20px; }
+            .ia-icon { font-size: 5rem; }
+            .ia-name { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader" id="loader">
+        <div class="crypto-container">
+            <div class="crypto-coin coin-btc">₿</div>
+            <div class="crypto-coin coin-eth">Ξ</div>
+            <div class="crypto-coin coin-usdt">₮</div>
+            <div class="crypto-coin coin-bnb">⭐</div>
+        </div>
+        <div class="loading-text">USDT.clan</div>
+        <div class="transport-text">Transportando...</div>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+
+    <div class="stars-bg"></div>
+
+    <div class="main-content">
+        <header class="header">
+            <h1 class="logo">USDT.clan</h1>
+            <p class="subtitle">Portal Cryptocurrency Avanzado</p>
+        </header>
+
+        <section class="services-grid">
+            <div class="service-card">
+                <img src="https://www.investopedia.com/thmb/Ab_C9f2b7gt2ceH3eVLwfic16Ss=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-929584582-9d7790de3ee44f658a9580cc598c641f.jpg" alt="Crypto Mining" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/00ff88?text=Mineria';">
+                <h3 class="service-title"><i class="fas fa-coins"></i> Minería Crypto</h3>
+                <p class="service-description">Plataforma avanzada de minería cryptocurrency con tecnología de última generación para maximizar tus ganancias en el ecosistema digital.</p>
+                <a href="mineria-crypto.html" class="service-button">
+                    <i class="fas fa-rocket"></i> Iniciar Minería
+                </a>
+            </div>
+
+            <div class="service-card">
+                <img src="https://miro.medium.com/v2/resize:fit:1400/1*IoPugZf37yFmv3Q0oBjT9w.jpeg" alt="Plataforma Bancaria" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/0088ff?text=Banca';">
+                <h3 class="service-title"><i class="fas fa-university"></i> Plataforma Bancaria</h3>
+                <p class="service-description">Plataformas bancarias de terceros confiables para facilitar el retiro de dinero de crypto a moneda fiat de forma segura y eficiente.</p>
+                <a href="Plataforma-Bancaria.html" class="service-button">
+                    <i class="fas fa-credit-card"></i> Acceder Plataforma
+                </a>
+            </div>
+
+            <div class="service-card">
+                <img src="https://i.ebayimg.com/images/g/BOAAAOSwQb5hMHUG/s-l1200.jpg" alt="Lotería USDT" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/ffaa00?text=Loteria';">
+                <h3 class="service-title"><i class="fas fa-dice"></i> Lotería USDT</h3>
+                <p class="service-description">Participa en nuestra emocionante lotería de USDT con premios increíbles y oportunidades diarias de ganar criptomonedas.</p>
+                <a href="Lotería-USDT.html" class="service-button">
+                    <i class="fas fa-trophy"></i> Participar Lotería
+                </a>
+            </div>
+
+            <div class="service-card">
+                <img src="https://miro.medium.com/v2/resize:fit:1200/1*MKDNdS5wsIiuE2MNo3PXeA.png" alt="Minería NFT" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/ff00aa?text=NFT';">
+                <h3 class="service-title"><i class="fas fa-palette"></i> Minería NFT</h3>
+                <p class="service-description">Explora el mundo de los NFT y gana criptomonedas mediante la minería de tokens no fungibles con tecnología blockchain avanzada.</p>
+                <a href="mineria-nft.html" class="service-button">
+                    <i class="fas fa-gem"></i> Minar NFT
+                </a>
+            </div>
+            
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Noticias Crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/38bdf8?text=Noticias';">
+                <h3 class="service-title"><i class="fas fa-newspaper"></i> Noticias Cryptos</h3>
+                <p class="service-description">Mantente al día con las últimas noticias, análisis y tendencias del mercado de criptomonedas de fuentes confiables y actualizadas.</p>
+                <a href="Noticias-Cryptos.html" class="service-button">
+                    <i class="fas fa-book-open"></i> Ver Noticias
+                </a>
+            </div>
+            
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Estudio sobre crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/fb923c?text=Estudio';">
+                <h3 class="service-title"><i class="fas fa-graduation-cap"></i> Estudio</h3>
+                <p class="service-description">Accede a nuestro centro de estudio para aprender todo sobre criptomonedas, blockchain, y estrategias de inversión de forma clara y concisa.</p>
+                <a href="Estudio.html" class="service-button">
+                    <i class="fas fa-chalkboard-teacher"></i> Ir a Estudio
+                </a>
+            </div>
+            
+            <div class="service-card">
+                <div class="ia-icon-container">
+                    <i class="fas fa-robot ia-icon"></i>
+                    <p class="ia-name">IA Eva</p>
+                </div>
+                <h3 class="service-title">Asistente Virtual</h3>
+                <p class="service-description">Contacta a nuestra asistente IA, Eva, para aprender más sobre el mundo crypto y resolver todas tus dudas de manera personalizada.</p>
+                <a href="https://wa.me/50672712037" class="service-button" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Contactar a Eva
+                </a>
+            </div>
+
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Música de Apoyo" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/a78bfa?text=Musica';">
+                <h3 class="service-title"><i class="fas fa-music"></i> Música de Apoyo</h3>
+                <p class="service-description">Apoya nuestro canal escuchando nuestra selección de música. Cada reproducción nos ayuda a seguir creciendo y creando contenido.</p>
+                <a href="https://youtube.com/@sneyder-estudio?si=MzFmycd-SehFw4RR" class="service-button" target="_blank">
+                    <i class="fas fa-play-circle"></i> Escuchar Música
+                </a>
+            </div>
+
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 Sneyder Estudio - USDT.clan | Todo es totalmente gratis | <i class="fas fa-shield-alt"></i> Tecnología Blockchain Segura</p>
+    </footer>
+
+    <script>
+        // Optimized Loading Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hide loader after animation completes
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 4500);
+
+            // Simple parallax effect for better performance
+            let ticking = false;
+            
+            function updateParallax() {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelector('.stars-bg');
+                // Ensure parallax exists before trying to style it
+                if (parallax) {
+                    const speed = scrolled * 0.5;
+                    parallax.style.transform = `translateY(${speed}px)`;
+                }
+                ticking = false;
+            }
+
+            function requestTick() {
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            }
+
+            window.addEventListener('scroll', requestTick);
+
+            // Enhanced hover effects for service cards
+            const serviceCards = document.querySelectorAll('.service-card');
+            
+            serviceCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // Smooth scroll for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                // Ensure the target element exists before scrolling
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

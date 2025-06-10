@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periódico CLAN - Noticias del Mundo Crypto</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f8fafc;
+        }
+        
+        .newspaper-header {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            border-bottom: 4px solid #f59e0b;
+        }
+        
+        .newspaper-title {
+            font-size: 4rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #0f172a;
+            border-bottom: 3px solid #f59e0b;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid #f59e0b;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+        
+        .breaking-news {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+        
+        .crypto-price {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .price-up {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .price-down {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .timeline-item {
+            border-left: 3px solid #f59e0b;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: #f59e0b;
+            border-radius: 50%;
+        }
+        
+        .market-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .indicator-bullish {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border: 1px solid #10b981;
+        }
+        
+        .indicator-bearish {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+            border: 1px solid #ef4444;
+        }
+        
+        .indicator-neutral {
+            background: rgba(251, 191, 36, 0.1);
+            color: #d97706;
+            border: 1px solid #f59e0b;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            height: 300px;
+        }
+        
+        .chart-canvas {
+            height: 200px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .newspaper-title {
+                font-size: 2.5rem;
+            }
+            
+            .grid {
+                gap: 1rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+        }
+        
+        @media print {
+            body { 
+                background: white; 
+                font-size: 12px;
+            }
+            .no-print { 
+                display: none !important; 
+            }
+            .article-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .section-title {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="newspaper-header py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center">
+                <div class="flex justify-center items-center mb-4">
+                    <i class="fas fa-newspaper text-5xl text-yellow-400 mr-4"></i>
+                    <h1 class="newspaper-title">PERIÓDICO CLAN</h1>
+                </div>
+                <div class="text-xl font-semibold mb-2">Noticias del Mundo Crypto</div>
+                <div class="flex flex-wrap justify-center items-center space-x-6 text-sm">
+                    <span><i class="fas fa-calendar-alt mr-2"></i>Junio 7, 2025</span>
+                    <span><i class="fas fa-globe mr-2"></i>Edición Digital</span>
+                    <span><i class="fas fa-bitcoin mr-2 text-yellow-400"></i>BTC: $104,843</span>
+                    <span><i class="fab fa-ethereum mr-2 text-blue-400"></i>ETH: $3,247</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breaking News Banner -->
+    <div class="breaking-news py-3">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-wrap items-center justify-center text-center">
+                <i class="fas fa-exclamation-triangle mr-3 text-xl"></i>
+                <span class="font-bold text-lg">ÚLTIMA HORA:</span>
+                <span class="ml-2">Bitcoin alcanza nuevos máximos de $104,843 tras señales alcistas del mercado</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Market Overview -->
+        <section class="mb-12">
+            <h2 class="section-title text-3xl">Resumen del Mercado Crypto</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="chart-container">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-chart-line mr-2 text-green-600"></i>
+                        Capitalización Total
+                    </h3>
+                    <canvas id="marketCapChart" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-coins mr-2 text-blue-600"></i>
+                        Dominancia de Mercado
+                    </h3>
+                    <canvas id="dominanceChart" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-exchange-alt mr-2 text-purple-600"></i>
+                        Volumen de Trading 24h
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="crypto-price price-up">$112.35B Total</div>
+                        <div class="text-sm text-gray-600">
+                            <div class="flex justify-between"><span>DeFi:</span><span>31.01%</span></div>
+                            <div class="flex justify-between"><span>Stablecoins:</span><span>96.55%</span></div>
+                            <div class="flex justify-between"><span>Variación:</span><span class="text-red-600">-17.19%</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main News Grid -->
+        <section class="mb-12">
+            <h2 class="section-title text-3xl">Noticias Principales</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Bitcoin News -->
+                <article class="article-card p-6">
+                    <img src="https://s3.eu-central-1.amazonaws.com/xstation5screens/230/142/e1579a6236604b5f36625754175d30907aeb82b0.png" alt="Bitcoin Chart December 2024" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-2xl font-bold mb-3">Bitcoin Alcanza $104,843: Nuevo Récord Histórico</h3>
+                    <div class="flex flex-wrap items-center mb-3 space-x-4">
+                        <span class="market-indicator indicator-bullish">
+                            <i class="fas fa-arrow-up mr-1"></i>Alcista
+                        </span>
+                        <span class="text-sm text-gray-600">
+                            <i class="fas fa-clock mr-1"></i>Hace 2 horas
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Bitcoin ha experimentado un rally extraordinario, alcanzando un nuevo máximo histórico de $104,843. Este incremento del 2.59% en las últimas 24 horas consolida la tendencia alcista que comenzó tras las señales positivas del mercado institucional.
+                    </p>
+                    <div class="border-t pt-4">
+                        <h4 class="font-semibold mb-2">Factores Clave:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Adopción institucional acelerada</li>
+                            <li>• Políticas favorables de la administración Trump</li>
+                            <li>• Liquidaciones masivas de posiciones bajistas</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- Ethereum & DeFi News -->
+                <article class="article-card p-6">
+                    <img src="https://developers.moralis.com/wp-content/uploads/2024/01/Full-Guide-The-Ethereum-Ecosystem-in-2024.jpg" alt="Ethereum Ecosystem 2024" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-2xl font-bold mb-3">Ethereum Prepara Actualización Pectra: Revolución DeFi</h3>
+                    <div class="flex flex-wrap items-center mb-3 space-x-4">
+                        <span class="market-indicator indicator-bullish">
+                            <i class="fas fa-rocket mr-1"></i>Innovación
+                        </span>
+                        <span class="text-sm text-gray-600">
+                            <i class="fas fa-clock mr-1"></i>Hace 4 horas
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        La próxima actualización Pectra de Ethereum promete revolucionar el ecosistema DeFi con mejoras significativas en escalabilidad y funcionalidad. La actualización combina Prague y Electra para optimizar la red.
+                    </p>
+                    <div class="border-t pt-4">
+                        <h4 class="font-semibold mb-2">Mejoras Principales:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Reducción de costos de transacción</li>
+                            <li>• Mayor throughput para dApps</li>
+                            <li>• Optimización de contratos inteligentes</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- Market Analysis -->
+                <article class="article-card p-6">
+                    <img src="https://cdn.sanity.io/images/crh39rus/prod-v2/0be677226c9296f37d1140ab25755aab684c1928-2980x1984.png" alt="Crypto Market Analysis December 2024" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-2xl font-bold mb-3">Análisis: Mercado Crypto Toma un Respiro Tras Año Explosivo</h3>
+                    <div class="flex flex-wrap items-center mb-3 space-x-4">
+                        <span class="market-indicator indicator-neutral">
+                            <i class="fas fa-chart-bar mr-1"></i>Análisis
+                        </span>
+                        <span class="text-sm text-gray-600">
+                            <i class="fas fa-clock mr-1"></i>Hace 6 horas
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Según el último reporte de Grayscale, el mercado crypto ha tomado un respiro en diciembre tras un año de crecimiento excepcional. La capitalización total se sitúa en $3.39 trillones, con señales mixtas para 2025.
+                    </p>
+                    <div class="border-t pt-4">
+                        <h4 class="font-semibold mb-2">Datos del Mercado:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Cap. Total: $3.39T (-0.27% 24h)</li>
+                            <li>• Dominancia BTC: 63.82%</li>
+                            <li>• Volumen: $112.35B (-17.19%)</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- Solana News -->
+                <article class="article-card p-6">
+                    <img src="https://media.calibraint.com/calibraint-wordpress/wp-content/uploads/2024/04/19053437/Top-Blockchains-for-DeFi-in-2024-Calibraint.webp" alt="Best Blockchains for DeFi 2024" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-2xl font-bold mb-3">Solana Lidera Desarrollo Blockchain: Supera a Ethereum</h3>
+                    <div class="flex flex-wrap items-center mb-3 space-x-4">
+                        <span class="market-indicator indicator-bullish">
+                            <i class="fas fa-trophy mr-1"></i>Liderazgo
+                        </span>
+                        <span class="text-sm text-gray-600">
+                            <i class="fas fa-clock mr-1"></i>Hace 8 horas
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Según Electric Capital, Solana ha superado a Ethereum como la plataforma preferida por desarrolladores en 2024, rompiendo una racha de 8 años de dominio de Ethereum. El crecimiento del 83% YoY marca un hito histórico.
+                    </p>
+                    <div class="border-t pt-4">
+                        <h4 class="font-semibold mb-2">Logros de Solana 2024:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• +83% desarrolladores activos</li>
+                            <li>• ATH: $263.84 en noviembre</li>
+                            <li>• Líder en proyectos DePIN</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Regulation Section -->
+        <section class="mb-12">
+            <h2 class="section-title text-3xl">Regulación y Política</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <article class="article-card p-6">
+                    <h3 class="text-xl font-bold mb-3">
+                        <i class="fas fa-gavel mr-2 text-blue-600"></i>
+                        MiCA Entra en Vigor: Nueva Era Regulatoria en Europa
+                    </h3>
+                    <p class="text-gray-700 mb-4">
+                        La regulación Markets in Crypto-Assets (MiCA) ha entrado completamente en vigor el 30 de diciembre de 2024, estableciendo un marco regulatorio uniforme para criptoactivos en la UE.
+                    </p>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <h4 class="font-semibold text-blue-800 mb-2">Impacto MiCA:</h4>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Regulación de stablecoins desde junio 2024</li>
+                            <li>• Supervisión de exchanges y wallets</li>
+                            <li>• DeFi regulado a partir de 2026</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="article-card p-6">
+                    <h3 class="text-xl font-bold mb-3">
+                        <i class="fas fa-flag-usa mr-2 text-red-600"></i>
+                        Trump Impulsa Reserva Estratégica de Bitcoin
+                    </h3>
+                    <p class="text-gray-700 mb-4">
+                        La administración Trump ha propuesto la creación de una reserva estratégica nacional de Bitcoin, parte de su agenda pro-crypto que incluye normativas claras en un plazo de 6 meses.
+                    </p>
+                    <div class="bg-red-50 p-3 rounded-lg">
+                        <h4 class="font-semibold text-red-800 mb-2">Iniciativas Trump 2025:</h4>
+                        <ul class="text-sm text-red-700 space-y-1">
+                            <li>• Grupo de trabajo regulatorio</li>
+                            <li>• Reserva nacional de Bitcoin</li>
+                            <li>• Políticas favorables a la innovación</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- DeFi Trends -->
+        <section class="mb-12">
+            <h2 class="section-title text-3xl">Tendencias DeFi 2024-2025</h2>
+            <div class="article-card p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <img src="https://media.calibraint.com/calibraint-wordpress/wp-content/uploads/2024/09/03095244/The-DeFi-Giants-of-2024-Calibraint-1024x465.webp" alt="DeFi Giants 2024" class="w-full h-40 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-3">DeFi Experimenta Crecimiento del 130% en 2024</h3>
+                        <p class="text-gray-700 mb-4">
+                            El Total Value Locked (TVL) en protocolos DeFi ha experimentado un crecimiento excepcional del 130% durante 2024, alcanzando nuevos máximos históricos.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-3">Estadísticas DeFi Clave:</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">TVL Total 2024:</span>
+                                <span class="crypto-price price-up">+130%</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">Ingresos Sector:</span>
+                                <span class="crypto-price">$419M</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">Proyección 2031:</span>
+                                <span class="crypto-price price-up">$351.75B</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">CAGR Esperado:</span>
+                                <span class="crypto-price price-up">48.9%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="mb-12">
+            <h2 class="section-title text-3xl">Videos Destacados</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="article-card p-6">
+                    <h3 class="text-lg font-bold mb-3">Bitcoin: ¿Crash o Rally Masivo?</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/u27wzfTmG3c" title="Bitcoin Price Analysis" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        <i class="fas fa-play-circle mr-1"></i>Altcoin Daily - Análisis técnico de Bitcoin
+                    </p>
+                </div>
+
+                <div class="article-card p-6">
+                    <h3 class="text-lg font-bold mb-3">Bitcoin a $200k: Predicciones 2025</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/QjH-wvXpz-4" title="Bitcoin Price Predictions 2025" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        <i class="fas fa-play-circle mr-1"></i>Coin Bureau - Predicciones de precio BTC
+                    </p>
+                </div>
+
+                <div class="article-card p-6">
+                    <h3 class="text-lg font-bold mb-3">Ethereum: La Mejor Compra Ahora</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/7EiHYECkLEQ" title="Why Ethereum is the Best Crypto" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        <i class="fas fa-play-circle mr-1"></i>VirtualBacon - Análisis de Ethereum
+                    </p>
+                </div>
+
+                <div class="article-card p-6">
+                    <h3 class="text-lg font-bold mb-3">Criptos Gigantes de 2025</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/XxOp3sQsajY" title="Top 10 Cryptos 2025" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        <i class="fas fa-play-circle mr-1"></i>MoneyControl - Top criptos dominando 2025
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section class="mb-12">
+            <h2 class="section-title text-3xl">Cronología de Eventos Clave</h2>
+            <div class="article-card p-6">
+                <div class="space-y-4">
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-lg">Diciembre 2024</h4>
+                        <p class="text-gray-700">Bitcoin alcanza máximo histórico de $106,142.51 el 17 de diciembre</p>
+                        <span class="text-sm text-gray-500">Fuente: Bitbo Charts</span>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-lg">Noviembre 2024</h4>
+                        <p class="text-gray-700">Solana establece nuevo ATH de $263.84, confirmando liderazgo en desarrollo</p>
+                        <span class="text-sm text-gray-500">Fuente: Electric Capital</span>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-lg">Junio 2024</h4>
+                        <p class="text-gray-700">Primera fase de MiCA entra en vigor, regulando stablecoins en la UE</p>
+                        <span class="text-sm text-gray-500">Fuente: ESMA</span>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-lg">Marzo 2024</h4>
+                        <p class="text-gray-700">Actualización Dencun de Ethereum mejora escalabilidad y reduce costos</p>
+                        <span class="text-sm text-gray-500">Fuente: Ethereum Foundation</span>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-lg">Enero 2024</h4>
+                        <p class="text-gray-700">Bitcoin inicia año con precio de $44,161.95, marcando inicio de rally histórico</p>
+                        <span class="text-sm text-gray-500">Fuente: Historical Data</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expert Analysis -->
+        <section class="mb-12">
+            <h2 class="section-title text-3xl">Análisis de Expertos</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <article class="article-card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">MK</div>
+                        <div class="ml-3">
+                            <h4 class="font-bold">Max Keiser</h4>
+                            <p class="text-sm text-gray-600">Analista Senior</p>
+                        </div>
+                    </div>
+                    <blockquote class="italic text-gray-700 mb-3">
+                        "Predigo que Bitcoin alcanzará los $200,000 antes de finales de 2024. Los fundamentos macro nunca han sido tan favorables."
+                    </blockquote>
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-quote-left mr-1"></i>Predicción Bitcoin $200K
+                    </div>
+                </article>
+
+                <article class="article-card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">FD</div>
+                        <div class="ml-3">
+                            <h4 class="font-bold">Fidelity Research</h4>
+                            <p class="text-sm text-gray-600">Institución Financiera</p>
+                        </div>
+                    </div>
+                    <blockquote class="italic text-gray-700 mb-3">
+                        "Proyectamos que un Bitcoin valdrá $1 billón para 2038, respaldado por la adopción institucional masiva."
+                    </blockquote>
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-quote-left mr-1"></i>Predicción a largo plazo
+                    </div>
+                </article>
+
+                <article class="article-card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-xl">HF</div>
+                        <div class="ml-3">
+                            <h4 class="font-bold">Hal Finney</h4>
+                            <p class="text-sm text-gray-600">Pionero Bitcoin</p>
+                        </div>
+                    </div>
+                    <blockquote class="italic text-gray-700 mb-3">
+                        "Mi predicción histórica de $22 millones por Bitcoin para 2045 se mantiene vigente basada en la escasez digital."
+                    </blockquote>
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-quote-left mr-1"></i>Visión a 2045
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Sources Section -->
+        <section class="mb-12">
+            <h2 class="section-title text-3xl">Fuentes Oficiales Verificadas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="https://coinmarketcap.com" target="_blank" class="article-card p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-chart-line text-blue-600 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold">CoinMarketCap</h4>
+                            <p class="text-sm text-gray-600">Precios y capitalización en tiempo real</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://es.cointelegraph.com" target="_blank" class="article-card p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-newspaper text-green-600 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold">Cointelegraph</h4>
+                            <p class="text-sm text-gray-600">Noticias blockchain y crypto</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://es.investing.com/crypto/" target="_blank" class="article-card p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-analytics text-purple-600 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold">Investing.com</h4>
+                            <p class="text-sm text-gray-600">Análisis detallado del mercado</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.rtve.es/noticias/criptomonedas/" target="_blank" class="article-card p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-tv text-red-600 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold">RTVE</h4>
+                            <p class="text-sm text-gray-600">Cobertura mediática oficial</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://elpais.com/temas/criptomonedas/" target="_blank" class="article-card p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-globe text-blue-800 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold">El País</h4>
+                            <p class="text-sm text-gray-600">Perspectiva global de criptomonedas</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.coinbase.com/price" target="_blank" class="article-card p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-exchange-alt text-blue-500 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold">Coinbase</h4>
+                            <p class="text-sm text-gray-600">Precios y tendencias actualizadas</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-yellow-400">PERIÓDICO CLAN</h3>
+                    <p class="text-gray-300 mb-4">
+                        Tu fuente confiable de noticias sobre criptomonedas, blockchain y finanzas descentralizadas.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">
+                            <i class="fab fa-telegram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition-colors">
+                            <i class="fab fa-youtube text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Secciones</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Bitcoin</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Ethereum</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">DeFi</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Regulación</a></li>
+                        <li><a href="#" class="hover:text-yellow-400 transition-colors">Análisis</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Contacto</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p><i class="fas fa-envelope mr-2"></i>info@periodicoclan.crypto</p>
+                        <p><i class="fas fa-phone mr-2"></i>+1 (555) 123-CLAN</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Metaverso, Web3</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                <p>&copy; 2025 Sneyder Estudio. Todos los derechos reservados.</p>
+                <p class="text-sm mt-2">
+                    Información sobre el mercado de criptomonedas y factores que lo afectan | 
+                    Este periódico es solo informativo, no constituye asesoramiento financiero
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Esperar a que el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Market Cap Chart
+                const ctx1 = document.getElementById('marketCapChart');
+                if (ctx1) {
+                    new Chart(ctx1, {
+                        type: 'line',
+                        data: {
+                            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                            datasets: [{
+                                label: 'Capitalización (Trillones $)',
+                                data: [1.8, 1.6, 2.1, 2.4, 2.8, 3.39],
+                                borderColor: '#f59e0b',
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (e) {
+                console.log('Error creando gráfico de capitalización:', e);
+            }
+
+            try {
+                // Dominance Chart
+                const ctx2 = document.getElementById('dominanceChart');
+                if (ctx2) {
+                    new Chart(ctx2, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Bitcoin', 'Ethereum', 'Otros'],
+                            datasets: [{
+                                data: [63.82, 12.5, 23.68],
+                                backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 10,
+                                        usePointStyle: true
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (e) {
+                console.log('Error creando gráfico de dominancia:', e);
+            }
+
+            // Animaciones de scroll mejoradas
+            function handleScrollAnimation() {
+                const articles = document.querySelectorAll('.article-card');
+                articles.forEach(article => {
+                    const rect = article.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    if (rect.top < windowHeight * 0.8 && rect.bottom > 0) {
+                        article.style.opacity = '1';
+                        article.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+
+            // Throttle scroll events para mejor rendimiento
+            let ticking = false;
+            function requestTick() {
+                if (!ticking) {
+                    requestAnimationFrame(handleScrollAnimation);
+                    ticking = true;
+                    setTimeout(() => { ticking = false; }, 16);
+                }
+            }
+
+            window.addEventListener('scroll', requestTick);
+            
+            // Inicializar animaciones
+            handleScrollAnimation();
+        });
+    </script>
+</body>
+</html>

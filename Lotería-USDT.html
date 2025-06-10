@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doble Lotería Cripto Mensual - Sneyder Estudio - 200 USDT y 100 USDT</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .crypto-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .number-display {
+            font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        .neon-border {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3), inset 0 0 20px rgba(102, 126, 234, 0.1);
+        }
+        .crypto-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .flip-animation {
+            animation: flip 1s ease-in-out infinite;
+        }
+        @keyframes flip {
+            0%, 50% { transform: rotateY(0); }
+            50.1%, 100% { transform: rotateY(180deg); }
+        }
+        .lottery-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://nowpayments.io/blog/nowpayments-content/uploads/2021/03/LOTTERY.png');
+            background-size: cover;
+            background-position: center;
+        }
+        .explosion-effect {
+            animation: explode 3s infinite;
+        }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .confetti {
+            animation: confetti-fall 3s linear infinite;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+        .rifa-card-1 {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+            color: #000;
+        }
+        .rifa-card-2 {
+            background: linear-gradient(135deg, #67e8f9 0%, #06b6d4 100%);
+            color: #000;
+        }
+        .verification-steps {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white lottery-bg min-h-screen">
+    <!-- Header -->
+    <header class="crypto-gradient py-6 shadow-2xl">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-dice text-4xl text-yellow-300"></i>
+                    <div>
+                        <h1 class="text-3xl font-bold text-white">Sneyder Estudio</h1>
+                        <p class="text-blue-200">Expandiendo el Mundo Crypto</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-yellow-300 font-semibold">🎯 DOBLE RIFA 🎯</p>
+                    <p class="text-white text-lg">30 de Cada Mes - 12:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Reloj en Tiempo Real -->
+        <div class="text-center mb-8">
+            <div class="crypto-card rounded-2xl p-6 neon-border">
+                <h2 class="text-2xl font-bold mb-4 text-yellow-300">⏰ Reloj en Tiempo Real</h2>
+                <div id="clock" class="number-display text-4xl font-bold text-white mb-2"></div>
+                <div id="date" class="text-lg text-blue-300"></div>
+                <div id="timeToLottery" class="text-yellow-400 mt-4 text-xl font-semibold"></div>
+            </div>
+        </div>
+
+        <!-- Dos Rifas Principales -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Rifa 1 - 200 USDT -->
+            <div class="rifa-card-1 rounded-2xl p-8 neon-border text-center">
+                <h3 class="text-2xl font-bold mb-4">🏆 RIFA #1 - PREMIUM 🏆</h3>
+                <div class="mb-4">
+                    <i class="fas fa-crown text-5xl text-yellow-600 mb-2"></i>
+                    <div id="number1" class="number-display text-6xl font-black mb-4 pulse-animation">00</div>
+                    <p class="text-lg font-bold">Número Ganador 1</p>
+                </div>
+                <div class="bg-black bg-opacity-20 rounded-lg p-4 mb-4">
+                    <h4 class="text-2xl font-bold text-red-600 mb-2">PREMIO: 200 USDT</h4>
+                    <p class="text-xl font-semibold">Costo de Entrada: 3 USDT</p>
+                    <p class="text-sm mt-2">Red Polygon</p>
+                </div>
+                <p class="text-sm text-gray-800 font-semibold">Actualizándose cada segundo hasta el sorteo</p>
+            </div>
+
+            <!-- Rifa 2 - 100 USDT -->
+            <div class="rifa-card-2 rounded-2xl p-8 neon-border text-center">
+                <h3 class="text-2xl font-bold mb-4">🎯 RIFA #2 - ESTÁNDAR 🎯</h3>
+                <div class="mb-4">
+                    <i class="fas fa-gem text-5xl text-blue-800 mb-2"></i>
+                    <div id="number2" class="number-display text-6xl font-black mb-4 pulse-animation">00</div>
+                    <p class="text-lg font-bold">Número Ganador 2</p>
+                </div>
+                <div class="bg-black bg-opacity-20 rounded-lg p-4 mb-4">
+                    <h4 class="text-2xl font-bold text-red-600 mb-2">PREMIO: 100 USDT</h4>
+                    <p class="text-xl font-semibold">Costo de Entrada: 2 USDT</p>
+                    <p class="text-sm mt-2">Red Polygon</p>
+                </div>
+                <p class="text-sm text-gray-800 font-semibold">Actualizándose cada segundo hasta el sorteo</p>
+            </div>
+        </div>
+
+        <!-- Proceso de Participación -->
+        <div class="verification-steps rounded-2xl p-6 neon-border mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-white text-center">📋 PROCESO DE PARTICIPACIÓN</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center p-4">
+                    <div class="bg-yellow-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <span class="text-2xl font-bold text-black">1</span>
+                    </div>
+                    <h4 class="font-bold mb-2 text-lg">Únete a Nuestros Grupos</h4>
+                    <p class="text-sm">WhatsApp y Telegram: usdt.clan</p>
+                </div>
+                <div class="text-center p-4">
+                    <div class="bg-blue-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <span class="text-2xl font-bold text-white">2</span>
+                    </div>
+                    <h4 class="font-bold mb-2 text-lg">Pregunta Números Disponibles</h4>
+                    <p class="text-sm">Consulta en el grupo qué números están libres</p>
+                </div>
+                <div class="text-center p-4">
+                    <div class="bg-purple-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <span class="text-2xl font-bold text-white">3</span>
+                    </div>
+                    <h4 class="font-bold mb-2 text-lg">Realiza el Pago</h4>
+                    <p class="text-sm">3 USDT (Rifa 1) o 2 USDT (Rifa 2)</p>
+                </div>
+                <div class="text-center p-4">
+                    <div class="bg-red-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <span class="text-2xl font-bold text-white">4</span>
+                    </div>
+                    <h4 class="font-bold mb-2 text-lg">Envía Captura de Pago</h4>
+                    <p class="text-sm">Manda screenshot al grupo para verificación</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información Importante de Verificación -->
+        <div class="crypto-card rounded-2xl p-6 neon-border mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-red-400 text-center">⚠️ PROCESO DE VERIFICACIÓN OBLIGATORIO ⚠️</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-red-900 bg-opacity-50 rounded-lg p-4">
+                    <h3 class="font-bold text-lg mb-3 text-yellow-300">🔍 Pasos Obligatorios:</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• 1️⃣ Pregunta qué números están disponibles en el grupo</li>
+                        <li>• 2️⃣ Realiza el pago a la dirección oficial</li>
+                        <li>• 3️⃣ Toma captura de pantalla del pago</li>
+                        <li>• 4️⃣ Envía la captura al grupo para verificación</li>
+                        <li>• 5️⃣ Espera confirmación del administrador</li>
+                    </ul>
+                </div>
+                <div class="bg-green-900 bg-opacity-50 rounded-lg p-4">
+                    <h3 class="font-bold text-lg mb-3 text-yellow-300">✅ Información Importante:</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Solo pagos verificados participan</li>
+                        <li>• Cada rifa es completamente independiente</li>
+                        <li>• Puedes participar en ambas rifas</li>
+                        <li>• Los números se detienen a las 12:00 PM del día 30</li>
+                        <li>• Soporte 24/7 en nuestros grupos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dirección de Pago -->
+        <div class="crypto-card rounded-2xl p-6 neon-border mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-yellow-300 text-center">🔗 Dirección de Pago (Polygon)</h2>
+            <div class="bg-gray-800 rounded-lg p-4 border-2 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <code class="text-green-400 text-sm break-all">0x91de97ab5862d859086d8c5083f098ddba3ecd2d</code>
+                    <button onclick="copyAddress()" class="ml-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition">
+                        <i class="fas fa-copy"></i> Copiar
+                    </button>
+                </div>
+            </div>
+            <div class="mt-4 text-center">
+                <p class="text-red-400 font-bold mb-2">⚠️ IMPORTANTE ⚠️</p>
+                <p class="text-sm text-blue-300">Solo enviar USDT en red Polygon</p>
+                <p class="text-sm text-yellow-300">Verificación obligatoria en grupos</p>
+            </div>
+        </div>
+
+        <!-- Enlaces a Comunidades -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="crypto-card rounded-2xl p-6 neon-border text-center">
+                <i class="fab fa-whatsapp text-5xl text-green-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-3">💬 Grupo WhatsApp</h3>
+                <p class="text-blue-300 mb-4"><strong>usdt.clan</strong></p>
+                <p class="text-sm text-gray-300 mb-4">Consulta números disponibles y envía tu captura de pago</p>
+                <a href="https://chat.whatsapp.com/EyJWncjIkXoAjhLDGVYZYm" target="_blank" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg transition font-semibold inline-block">
+                    <i class="fab fa-whatsapp mr-2"></i>Unirse al Grupo
+                </a>
+            </div>
+            <div class="crypto-card rounded-2xl p-6 neon-border text-center">
+                <i class="fab fa-telegram text-5xl text-blue-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-3">📱 Canal Telegram</h3>
+                <p class="text-blue-300 mb-4"><strong>usdt.clan</strong></p>
+                <p class="text-sm text-gray-300 mb-4">Verificación de pagos y comunidad crypto</p>
+                <a href="https://t.me/+QC90Va2yvRVmNDU5" target="_blank" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition font-semibold inline-block">
+                    <i class="fab fa-telegram mr-2"></i>Unirse al Canal
+                </a>
+            </div>
+        </div>
+
+        <!-- Calendario -->
+        <div class="crypto-card rounded-2xl p-6 neon-border mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-yellow-300 text-center">📅 Calendario de Sorteos</h2>
+            <div id="calendar" class="grid grid-cols-7 gap-2 text-center">
+                <!-- El calendario se genera dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+        <!-- Información Adicional -->
+        <div class="crypto-card rounded-2xl p-6 neon-border">
+            <h2 class="text-2xl font-bold mb-6 text-yellow-300 text-center">ℹ️ Información de las Rifas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-bold text-lg mb-3 text-blue-300">🎯 Sobre las Rifas</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• <strong>Rifa 1:</strong> 200 USDT - Entrada 3 USDT</li>
+                        <li>• <strong>Rifa 2:</strong> 100 USDT - Entrada 2 USDT</li>
+                        <li>• Rifas completamente independientes</li>
+                        <li>• Verificación obligatoria de pagos</li>
+                        <li>• Sorteos transparentes el día 30 a las 12:00 PM</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-3 text-green-300">🌍 Nuestra Misión</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Expandir el mundo de las criptomonedas</li>
+                        <li>• Ayudar a personas con bajos recursos</li>
+                        <li>• Construir una comunidad sólida</li>
+                        <li>• Promover la educación financiera</li>
+                        <li>• Rifas verificadas y transparentes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="crypto-gradient py-6 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-white mb-2">© 2024 Sneyder Estudio - Expandiendo el Mundo Crypto</p>
+            <p class="text-blue-200 text-sm">Todas las rifas son transparentes y verificables</p>
+            <p class="text-yellow-300 text-sm font-bold">🎯 DOBLE RIFA: 200 USDT + 100 USDT 🎯</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <i class="fab fa-bitcoin text-2xl text-yellow-400"></i>
+                <i class="fab fa-ethereum text-2xl text-blue-400"></i>
+                <i class="fas fa-coins text-2xl text-green-400"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reloj en tiempo real
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('es-ES', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            const dateString = now.toLocaleDateString('es-ES', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            document.getElementById('clock').textContent = timeString;
+            document.getElementById('date').textContent = dateString;
+            
+            // Calcular tiempo hasta próximo sorteo
+            const nextLottery = new Date();
+            nextLottery.setDate(30);
+            nextLottery.setHours(12, 0, 0, 0);
+            
+            if (now > nextLottery) {
+                nextLottery.setMonth(nextLottery.getMonth() + 1);
+            }
+            
+            const timeDiff = nextLottery - now;
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            document.getElementById('timeToLottery').textContent = 
+                `Próximo sorteo en: ${days}d ${hours}h ${minutes}m`;
+            
+            // Efectos especiales si es día 30 a las 12:00 PM
+            if (now.getDate() === 30 && now.getHours() === 12 && now.getMinutes() === 0) {
+                document.getElementById('timeToLottery').textContent = '🎉 ¡SORTEO DOBLE EN CURSO! 🎉';
+                document.body.classList.add('explosion-effect');
+                createConfetti();
+                return;
+            }
+        }
+
+        // Números cambiantes para ambas rifas
+        function updateNumbers() {
+            const now = new Date();
+            
+            // Detener números si es 30 del mes a las 12:00 PM
+            if (now.getDate() === 30 && now.getHours() === 12 && now.getMinutes() === 0) {
+                return;
+            }
+            
+            const num1 = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            const num2 = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            
+            document.getElementById('number1').textContent = num1;
+            document.getElementById('number2').textContent = num2;
+        }
+
+        // Crear efecto confetti
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    top: -10px;
+                    left: ${Math.random() * 100}%;
+                    width: 10px;
+                    height: 10px;
+                    background: ${['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'][Math.floor(Math.random() * 5)]};
+                    z-index: 1000;
+                `;
+                confetti.classList.add('confetti');
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        // Generar calendario
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            // Días de la semana
+            const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            daysOfWeek.forEach(day => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'font-bold text-yellow-300 p-2';
+                dayElement.textContent = day;
+                calendar.appendChild(dayElement);
+            });
+            
+            // Días del mes
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            
+            // Espacios vacíos al inicio
+            for (let i = 0; i < firstDay; i++) {
+                const emptyElement = document.createElement('div');
+                emptyElement.className = 'p-2';
+                calendar.appendChild(emptyElement);
+            }
+            
+            // Días del mes
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'p-2 rounded';
+                
+                if (day === 30) {
+                    dayElement.className += ' bg-red-600 font-bold text-white neon-border pulse-animation';
+                    dayElement.innerHTML = `${day}<br><small>DOBLE SORTEO</small>`;
+                } else if (day === today.getDate()) {
+                    dayElement.className += ' bg-blue-600 font-bold';
+                    dayElement.textContent = day;
+                } else {
+                    dayElement.className += ' hover:bg-gray-700';
+                    dayElement.textContent = day;
+                }
+                
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        // Copiar dirección
+        function copyAddress() {
+            const address = '0x91de97ab5862d859086d8c5083f098ddba3ecd2d';
+            navigator.clipboard.writeText(address).then(() => {
+                alert('¡Dirección copiada al portapapeles!\n\nRecuerda:\n1. Preguntar números disponibles en el grupo\n2. Enviar captura de pago para verificación');
+            });
+        }
+
+        // Inicializar
+        updateClock();
+        updateNumbers();
+        generateCalendar();
+        
+        // Actualizar cada segundo
+        setInterval(updateClock, 1000);
+        setInterval(updateNumbers, 1000);
+    </script>
+</body>
+</html>

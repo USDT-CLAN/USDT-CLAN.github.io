@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de Criptomonedas - Sneyder Estudio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+        .glass-card {
+            background: rgba(22, 27, 34, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(48, 54, 61, 0.5);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #58a6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+        }
+        .neon-text {
+            text-shadow: 0 0 5px #58a6ff, 0 0 10px #58a6ff, 0 0 15px #58a6ff;
+        }
+        .section-title {
+            @apply text-3xl md:text-4xl font-bold text-white mb-2 text-center;
+        }
+        .section-subtitle {
+            @apply text-lg text-gray-400 mb-12 text-center max-w-3xl mx-auto;
+        }
+        .btn {
+            @apply px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300;
+        }
+        .btn-primary {
+            @apply bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20;
+        }
+        .warning-box {
+            @apply bg-red-900/50 border border-red-500 text-red-300 p-6 rounded-lg;
+        }
+        .highlight {
+            @apply text-blue-400 font-semibold;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header y Navegación -->
+    <header class="bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50 border-b border-slate-800">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-black text-white neon-text">CryptoGuía Ext</a>
+            <div class="hidden md:flex space-x-4 text-sm font-semibold">
+                <a href="#informacion" class="hover:text-blue-400 transition-colors">Información</a>
+                <a href="#inversion" class="hover:text-blue-400 transition-colors">Inversión</a>
+                <a href="#mineria" class="hover:text-blue-400 transition-colors">Minería</a>
+                <a href="#mercado" class="hover:text-blue-400 transition-colors">Mercado</a>
+                <a href="#plataformas" class="hover:text-blue-400 transition-colors">Plataformas</a>
+                <a href="#bots" class="hover:text-blue-400 transition-colors">Bots</a>
+                <a href="#nfts" class="hover:text-blue-400 transition-colors">NFTs</a>
+                <a href="#monedas" class="hover:text-blue-400 transition-colors">Monedas</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden">
+             <a href="#informacion" class="block py-2 px-6 text-sm hover:bg-slate-800">Información</a>
+            <a href="#inversion" class="block py-2 px-6 text-sm hover:bg-slate-800">Inversión</a>
+            <a href="#mineria" class="block py-2 px-6 text-sm hover:bg-slate-800">Minería</a>
+            <a href="#mercado" class="block py-2 px-6 text-sm hover:bg-slate-800">Mercado</a>
+            <a href="#plataformas" class="block py-2 px-6 text-sm hover:bg-slate-800">Plataformas</a>
+            <a href="#bots" class="block py-2 px-6 text-sm hover:bg-slate-800">Bots</a>
+            <a href="#nfts" class="block py-2 px-6 text-sm hover:bg-slate-800">NFTs</a>
+            <a href="#monedas" class="block py-2 px-6 text-sm hover:bg-slate-800">Monedas</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="container mx-auto px-6 py-12 md:py-24">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+                Domina el Universo de las <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-300">Criptomonedas</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                Una guía extendida y detallada para entender, invertir y navegar en el complejo y emocionante mundo de los activos digitales.
+            </p>
+            <a href="#informacion" class="btn btn-primary text-lg">Comenzar la Inmersión</a>
+        </div>
+
+        <!-- Sección Información Detallada -->
+        <section id="informacion" class="py-20">
+            <h2 class="section-title">Información Fundamental</h2>
+            <p class="section-subtitle">
+                Las criptomonedas son mucho más que dinero digital. Son la base de una nueva economía descentralizada (DeFi) y una nueva forma de interacción en internet (Web3).
+            </p>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 text-gray-300">
+                    <h3 class="text-2xl font-bold text-white">Blockchain: El Pilar de la Confianza</h3>
+                    <p>La <span class="highlight">Blockchain</span> es un libro contable digital, inmutable y distribuido. Cada "bloque" contiene un lote de transacciones y está criptográficamente vinculado al anterior, formando una "cadena". Esta estructura hace que sea extremadamente difícil alterar datos pasados.</p>
+                    <p>La red es mantenida por <span class="highlight">nodos</span> (ordenadores) en todo el mundo, y se llega a un acuerdo sobre qué transacciones son válidas a través de un <span class="highlight">mecanismo de consenso</span>, como Proof-of-Work (PoW) o Proof-of-Stake (PoS).</p>
+                    
+                    <h3 class="text-2xl font-bold text-white mt-8">Tus Activos, Tu Responsabilidad: Wallets</h3>
+                     <p>Una wallet de criptomonedas es una herramienta para interactuar con la blockchain. No "almacena" tus monedas, sino las claves criptográficas que demuestran tu propiedad y te permiten realizar transacciones.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Hot Wallets (Billeteras Calientes):</strong> Conectadas a internet (apps móviles, extensiones de navegador). Son convenientes para transacciones frecuentes pero más vulnerables a hackeos. Ejemplos: MetaMask, Trust Wallet.</li>
+                        <li><strong>Cold Wallets (Billeteras Frías):</strong> No están conectadas a internet (dispositivos físicos tipo USB). Ofrecen máxima seguridad para almacenar grandes cantidades a largo plazo. Ejemplos: Ledger, Trezor.</li>
+                    </ul>
+                </div>
+                 <div>
+                    <img src="https://placehold.co/600x600/0d1117/58a6ff?text=Blockchain+y+Wallets" alt="Diagrama de Blockchain y Wallets" class="rounded-lg shadow-2xl w-full">
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Inversión, Riesgo y Ganancia -->
+        <section id="inversion" class="py-20">
+            <h2 class="section-title">Inversión Estratégica en Cripto</h2>
+            <p class="section-subtitle">Invertir sin estrategia es apostar. Conocer los métodos y riesgos te posiciona mejor para el éxito a largo plazo.</p>
+             <div class="space-y-12">
+                 <div>
+                    <h3 class="text-2xl font-bold text-white mb-6 text-center">Estrategias de Inversión Populares</h3>
+                     <div class="grid md:grid-cols-3 gap-8 text-center">
+                        <div class="glass-card rounded-lg p-8">
+                            <h4 class="text-xl font-bold text-green-400 mb-2">DCA (Dollar-Cost Averaging)</h4>
+                            <p>Consiste en invertir una cantidad fija de dinero a intervalos regulares (ej. 100€ cada mes), sin importar el precio. Reduce el impacto de la volatilidad y es ideal para principiantes y largo plazo.</p>
+                        </div>
+                        <div class="glass-card rounded-lg p-8">
+                            <h4 class="text-xl font-bold text-yellow-400 mb-2">Swing Trading</h4>
+                            <p>Busca capturar "swings" (oscilaciones) en el precio que duran desde unos días hasta varias semanas. Requiere análisis técnico para identificar tendencias y puntos de entrada/salida.</p>
+                        </div>
+                        <div class="glass-card rounded-lg p-8">
+                            <h4 class="text-xl font-bold text-orange-400 mb-2">HODL</h4>
+                            <p>La estrategia fundamental: comprar y mantener a largo plazo, creyendo en el potencial futuro del activo y ignorando la volatilidad a corto plazo. Requiere paciencia y convicción.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-6 text-center">Análisis Detallado de Riesgos</h3>
+                    <div class="warning-box space-y-3">
+                        <p><strong>Riesgo de Mercado:</strong> La volatilidad es la norma. Los precios pueden caer un 50% o más en poco tiempo.</p>
+                        <p><strong>Riesgo Regulatorio:</strong> Gobiernos pueden prohibir o regular estrictamente las criptomonedas, afectando su precio y acceso.</p>
+                        <p><strong>Riesgo Tecnológico:</strong> Bugs en el código de un contrato inteligente pueden ser explotados, resultando en la pérdida total de fondos.</p>
+                        <p><strong>Riesgo de Estafa (Scams):</strong> Proyectos falsos (rug pulls), phishing, y promesas de ganancias garantizadas son muy comunes. <strong class="uppercase">DYOR - Do Your Own Research (Haz tu propia investigación)</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Sección Minería y Consenso -->
+        <section id="mineria" class="py-20">
+            <h2 class="section-title">Validando la Red: Minería y Staking</h2>
+            <p class="section-subtitle">La seguridad y funcionamiento de una blockchain dependen de cómo se validan las transacciones. Los dos métodos más importantes son Prueba de Trabajo y Prueba de Participación.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">Proof of Work (PoW) - La Prueba de Trabajo</h3>
+                    <p>Usado por Bitcoin. Los <span class="highlight">mineros</span> compiten para resolver un complejo acertijo matemático usando una enorme cantidad de poder computacional. El primero en resolverlo valida un bloque de transacciones y es recompensado con nuevas monedas.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-4">
+                        <li><strong>Ventaja:</strong> Máxima seguridad y descentralización probada.</li>
+                        <li><strong>Desventaja:</strong> Enorme consumo energético e incentiva la centralización en <span class="highlight">mining pools</span> (grupos de mineros que combinan su poder).</li>
+                    </ul>
+                </div>
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">Proof of Stake (PoS) - La Prueba de Participación</h3>
+                    <p>Usado por Ethereum, Cardano, etc. Los <span class="highlight">validadores</span> "bloquean" una cantidad de la criptomoneda nativa (su "stake") como garantía. El protocolo elige un validador para crear el siguiente bloque, basado en la cantidad de stake y otros factores. Si actúan maliciosamente, pierden parte de su stake.</p>
+                     <ul class="list-disc list-inside space-y-2 mt-4">
+                        <li><strong>Ventaja:</strong> Mucho más eficiente energéticamente y más accesible para participar.</li>
+                        <li><strong>Desventaja:</strong> Puede llevar a que los "ricos se hagan más ricos", ya que más stake significa más oportunidades de validar.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Mercado y Ciclos -->
+        <section id="mercado" class="py-20">
+            <h2 class="section-title">Navegando los Ciclos del Mercado</h2>
+            <p class="section-subtitle">El mercado cripto se mueve en ciclos de euforia (mercado alcista o bull market) y desesperación (mercado bajista o bear market). Entenderlos es clave para no tomar decisiones emocionales.</p>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                 <div>
+                     <img src="https://placehold.co/600x500/0d1117/02c39a?text=Ciclos+del+Mercado" alt="Gráfico de ciclos del mercado" class="rounded-lg shadow-2xl w-full">
+                </div>
+                <div class="space-y-6 text-gray-300">
+                    <h3 class="text-2xl font-bold text-white">Análisis para Predecir (o Intentarlo)</h3>
+                    <p>Predecir el futuro es imposible, pero estas dos escuelas de análisis ayudan a tomar decisiones informadas:</p>
+                    <p><span class="highlight">Análisis Técnico:</span> Se basa en que "la historia se repite". Estudia gráficos de precios buscando patrones y tendencias usando indicadores como:</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li><strong>RSI (Relative Strength Index):</strong> Mide si un activo está sobrecomprado o sobrevendido.</li>
+                        <li><strong>MACD (Moving Average Convergence Divergence):</strong> Muestra la relación entre dos medias móviles de precios.</li>
+                        <li><strong>Soportes y Resistencias:</strong> Niveles de precio donde el activo tiende a detener su caída (soporte) o su subida (resistencia).</li>
+                    </ul>
+                    <p><span class="highlight">Análisis Fundamental:</span> Evalúa el valor intrínseco de un proyecto investigando:</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li><strong>Whitepaper:</strong> El documento que explica el propósito y la tecnología del proyecto.</li>
+                        <li><strong>Tokenomics:</strong> Cómo se distribuyen y utilizan los tokens (oferta total, inflación, utilidad).</li>
+                        <li><strong>Equipo y Comunidad:</strong> La experiencia del equipo desarrollador y la actividad de la comunidad.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Plataformas Confiables -->
+        <section id="plataformas" class="py-20">
+            <h2 class="section-title">Plataformas para Operar</h2>
+            <p class="section-subtitle">Elegir una plataforma (exchange) segura y fiable es tu primer paso. Aquí hay algunas de las más reconocidas a nivel mundial. Investiga cuál se adapta mejor a tus necesidades y a las regulaciones de tu país.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-card p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-2xl mb-2 text-yellow-400">Binance</h3>
+                    <p>El exchange más grande del mundo por volumen. Ofrece una enorme cantidad de criptomonedas y productos avanzados como futuros y staking. Ideal para usuarios intermedios y avanzados.</p>
+                </div>
+                <div class="glass-card p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-2xl mb-2 text-blue-500">Coinbase</h3>
+                    <p>Conocida por su interfaz amigable y por ser una empresa que cotiza en bolsa en EE.UU., lo que le da un alto grado de confianza. Perfecta para principiantes.</p>
+                </div>
+                <div class="glass-card p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-2xl mb-2 text-orange-500">Kraken</h3>
+                    <p>Uno de los exchanges más antiguos y respetados, conocido por su fuerte enfoque en la seguridad. Ofrece una buena selección de activos y opciones de staking.</p>
+                </div>
+                <div class="glass-card p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-2xl mb-2 text-green-400">KuCoin</h3>
+                    <p>Llamado "el exchange de la gente", es famoso por listar gemas o monedas de baja capitalización antes que otros exchanges grandes. Más riesgo, pero potencial de mayor recompensa.</p>
+                </div>
+                 <div class="glass-card p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-2xl mb-2 text-red-500">Bybit</h3>
+                    <p>Originalmente enfocado en derivados (futuros, opciones), se ha expandido para convertirse en un completo exchange de spot. Popular entre traders por su potente motor de trading.</p>
+                </div>
+                 <div class="glass-card p-6 rounded-lg text-center">
+                    <h3 class="font-bold text-2xl mb-2 text-cyan-400">OKX</h3>
+                    <p>Un exchange global que ofrece una amplia gama de servicios, incluyendo trading, una wallet Web3 integrada, y un mercado de NFTs. Muy innovador.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Bots de Trading -->
+        <section id="bots" class="py-20">
+            <h2 class="section-title">Automatización: Bots de Trading</h2>
+            <p class="section-subtitle">Los bots son software que ejecuta operaciones de compra/venta automáticamente según una estrategia predefinida. Pueden ser una herramienta poderosa, pero conllevan riesgos extremos, especialmente los más nuevos.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="glass-card p-8 space-y-4">
+                    <h3 class="text-2xl font-bold text-white mb-2">Bots de Plataforma y Standalone</h3>
+                    <p>Son la forma más tradicional y relativamente segura de usar bots.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Integrados en Exchanges:</strong> Plataformas como Binance, KuCoin u OKX ofrecen bots de Grid Trading o DCA que son fáciles de configurar y no requieren compartir claves de API externamente.</li>
+                        <li><strong>Plataformas Externas:</strong> Servicios como 3Commas o CryptoHopper se conectan a tu exchange mediante claves API. Ofrecen estrategias más complejas pero requieren confiar tus claves a un tercero.</li>
+                    </ul>
+                    <p class="text-sm text-gray-400"><strong>Riesgo Principal:</strong> Malas configuraciones que lleven a pérdidas y el riesgo de seguridad de las claves API.</p>
+                </div>
+
+                <div class="warning-box p-8 space-y-4">
+                    <h3 class="text-2xl font-bold text-white mb-2">El Salvaje Oeste: Bots de Telegram</h3>
+                    <p class="text-red-200">Estos bots operan directamente en la blockchain a través de la interfaz de Telegram y han ganado una popularidad masiva por su velocidad y funciones agresivas. <strong>SON DE EXTREMO RIESGO.</strong></p>
+                    <p><strong>¿Cómo funcionan?</strong> Te piden que crees una nueva wallet dentro del bot o que importes tu clave privada. <strong class="uppercase">NUNCA importes la clave privada de tu wallet principal.</strong></p>
+                    <p><strong>Funciones Comunes:</strong></p>
+                    <ul class="list-disc list-inside space-y-2 text-sm">
+                        <li><strong>Sniping:</strong> Comprar un token en el mismo instante en que se lanza al mercado.</li>
+                        <li><strong>Copy Trading:</strong> Copiar automáticamente las operaciones de una wallet "experta".</li>
+                        <li><strong>Análisis de Seguridad:</strong> Evalúan si el contrato de un token parece una estafa.</li>
+                    </ul>
+                     <p class="font-bold mt-4">Riesgos MASIVOS:</p>
+                     <p>El desarrollador del bot puede robar tus fondos en cualquier momento, el bot puede tener fallos, o puedes ser víctima de estafas complejas. Plataformas como Unibot, Banana Gun o Maestro son conocidas, pero su uso es solo para expertos que entienden y aceptan la posibilidad de perderlo todo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección NFTs -->
+        <section id="nfts" class="py-20">
+            <h2 class="section-title">NFTs: Más Allá del Arte Digital</h2>
+            <p class="section-subtitle">Los Tokens No Fungibles (NFTs) son certificados de propiedad digital únicos. Aunque explotaron con el arte y los coleccionables, su tecnología tiene aplicaciones mucho más amplias.</p>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                 <div>
+                    <img src="https://placehold.co/600x400/0d1117/9d4edd?text=Ecosistema+NFT" alt="Ecosistema de NFTs" class="rounded-lg shadow-2xl w-full">
+                </div>
+                <div class="space-y-4 text-gray-300">
+                    <h3 class="text-2xl font-bold text-white">Casos de Uso Emergentes</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Gaming (Play-to-Earn):</strong> Los objetos del juego (armas, skins) son NFTs que los jugadores realmente poseen y pueden vender.</li>
+                        <li><strong>Ticketing:</strong> Entradas a conciertos o eventos como NFTs para evitar falsificaciones y permitir un mercado secundario controlado.</li>
+                        <li><strong>Identidad Digital:</strong> Un NFT podría representar tu título universitario, tu pasaporte o tu historial médico de forma segura y verificable.</li>
+                        <li><strong>Bienes Raíces:</strong> Representar la propiedad de un inmueble con un NFT para agilizar y transparentar las transacciones.</li>
+                    </ul>
+                    <p>Plataformas como <span class="highlight">OpenSea</span>, <span class="highlight">Magic Eden</span> (en Solana) y <span class="highlight">Blur</span> son los mercados principales para comprar y vender NFTs.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Sección Monedas Conocidas y Meme Coins -->
+        <section id="monedas" class="py-20">
+            <h2 class="section-title">Protagonistas del Ecosistema</h2>
+            <p class="section-subtitle">Un vistazo a las monedas que mueven el mercado, desde los gigantes establecidos hasta las volátiles pero populares meme coins.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Bitcoin -->
+                <div class="glass-card p-6 rounded-lg">
+                    <h3 class="font-bold text-xl mb-2 text-yellow-500">Bitcoin (BTC)</h3>
+                    <p>El rey indiscutible. La criptomoneda más descentralizada y segura, vista como oro digital y reserva de valor contra la inflación.</p>
+                </div>
+                <!-- Ethereum -->
+                <div class="glass-card p-6 rounded-lg">
+                    <h3 class="font-bold text-xl mb-2 text-blue-300">Ethereum (ETH)</h3>
+                    <p>El ordenador mundial. Su capacidad para ejecutar contratos inteligentes es la base de DeFi, NFTs y miles de otras aplicaciones.</p>
+                </div>
+                 <!-- Solana -->
+                <div class="glass-card p-6 rounded-lg">
+                    <h3 class="font-bold text-xl mb-2 text-purple-400">Solana (SOL)</h3>
+                    <p>El demonio de la velocidad. Atrae a desarrolladores y usuarios por sus transacciones casi instantáneas y de bajo costo, ideal para trading y gaming.</p>
+                </div>
+                <!-- BNB -->
+                <div class="glass-card p-6 rounded-lg">
+                    <h3 class="font-bold text-xl mb-2 text-amber-400">BNB (BNB)</h3>
+                    <p>El token nativo del ecosistema Binance. Se usa para pagar comisiones con descuento en el exchange y es el centro de la BNB Smart Chain.</p>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-white text-center mt-16 mb-8">El Fenómeno Cultural de las Meme Coins</h3>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 rounded-lg">
+                    <h4 class="font-bold text-xl mb-2 text-amber-600">Dogecoin (DOGE)</h4>
+                    <p>La meme coin original. Su valor es casi puramente especulativo y se mueve por el sentimiento de la comunidad y la atención mediática. "La cripto del pueblo".</p>
+                </div>
+                 <div class="glass-card p-6 rounded-lg">
+                    <h4 class="font-bold text-xl mb-2 text-orange-600">Shiba Inu (SHIB)</h4>
+                    <p>Nació para competir con DOGE pero ha creado un ecosistema con su propio exchange (ShibaSwap). Representa el poder del marketing y la comunidad en cripto.</p>
+                </div>
+            </div>
+            <p class="text-center mt-8 text-yellow-300"><strong>Advertencia:</strong> Las meme coins son extremadamente volátiles y deben ser consideradas como una lotería de alto riesgo, no como una inversión seria.</p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+            <p class="mb-4 font-semibold text-red-400 text-sm">
+                Sneyder Estudio no es asesor financiero y toda inversión va bajo de su propio riesgo.
+            </p>
+            <p class="text-sm">
+                2025 Sneyder Estudio
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Script para el menú móvil
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelectorAll('#mobile-menu a, .hidden.md\\:flex a');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Lulubit - La Revolución Crypto en Latinoamérica | Sneyder Estudio</title>
+    <meta name="description" content="Página promocional para Lulubit App - Compra y vende Bitcoin y más de 30 criptomonedas en Costa Rica, Panamá, Guatemala y próximamente Honduras y República Dominicana. Gana hasta 7% anual. Promoción por Sneyder Estudio.">
+    
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        .crypto-gradient {
+            background: linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #6c5ce7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hover-effect {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-effect:hover {
+            transform: translateY(-2px);
+        }
+        
+        .crypto-bg {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(108, 92, 231, 0.1) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .country-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(108, 92, 231, 0.05) 100%);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            transition: all 0.3s ease;
+        }
+        
+        .country-card:hover {
+            border: 2px solid #ffd700;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+        
+        .coming-soon {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .coming-soon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .orbitron {
+            font-family: 'Orbitron', monospace;
+        }
+
+        .referral-code {
+            background: linear-gradient(135deg, #ffd700 0%, #ff6b35 100%);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        .referral-code h3 {
+            color: #0f0f23;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .referral-code p {
+            color: #0f0f23;
+            font-weight: 600;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Header -->
+    <header class="py-6 px-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-6xl font-black orbitron crypto-gradient mb-4">
+                🚀 LULUBIT
+            </h1>
+            <p class="text-2xl text-gray-300 font-light">
+                LA REVOLUCIÓN CRYPTO EN LATINOAMÉRICA
+            </p>
+            <div class="mt-4 text-sm text-yellow-400">
+                <i class="fas fa-star"></i> Promoción Oficial por Sneyder Estudio <i class="fas fa-star"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap items-center">
+                <div class="w-full lg:w-1/2 mb-8 lg:mb-0">
+                    <h2 class="text-5xl font-bold mb-6 crypto-gradient">
+                        DESCARGA LA APP Y REGÍSTRATE GRATIS
+                    </h2>
+                    <h3 class="text-3xl font-semibold mb-6 text-yellow-400">
+                        Compra y vende Bitcoin y más de 30 criptomonedas
+                    </h3>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Deposita desde tu banco con SINPE, ACH y transferencias. 
+                        <span class="text-yellow-400 font-semibold">¡Gana hasta 7% anual!</span>
+                    </p>
+
+                    <!-- Referral Code Section -->
+                    <div class="referral-code">
+                        <h3><i class="fas fa-gift"></i> ¡USA MI CÓDIGO DE INVITACIÓN!</h3>
+                        <p>$LULUAXEL64</p>
+                        <small style="color: #0f0f23; font-weight: 500;">Copia este código al registrarte para obtener beneficios exclusivos</small>
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="flex flex-wrap gap-4 mb-8">
+                        <a href="https://apps.apple.com/pa/app/lulubit-compra-bitcoin-crypto/id6444370380" class="hover-effect rounded-lg overflow-hidden">
+                            <img src="https://static.wixstatic.com/media/41db3d_f1103e4f153a4cd49d323899d3b2098c~mv2.png/v1/crop/x_58,y_97,w_2366,h_661/fill/w_122,h_34,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/41db3d_f1103e4f153a4cd49d323899d3b2098c~mv2.png" alt="Descarga en App Store" class="h-12">
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.lulubit&pli=1" class="hover-effect rounded-lg overflow-hidden">
+                            <img src="https://static.wixstatic.com/media/41db3d_7575f1af88cf458da87a31754455a446~mv2.png/v1/crop/x_104,y_0,w_2456,h_759/fill/w_122,h_34,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Google_Play_Store_blanca.png" alt="Descarga en Google Play" class="h-12">
+                        </a>
+                    </div>
+                    
+                    <!-- Features -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="crypto-bg p-4 rounded-lg">
+                            <i class="fas fa-coins text-yellow-400 text-2xl mb-2"></i>
+                            <p class="font-semibold">+30 Criptomonedas</p>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg">
+                            <i class="fas fa-percentage text-green-400 text-2xl mb-2"></i>
+                            <p class="font-semibold">Hasta 7% Anual</p>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg">
+                            <i class="fas fa-credit-card text-purple-400 text-2xl mb-2"></i>
+                            <p class="font-semibold">Lulucard</p>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg">
+                            <i class="fas fa-globe-americas text-blue-400 text-2xl mb-2"></i>
+                            <p class="font-semibold">Depósitos USA</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-1/2 text-center">
+                    <img src="https://static.wixstatic.com/media/41db3d_b304c39d287448dabef84a7ababa119a~mv2.png/v1/crop/x_806,y_240,w_5255,h_4855/fill/w_748,h_658,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Inicio_Landing%20Page.png" alt="Lulubit App" class="max-w-full h-auto float-animation">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countries Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12 crypto-gradient">
+                <i class="fas fa-globe-americas"></i> DISPONIBLE EN LATINOAMÉRICA
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+                <!-- Current Countries -->
+                <div class="country-card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">🇨🇷</div>
+                    <h3 class="text-xl font-bold text-yellow-400 mb-2">COSTA RICA</h3>
+                    <p class="text-sm text-gray-300">SINPE • IBAN</p>
+                    <div class="mt-4 text-green-400">
+                        <i class="fas fa-check-circle"></i> DISPONIBLE
+                    </div>
+                </div>
+                
+                <div class="country-card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">🇵🇦</div>
+                    <h3 class="text-xl font-bold text-yellow-400 mb-2">PANAMÁ</h3>
+                    <p class="text-sm text-gray-300">ACH • Transferencias</p>
+                    <div class="mt-4 text-green-400">
+                        <i class="fas fa-check-circle"></i> DISPONIBLE
+                    </div>
+                </div>
+                
+                <div class="country-card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">🇬🇹</div>
+                    <h3 class="text-xl font-bold text-yellow-400 mb-2">GUATEMALA</h3>
+                    <p class="text-sm text-gray-300">ACH • Quetzales/USD</p>
+                    <div class="mt-4 text-green-400">
+                        <i class="fas fa-check-circle"></i> DISPONIBLE
+                    </div>
+                </div>
+                
+                <!-- Coming Soon Countries -->
+                <div class="country-card coming-soon p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">🇭🇳</div>
+                    <h3 class="text-xl font-bold text-orange-400 mb-2">HONDURAS</h3>
+                    <p class="text-sm text-gray-300">Próximamente</p>
+                    <div class="mt-4 text-orange-400 pulse-animation">
+                        <i class="fas fa-clock"></i> 2025
+                    </div>
+                </div>
+                
+                <div class="country-card coming-soon p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">🇩🇴</div>
+                    <h3 class="text-xl font-bold text-orange-400 mb-2">REP. DOMINICANA</h3>
+                    <p class="text-sm text-gray-300">Próximamente</p>
+                    <div class="mt-4 text-orange-400 pulse-animation">
+                        <i class="fas fa-clock"></i> 2025
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-lg text-gray-300">
+                    <i class="fas fa-rocket text-yellow-400"></i> 
+                    ¡Expansión continua por toda Latinoamérica!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12 crypto-gradient">
+                COMIENZA A COMPRAR CRIPTOMONEDAS
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <div class="text-center">
+                    <div class="crypto-bg p-8 rounded-lg mb-6">
+                        <div class="text-6xl font-bold crypto-gradient mb-4">01</div>
+                        <h3 class="text-2xl font-bold mb-4 text-yellow-400">Regístrate en la App</h3>
+                        <p class="text-gray-300">Descarga la App desde PlayStore o AppStore y crea tu cuenta gratis.</p>
+                        <div class="referral-code mt-4" style="padding: 10px; font-size: 0.8rem;">
+                            <p style="font-size: 1rem; margin: 0;">Usa el código: <strong>$LULUAXEL64</strong></p>
+                        </div>
+                    </div>
+                    <img src="https://static.wixstatic.com/media/41db3d_b2e0aa011f38455191d986ec452fe961~mv2.png/v1/fill/w_294,h_543,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Iniciar%20Sesi%C3%B3n%20Mockup_1.png" alt="Registro Lulubit" class="max-w-full h-auto mx-auto">
+                </div>
+                
+                <div class="text-center">
+                    <div class="crypto-bg p-8 rounded-lg mb-6">
+                        <div class="text-6xl font-bold crypto-gradient mb-4">02</div>
+                        <h3 class="text-2xl font-bold mb-4 text-yellow-400">Deposita desde tu banco</h3>
+                        <p class="text-gray-300">Deposita USD, Colones o Quetzales desde todos los bancos sin costo.</p>
+                    </div>
+                    <img src="https://static.wixstatic.com/media/41db3d_38b93894ab774668a8c21cd062032ec4~mv2.png/v1/crop/x_0,y_78,w_1261,h_2119/fill/w_309,h_519,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Depositar_Mockup_1.png" alt="Depósito Lulubit" class="max-w-full h-auto mx-auto">
+                </div>
+                
+                <div class="text-center">
+                    <div class="crypto-bg p-8 rounded-lg mb-6">
+                        <div class="text-6xl font-bold crypto-gradient mb-4">03</div>
+                        <h3 class="text-2xl font-bold mb-4 text-yellow-400">Compra criptomonedas</h3>
+                        <p class="text-gray-300">Compra Bitcoin, Ethereum y +30 criptomonedas al instante, sin vueltas.</p>
+                    </div>
+                    <img src="https://static.wixstatic.com/media/41db3d_c00ea437cdd94275ab86713ef048f9a8~mv2.png/v1/fill/w_294,h_543,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Compr%C3%A1%20Bitcoin_Mockup_1.png" alt="Comprar Bitcoin" class="max-w-full h-auto mx-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lulucard Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap items-center">
+                <div class="w-full lg:w-1/2 mb-8 lg:mb-0">
+                    <img src="https://static.wixstatic.com/media/41db3d_bfb0b49da50a4b939b285355518e586e~mv2.png/v1/crop/x_911,y_311,w_5127,h_4619/fill/w_704,h_535,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Lulucard_Landing%20Page.png" alt="Lulucard" class="max-w-full h-auto float-animation">
+                </div>
+                <div class="w-full lg:w-1/2 lg:pl-12">
+                    <h2 class="text-4xl font-bold mb-6 crypto-gradient">
+                        <i class="fas fa-credit-card"></i> SOLICITA TU LULUCARD
+                    </h2>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Muy pronto podrás solicitar tu tarjeta y utilizarla en cualquier comercio del mundo, 
+                        <span class="text-yellow-400 font-semibold">pagando con criptomonedas</span>.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="crypto-bg p-4 rounded-lg">
+                            <i class="fas fa-store text-purple-400 text-2xl mb-2"></i>
+                            <p class="font-semibold">Tiendas Físicas</p>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg">
+                            <i class="fas fa-laptop text-blue-400 text-2xl mb-2"></i>
+                            <p class="font-semibold">Compras Online</p>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg">
+                            <i class="fas fa-atm text-green-400 text-2xl mb-2"></i>
+                            <p class="font-semibold">Retira Efectivo</p>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg">
+                            <i class="fas fa-globe text-yellow-400 text-2xl mb-2"></i>
+                            <p class="font-semibold">Uso Mundial</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Earnings Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap items-center">
+                <div class="w-full lg:w-1/2 lg:pr-12 mb-8 lg:mb-0">
+                    <h2 class="text-4xl font-bold mb-6 crypto-gradient">
+                        <i class="fas fa-chart-line"></i> GANA HASTA UN 7% ANUAL
+                    </h2>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Genera ganancias pasivas con tus 
+                        <span class="text-yellow-400 font-semibold">USDT, USDC, DAI y ETH</span>. 
+                        Podrás disponer de tu dinero cuando quieras.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="crypto-bg p-4 rounded-lg flex items-center">
+                            <i class="fas fa-coins text-yellow-400 text-2xl mr-4"></i>
+                            <div>
+                                <p class="font-semibold">Ganancias Pasivas</p>
+                                <p class="text-sm text-gray-400">Hasta 7% anual garantizado</p>
+                            </div>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg flex items-center">
+                            <i class="fas fa-unlock text-green-400 text-2xl mr-4"></i>
+                            <div>
+                                <p class="font-semibold">Liquidez Total</p>
+                                <p class="text-sm text-gray-400">Accede a tu dinero cuando quieras</p>
+                            </div>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg flex items-center">
+                            <i class="fas fa-shield-alt text-blue-400 text-2xl mr-4"></i>
+                            <div>
+                                <p class="font-semibold">100% Seguro</p>
+                                <p class="text-sm text-gray-400">Fondos protegidos y auditados</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2 text-center">
+                    <img src="https://static.wixstatic.com/media/41db3d_4a1cebc79ab7403590f269a1f7bf94d5~mv2.png/v1/crop/x_0,y_18,w_3318,h_2667/fill/w_445,h_357,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/41db3d_4a1cebc79ab7403590f269a1f7bf94d5~mv2.png" alt="Ganancias" class="max-w-full h-auto float-animation">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- USD Deposits Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap items-center">
+                <div class="w-full lg:w-1/2 mb-8 lg:mb-0">
+                    <img src="https://static.wixstatic.com/media/41db3d_37be5e878bf04a519cc554555a8d15f4~mv2.png/v1/crop/x_0,y_154,w_3327,h_2871/fill/w_445,h_382,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/41db3d_37be5e878bf04a519cc554555a8d15f4~mv2.png" alt="Depósitos USD" class="max-w-full h-auto float-animation">
+                </div>
+                <div class="w-full lg:w-1/2 lg:pl-12">
+                    <h2 class="text-4xl font-bold mb-6 crypto-gradient">
+                        <i class="fas fa-dollar-sign"></i> RECIBE USD, OBTÉN USDC
+                    </h2>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Abre tu cuenta virtual de depósito en USA y recibe USD desde Estados Unidos. 
+                        <span class="text-yellow-400 font-semibold">Retira desde PayPal, Payoneer, ¡y más!</span>
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="crypto-bg p-4 rounded-lg flex items-center">
+                            <i class="fab fa-paypal text-blue-400 text-2xl mr-4"></i>
+                            <p class="font-semibold">Integración PayPal</p>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg flex items-center">
+                            <i class="fas fa-university text-green-400 text-2xl mr-4"></i>
+                            <p class="font-semibold">Cuenta Virtual USA</p>
+                        </div>
+                        <div class="crypto-bg p-4 rounded-lg flex items-center">
+                            <i class="fas fa-exchange-alt text-purple-400 text-2xl mr-4"></i>
+                            <p class="font-semibold">Conversión Automática a USDC</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Referral Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto text-center">
+            <div class="crypto-bg p-12 rounded-lg">
+                <h2 class="text-4xl font-bold mb-6 crypto-gradient">
+                    <i class="fas fa-users"></i> EFECTO PIE DE AMIGO
+                </h2>
+                <p class="text-xl text-gray-300 mb-8">
+                    ¡Invita a tus amigos y ganen juntos! Por cada referido que se registre y use Lulubit, 
+                    <span class="text-yellow-400 font-semibold">ambos reciben beneficios exclusivos</span>.
+                </p>
+                
+                <div class="referral-code mb-8">
+                    <h3><i class="fas fa-share-alt"></i> MI CÓDIGO DE INVITACIÓN</h3>
+                    <p>$LULUAXEL64</p>
+                    <small style="color: #0f0f23; font-weight: 500;">¡Compártelo con tus amigos para que obtengan beneficios!</small>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="crypto-bg p-6 rounded-lg">
+                        <i class="fas fa-share-alt text-yellow-400 text-3xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Comparte</h3>
+                        <p class="text-gray-300">Envía tu código único a amigos y familia</p>
+                    </div>
+                    <div class="crypto-bg p-6 rounded-lg">
+                        <i class="fas fa-user-plus text-green-400 text-3xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Se Registran</h3>
+                        <p class="text-gray-300">Tus amigos se registran con tu código</p>
+                    </div>
+                    <div class="crypto-bg p-6 rounded-lg">
+                        <i class="fas fa-gift text-purple-400 text-3xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Ganan Ambos</h3>
+                        <p class="text-gray-300">Reciben recompensas y beneficios exclusivos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-5xl font-bold mb-6 crypto-gradient">
+                ¡ÚNETE A LA REVOLUCIÓN CRYPTO!
+            </h2>
+            <p class="text-xl text-gray-300 mb-8">
+                Más de 15,000 usuarios ya confían en Lulubit para sus inversiones crypto
+            </p>
+            
+            <div class="referral-code mb-8">
+                <h3><i class="fas fa-rocket"></i> ¡NO OLVIDES MI CÓDIGO!</h3>
+                <p>$LULUAXEL64</p>
+                <small style="color: #0f0f23; font-weight: 500;">Úsalo al registrarte para obtener beneficios especiales</small>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <a href="https://apps.apple.com/pa/app/lulubit-compra-bitcoin-crypto/id6444370380" class="hover-effect rounded-lg overflow-hidden pulse-animation">
+                    <img src="https://static.wixstatic.com/media/41db3d_f1103e4f153a4cd49d323899d3b2098c~mv2.png/v1/crop/x_58,y_97,w_2366,h_661/fill/w_122,h_34,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/41db3d_f1103e4f153a4cd49d323899d3b2098c~mv2.png" alt="Descarga en App Store" class="h-16">
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.lulubit&pli=1" class="hover-effect rounded-lg overflow-hidden pulse-animation">
+                    <img src="https://static.wixstatic.com/media/41db3d_7575f1af88cf458da87a31754455a446~mv2.png/v1/crop/x_104,y_0,w_2456,h_759/fill/w_122,h_34,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Google_Play_Store_blanca.png" alt="Descarga en Google Play" class="h-16">
+                </a>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-lg text-yellow-400 mb-4">
+                    <i class="fas fa-rocket"></i> ¡Descarga ahora y comienza a invertir en tu futuro!
+                </p>
+                <p class="text-sm text-gray-400">
+                    Disponible 24/7 • Soporte en español • 100% Seguro
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-gray-700">
+        <div class="container mx-auto">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold crypto-gradient orbitron mb-4">
+                    SNEYDER ESTUDIO
+                </h3>
+                <p class="text-gray-400 mb-4">
+                    Promoción oficial de Lulubit App para el mundo crypto
+                </p>
+            </div>
+            
+            <!-- Disclaimer -->
+            <div class="crypto-bg p-6 rounded-lg mb-6">
+                <h4 class="text-lg font-bold text-yellow-400 mb-3">
+                    <i class="fas fa-exclamation-triangle"></i> AVISO IMPORTANTE
+                </h4>
+                <p class="text-sm text-gray-300 mb-2">
+                    <strong>Sneyder Estudio no se hace responsable</strong> de las decisiones de inversión tomadas por los usuarios, 
+                    ya que <strong>no es asesor financiero</strong>. Las criptomonedas son inversiones de alto riesgo.
+                </p>
+                <p class="text-xs text-gray-400">
+                    Siempre consulte con un asesor financiero profesional antes de realizar inversiones. 
+                    El valor de las criptomonedas puede fluctuar significativamente.
+                </p>
+            </div>
+            
+            <div class="text-center text-sm text-gray-500">
+                <p class="mb-2">
+                    © 2025 <span class="text-yellow-400 font-semibold">Sneyder Estudio</span> - Todos los derechos reservados
+                </p>
+                <p>
+                    <i class="fas fa-heart text-red-400"></i> 
+                    Hecho con pasión para la comunidad crypto de Latinoamérica
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for better UX
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add floating effect on scroll
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelectorAll('.float-animation');
+                const speed = 0.5;
+
+                parallax.forEach(element => {
+                    const yPos = -(scrolled * speed);
+                    element.style.transform = `translateY(${yPos}px)`;
+                });
+            });
+
+            // Copy referral code functionality
+            const referralCodes = document.querySelectorAll('.referral-code p');
+            referralCodes.forEach(code => {
+                code.addEventListener('click', function() {
+                    navigator.clipboard.writeText('$LULUAXEL64').then(function() {
+                        alert('¡Código copiado al portapapeles!');
+                    });
+                });
+                code.style.cursor = 'pointer';
+                code.title = 'Haz clic para copiar';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Definitiva de Criptomonedas - Sneyder Estudio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+        .glass-card {
+            background: rgba(22, 27, 34, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(48, 54, 61, 0.5);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #58a6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+        }
+        .neon-text {
+            text-shadow: 0 0 5px #58a6ff, 0 0 10px #58a6ff, 0 0 15px #58a6ff;
+        }
+        .section-title {
+            @apply text-3xl md:text-5xl font-extrabold text-white mb-4 text-center;
+        }
+        .section-subtitle {
+            @apply text-lg text-gray-400 mb-12 text-center max-w-3xl mx-auto;
+        }
+        .btn {
+            @apply px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300;
+        }
+        .btn-primary {
+            @apply bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20;
+        }
+        .btn-whatsapp {
+            @apply bg-green-500 hover:bg-green-600 shadow-lg shadow-green-500/20;
+        }
+        .warning-box {
+            @apply bg-red-900/50 border border-red-500 text-red-300 p-6 rounded-lg;
+        }
+        .highlight {
+            @apply text-blue-400 font-semibold;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header y Navegación -->
+    <header class="bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50 border-b border-slate-800">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-black text-white neon-text">CryptoDefinitiva</a>
+            <div class="hidden lg:flex space-x-4 text-xs font-semibold">
+                <a href="#informacion" class="hover:text-blue-400 transition-colors">Conceptos</a>
+                <a href="#defi" class="hover:text-blue-400 transition-colors">DeFi</a>
+                <a href="#inversion" class="hover:text-blue-400 transition-colors">Inversión</a>
+                <a href="#seguridad" class="hover:text-blue-400 transition-colors">Seguridad</a>
+                <a href="#mercado" class="hover:text-blue-400 transition-colors">Mercado</a>
+                <a href="#plataformas" class="hover:text-blue-400 transition-colors">Plataformas</a>
+                <a href="#tecnologia" class="hover:text-blue-400 transition-colors">Tecnología</a>
+                <a href="#web3" class="hover:text-blue-400 transition-colors">Web3</a>
+                <a href="#nfts" class="hover:text-blue-400 transition-colors">NFTs</a>
+                <a href="#regulacion" class="hover:text-blue-400 transition-colors">Regulación</a>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-slate-900">
+             <a href="#informacion" class="block py-2 px-6 text-sm hover:bg-slate-800">Conceptos</a>
+             <a href="#defi" class="block py-2 px-6 text-sm hover:bg-slate-800">DeFi</a>
+             <a href="#inversion" class="block py-2 px-6 text-sm hover:bg-slate-800">Inversión</a>
+             <a href="#seguridad" class="block py-2 px-6 text-sm hover:bg-slate-800">Seguridad</a>
+             <a href="#mercado" class="block py-2 px-6 text-sm hover:bg-slate-800">Mercado</a>
+             <a href="#plataformas" class="block py-2 px-6 text-sm hover:bg-slate-800">Plataformas</a>
+             <a href="#tecnologia" class="block py-2 px-6 text-sm hover:bg-slate-800">Tecnología</a>
+             <a href="#web3" class="block py-2 px-6 text-sm hover:bg-slate-800">Web3</a>
+             <a href="#nfts" class="block py-2 px-6 text-sm hover:bg-slate-800">NFTs</a>
+             <a href="#regulacion" class="block py-2 px-6 text-sm hover:bg-slate-800">Regulación</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6">
+        <!-- Hero Section -->
+        <section class="text-center py-16 md:py-24">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-4">
+                La Guía Definitiva del <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">Universo Cripto</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto mb-8">
+                Un viaje de aprendizaje profundo y exhaustivo. Desde los fundamentos de Blockchain hasta los secretos de DeFi, Web3 y la inversión estratégica.
+            </p>
+            <a href="#informacion" class="btn btn-primary text-lg">Comenzar el Viaje</a>
+        </section>
+
+        <!-- Asistente IA Eva Section -->
+        <section id="asistente-eva-top" class="py-16">
+            <div class="glass-card rounded-2xl p-8 md:p-12">
+                <div class="grid md:grid-cols-3 gap-8 items-center">
+                    <div class="md:col-span-1 flex justify-center">
+                        <img src="https://i.postimg.cc/V6wXLqnY/Picsart-25-06-07-03-40-11-387.png" 
+                             alt="Asistente IA Eva" 
+                             class="rounded-full w-48 h-48 md:w-64 md:h-64 object-cover border-4 border-blue-500 shadow-2xl"
+                             onerror="this.onerror=null;this.src='https://placehold.co/256x256/0d1117/ffffff?text=Eva+IA';">
+                    </div>
+                    <div class="md:col-span-2 text-center md:text-left">
+                        <h2 class="text-3xl font-bold text-white mb-4">¿Tienes preguntas? ¡Habla con Eva!</h2>
+                        <p class="text-gray-300 mb-6 text-lg">Soy Eva, tu asistente de IA personal de Sneyder Estudio. Estoy aquí para ayudarte a profundizar en cualquier tema y resolver todas tus dudas. El mundo cripto es complejo, ¡no lo explores solo!</p>
+                        <a href="https://wa.me/50672712037" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp inline-flex items-center space-x-2 text-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.902-.539-5.587-1.54l-6.162 1.688a.5.5 0 0 1-.612-.611zM7.127 19.826l.438.261c1.557.935 3.328 1.448 5.143 1.448 5.485 0 9.941-4.456 9.941-9.941s-4.456-9.941-9.941-9.941-9.941 4.456-9.941 9.941c0 1.793.468 3.518 1.348 5.079l.272.443-1.039 3.787 3.849-1.048z"/></svg>
+                            <span>Enviar mensaje por WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 1: Conceptos Fundamentales -->
+        <section id="informacion" class="py-20">
+            <h2 class="section-title">Conceptos Fundamentales</h2>
+            <p class="section-subtitle">Para construir un rascacielos, necesitas cimientos de acero. Estos son los cimientos de tu conocimiento cripto.</p>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 text-gray-300">
+                    <h3 class="text-2xl font-bold text-white">Blockchain: El Libro Contable Inmutable</h3>
+                    <p>Imagina un libro de contabilidad digital que, en lugar de estar en un solo ordenador, está copiado en miles de ordenadores por todo el mundo. Cada transacción (un "bloque") se añade a este libro, y se vincula al anterior con una huella digital criptográfica (un "hash"). Para cambiar una transacción antigua, tendrías que cambiar todos los bloques siguientes en miles de ordenadores simultáneamente, lo cual es prácticamente imposible. Esto es <span class="highlight">Blockchain</span>: un sistema que genera confianza sin necesidad de un intermediario como un banco.</p>
+                    <h3 class="text-2xl font-bold text-white mt-8">Claves Públicas y Privadas: Tu Identidad Digital</h3>
+                     <p>En el mundo cripto, tu identidad es un par de claves criptográficas:</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Clave Pública:</strong> Es como tu número de cuenta bancaria (IBAN). Puedes compartirla con cualquiera para que te envíen fondos. De ella se deriva tu dirección de wallet.</li>
+                        <li><strong>Clave Privada:</strong> Es tu contraseña secreta y la prueba de que eres el dueño de los fondos. <strong class="text-red-400">¡NUNCA LA COMPARTAS CON NADIE!</strong> Quien tiene tu clave privada, tiene tu dinero. La frase semilla (12 o 24 palabras) es una forma legible de respaldar esta clave.</li>
+                    </ul>
+                </div>
+                 <div>
+                    <img src="https://placehold.co/600x600/0d1117/58a6ff?text=Claves+Públicas+y+Privadas" alt="Diagrama de Claves Públicas y Privadas" class="rounded-lg shadow-2xl w-full">
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: DeFi (Finanzas Descentralizadas) -->
+        <section id="defi" class="py-20">
+            <h2 class="section-title">La Revolución de las Finanzas Descentralizadas (DeFi)</h2>
+            <p class="section-subtitle">DeFi recrea el sistema financiero tradicional (préstamos, seguros, exchanges) sobre la blockchain, eliminando intermediarios. Es un sistema abierto, global y transparente.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-card p-8">
+                    <h3 class="font-bold text-xl mb-2 text-white">Préstamos y Endeudamiento (Lending)</h3>
+                    <p>Plataformas como <span class="highlight">Aave</span> o <span class="highlight">Compound</span> te permiten depositar tus criptomonedas para ganar intereses (como un depósito a plazo fijo) o usarlas como colateral para pedir prestado otras criptomonedas, todo sin papeleo ni bancos.</p>
+                </div>
+                <div class="glass-card p-8">
+                    <h3 class="font-bold text-xl mb-2 text-white">Exchanges Descentralizados (DEX)</h3>
+                    <p>Plataformas como <span class="highlight">Uniswap</span> o <span class="highlight">PancakeSwap</span> permiten intercambiar criptomonedas directamente desde tu wallet, sin necesidad de un intermediario central. Funcionan con "pools de liquidez" donde los usuarios aportan pares de tokens a cambio de comisiones.</p>
+                </div>
+                <div class="glass-card p-8">
+                    <h3 class="font-bold text-xl mb-2 text-white">Yield Farming y Staking Líquido</h3>
+                    <p>El <span class="highlight">Yield Farming</span> es una estrategia avanzada donde los usuarios mueven sus fondos entre diferentes protocolos de lending y pools de liquidez para maximizar sus ganancias. El <span class="highlight">Staking Líquido</span> (ej. Lido) te permite participar en el staking de PoS sin bloquear tus fondos, dándote un token representativo que puedes usar en otras partes de DeFi.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 3: Inversión y Gestión de Riesgo -->
+        <section id="inversion" class="py-20">
+            <h2 class="section-title">Inversión y Gestión de Riesgo</h2>
+            <p class="section-subtitle">El potencial de ganancia es enorme, pero el riesgo de pérdida total es real. Una gestión de riesgo inteligente es la diferencia entre un inversor y un apostador.</p>
+            <div class="space-y-12">
+                 <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-bold text-white">Psicología del Trading: Tu Peor Enemigo</h3>
+                        <p>El mercado está diseñado para jugar con tus emociones. El <span class="highlight">FOMO</span> (Fear Of Missing Out - Miedo a quedarse fuera) te hace comprar en la cima, y el <span class="highlight">FUD</span> (Fear, Uncertainty, and Doubt - Miedo, Incertidumbre y Duda) te hace vender en el fondo. Controlar estas emociones es más importante que cualquier análisis técnico.</p>
+                        <h3 class="text-2xl font-bold text-white mt-6">Diversificación y Asignación de Cartera</h3>
+                        <p>La regla de oro: "No pongas todos los huevos en la misma cesta". Una cartera diversificada podría incluir:</p>
+                        <ul class="list-disc list-inside space-y-2 text-sm">
+                            <li><strong>Mayor Porcentaje (50-70%):</strong> Criptomonedas establecidas y de gran capitalización (Bitcoin, Ethereum).</li>
+                            <li><strong>Porcentaje Medio (20-40%):</strong> Proyectos de Capa 1 o Capa 2 con ecosistemas fuertes (Solana, Cardano, Polygon, Arbitrum).</li>
+                            <li><strong>Pequeño Porcentaje (1-10%):</strong> "Apuestas" de alto riesgo y alta recompensa como small caps o incluso meme coins, asumiendo que puedes perderlo todo.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <img src="https://placehold.co/600x500/0d1117/fca311?text=Gestión+de+Cartera" alt="Diagrama de Gestión de Cartera" class="rounded-lg shadow-2xl w-full">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 4: Seguridad Avanzada -->
+        <section id="seguridad" class="py-20">
+            <h2 class="section-title">Seguridad: Tu Fortaleza Digital</h2>
+            <p class="section-subtitle">En cripto, tú eres tu propio banco. Eso significa que tú eres el único responsable de tu seguridad. Aprende a identificar y evitar las amenazas más comunes.</p>
+            <div class="warning-box p-8 space-y-6">
+                <h3 class="text-2xl font-bold text-white text-center">Manual de Supervivencia Cripto</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-lg text-red-300">Phishing y Sitios Falsos</h4>
+                        <p class="text-sm">Recibirás emails o mensajes directos de "Soporte" pidiéndote tu frase semilla o que conectes tu wallet a un sitio para "verificarla". <strong class="uppercase">NUNCA</strong> lo hagas. Siempre verifica la URL del sitio oficial letra por letra.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-red-300">Contratos Maliciosos</h4>
+                        <p class="text-sm">Al interactuar con un protocolo DeFi o mintear un NFT, autorizas a un contrato inteligente a mover tus tokens. Un contrato malicioso puede tener una función oculta para vaciar tu wallet. Usa herramientas como Pocket Universe o Fire para simular transacciones antes de aprobarlas.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-red-300">Rug Pulls (Tirón de Alfombra)</h4>
+                        <p class="text-sm">En proyectos nuevos, los desarrolladores pueden simplemente tomar todo el dinero invertido y desaparecer. Busca señales de alerta: equipo anónimo, liquidez no bloqueada, promesas irreales.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-red-300">Ataques de "Dusting"</h4>
+                        <p class="text-sm">Recibes una pequeña cantidad de una cripto desconocida en tu wallet. Es un intento de los hackers para rastrear tus transacciones y des-anonimizarte. Simplemente ignora esos tokens, no intentes venderlos o moverlos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 5: Ciclos del Mercado y Halving -->
+        <section id="mercado" class="py-20">
+            <h2 class="section-title">Ciclos del Mercado y el "Halving"</h2>
+            <p class="section-subtitle">La historia no se repite, pero a menudo rima. El mercado cripto sigue ciclos de aproximadamente 4 años, impulsados en gran medida por un evento programado en el código de Bitcoin.</p>
+            <div class="glass-card p-8 text-center">
+                <h3 class="text-2xl font-bold text-white mb-4">El Halving de Bitcoin: El Motor del Ciclo</h3>
+                <p class="max-w-3xl mx-auto text-gray-300">Aproximadamente cada cuatro años, la recompensa que reciben los mineros de Bitcoin por validar un bloque se reduce a la mitad. Este evento se llama <span class="highlight">Halving</span>. Reduce la oferta de nuevos bitcoins que entran al mercado, creando un "shock de oferta". Históricamente, en los 12-18 meses siguientes a un halving, el precio de Bitcoin (y con él, el resto del mercado) ha alcanzado nuevos máximos históricos, seguido de un mercado bajista de aproximadamente un año.</p>
+                <img src="https://placehold.co/800x400/0d1117/02c39a?text=Ciclos+del+Halving+de+Bitcoin" alt="Diagrama del Halving de Bitcoin" class="rounded-lg shadow-2xl w-full mt-8">
+            </div>
+        </section>
+
+        <!-- Sección 6: Plataformas CEX vs DEX -->
+        <section id="plataformas" class="py-20">
+            <h2 class="section-title">Plataformas: CEX vs. DEX</h2>
+            <p class="section-subtitle">¿Dónde compras, vendes e intercambias criptomonedas? Tienes dos caminos principales, cada uno con sus ventajas y desventajas.</p>
+             <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">Exchanges Centralizados (CEX)</h3>
+                    <p>Son empresas como <span class="highlight">Binance, Coinbase, o Kraken</span>. Actúan como un banco tradicional. Creas una cuenta, depositas tu dinero, y ellos custodian tus criptomonedas por ti.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-4">
+                        <li><strong>Pros:</strong> Fáciles de usar, alta liquidez, rampas de entrada y salida a dinero fiduciario (euros, dólares).</li>
+                        <li><strong>Cons:</strong> "Not your keys, not your coins" (Si no tienes las claves, no son tus monedas). Estás a merced de la seguridad y las políticas de la empresa. Requieren KYC (conoce a tu cliente).</li>
+                    </ul>
+                </div>
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">Exchanges Descentralizados (DEX)</h3>
+                    <p>Son protocolos como <span class="highlight">Uniswap, SushiSwap, o Jupiter (en Solana)</span>. No hay una empresa detrás. Interactúas directamente con un contrato inteligente desde tu propia wallet (ej. MetaMask).</p>
+                     <ul class="list-disc list-inside space-y-2 mt-4">
+                        <li><strong>Pros:</strong> Total custodia de tus fondos, no requieren KYC, acceso a miles de tokens nuevos.</li>
+                        <li><strong>Cons:</strong> Más complejos de usar, riesgo de contratos maliciosos, necesitas pagar comisiones de red ("gas fees").</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Sección 7: Tecnología: Capa 2 y Minería -->
+        <section id="tecnologia" class="py-20">
+            <h2 class="section-title">Tecnología: Escalabilidad y Consenso</h2>
+            <p class="section-subtitle">¿Cómo logramos que las blockchains sean rápidas y baratas sin sacrificar la seguridad? ¿Y cómo se mantiene la red segura? Aquí las respuestas.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">El Trilema de la Blockchain y las Capas 2</h3>
+                    <p>Las blockchains se enfrentan a un "trilema": es muy difícil ser a la vez <span class="highlight">descentralizado, seguro y escalable</span>. Ethereum prioriza la descentralización y la seguridad, por eso es lento y caro. Las <span class="highlight">Soluciones de Capa 2 (L2s)</span> como <span class="highlight">Arbitrum, Optimism y Polygon</span> se construyen "encima" de Ethereum, procesan transacciones de forma rápida y barata, y luego publican un resumen en la Capa 1, heredando su seguridad. Son la clave para la adopción masiva.</p>
+                </div>
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">Consenso: PoW vs. PoS</h3>
+                    <p>Es la forma en que la red se pone de acuerdo sobre qué transacciones son válidas.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-4">
+                        <li><strong>Proof-of-Work (PoW - Bitcoin):</strong> Los mineros compiten con hardware potente para resolver un puzzle. Requiere mucha energía, pero es extremadamente seguro y probado.</li>
+                        <li><strong>Proof-of-Stake (PoS - Ethereum, Solana):</strong> Los validadores bloquean ("stakean") monedas para tener la oportunidad de crear el siguiente bloque. Mucho más eficiente energéticamente y permite que cualquiera participe con menos capital.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Sección 8: Web3 y DAOs -->
+        <section id="web3" class="py-20">
+            <h2 class="section-title">El Futuro: Web3 y DAOs</h2>
+            <p class="section-subtitle">Blockchain no es solo dinero. Es la base para una nueva fase de internet, donde los usuarios son dueños de sus datos y las organizaciones se gobiernan de forma colectiva.</p>
+             <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-white">De Web2 a Web3: El Internet del Valor</h3>
+                    <p><span class="highlight">Web1</span> era de solo lectura (páginas estáticas). <span class="highlight">Web2</span> (el internet actual) es de lectura-escritura, pero el valor es capturado por grandes corporaciones (Google, Facebook) que controlan nuestros datos. <span class="highlight">Web3</span> es el internet de lectura-escritura-propiedad. Usando tu wallet como identidad, puedes interactuar con aplicaciones y ser dueño de tus datos y activos digitales.</p>
+                     <h3 class="text-2xl font-bold text-white mt-8">DAOs: Organizaciones Nativas de Internet</h3>
+                    <p>Una <span class="highlight">Organización Autónoma Descentralizada (DAO)</span> es una comunidad que se gobierna mediante reglas codificadas en la blockchain. Las decisiones se toman votando con tokens de gobernanza. Las DAOs se usan para gestionar protocolos DeFi, fondos de inversión colectivos o incluso comunidades de artistas, todo de forma transparente y democrática.</p>
+                </div>
+                <div>
+                    <img src="https://placehold.co/600x500/0d1117/8338ec?text=Web2+vs+Web3" alt="Diagrama de Web2 vs Web3" class="rounded-lg shadow-2xl w-full">
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 9: NFTs -->
+        <section id="nfts" class="py-20">
+            <h2 class="section-title">NFTs: La Era de la Propiedad Digital</h2>
+            <p class="section-subtitle">Los Tokens No Fungibles son más que simples JPEGs. Son una tecnología revolucionaria para certificar la propiedad de cualquier activo único, tanto digital como físico.</p>
+            <div class="glass-card p-8">
+                <h3 class="text-2xl font-bold text-white mb-4 text-center">Más Allá del Arte: Casos de Uso Reales</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-300">Gaming</h4>
+                        <p class="text-sm">Tus espadas, skins y personajes son NFTs que realmente posees y puedes vender en un mercado abierto, no están atrapados en el juego.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-lg text-green-300">Música y Entradas</h4>
+                        <p class="text-sm">Los artistas pueden vender su música como NFTs de edición limitada, y las entradas a eventos se vuelven coleccionables imposibles de falsificar.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-lg text-yellow-300">Identidad y Credenciales</h4>
+                        <p class="text-sm">Tu título universitario, tu certificado profesional o tu historial médico pueden ser un NFT privado y verificable que solo tú controlas.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-lg text-purple-300">Activos del Mundo Real</h4>
+                        <p class="text-sm">Fraccionar la propiedad de una casa, un coche de lujo o una obra de arte, permitiendo que muchas personas inviertan en una parte.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 10: Regulación y Fiscalidad -->
+        <section id="regulacion" class="py-20">
+            <h2 class="section-title">Regulación y Fiscalidad</h2>
+            <p class="section-subtitle">El mundo cripto no es el salvaje oeste. Los gobiernos de todo el mundo están creando marcos regulatorios y debes ser consciente de tus obligaciones fiscales.</p>
+             <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-white">El Panorama Regulatorio Global</h3>
+                    <p>Las regulaciones varían enormemente por país. Algunas naciones como El Salvador han adoptado Bitcoin como moneda de curso legal, mientras que otras como China lo han prohibido. En Europa, la regulación <span class="highlight">MiCA (Markets in Crypto-Assets)</span> busca crear un marco unificado para dar seguridad jurídica a empresas y usuarios.</p>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-white">Tus Obligaciones Fiscales</h3>
+                    <p>En la mayoría de los países, las criptomonedas se consideran un activo patrimonial. Esto significa que <strong class="text-yellow-400">debes pagar impuestos sobre las ganancias de capital</strong> cuando vendes una criptomoneda por más de lo que pagaste por ella. Intercambiar una cripto por otra también se considera un evento fiscal. Es crucial llevar un registro de todas tus transacciones. Usa herramientas como Koinly o Coinpanda para simplificar este proceso.</p>
+                    <p class="text-sm text-gray-400"><strong>Nota:</strong> Esto no es asesoramiento fiscal. Consulta a un profesional en tu jurisdicción para entender tus obligaciones específicas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Asistente IA Eva Section (Final) -->
+        <section id="asistente-eva-bottom" class="py-16">
+            <div class="glass-card rounded-2xl p-8 md:p-12">
+                <div class="grid md:grid-cols-3 gap-8 items-center">
+                    <div class="md:col-span-1 flex justify-center">
+                        <img src="https://i.postimg.cc/V6wXLqnY/Picsart-25-06-07-03-40-11-387.png" 
+                             alt="Asistente IA Eva" 
+                             class="rounded-full w-48 h-48 md:w-64 md:h-64 object-cover border-4 border-blue-500 shadow-2xl"
+                             onerror="this.onerror=null;this.src='https://placehold.co/256x256/0d1117/ffffff?text=Eva+IA';">
+                    </div>
+                    <div class="md:col-span-2 text-center md:text-left">
+                        <h2 class="text-3xl font-bold text-white mb-4">¿Listo para el siguiente nivel?</h2>
+                        <p class="text-gray-300 mb-6 text-lg">Has completado la guía, pero el aprendizaje nunca termina. Si quieres discutir una estrategia de inversión, analizar un proyecto o simplemente tienes curiosidad, contáctame. Soy Eva y estoy aquí para ayudarte.</p>
+                        <a href="https://wa.me/50672712037" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp inline-flex items-center space-x-2 text-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.902-.539-5.587-1.54l-6.162 1.688a.5.5 0 0 1-.612-.611zM7.127 19.826l.438.261c1.557.935 3.328 1.448 5.143 1.448 5.485 0 9.941-4.456 9.941-9.941s-4.456-9.941-9.941-9.941-9.941 4.456-9.941 9.941c0 1.793.468 3.518 1.348 5.079l.272.443-1.039 3.787 3.849-1.048z"/></svg>
+                            <span>Contactar a Sneyder Estudio</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+            <p class="mb-4 font-semibold text-red-400 text-sm max-w-2xl mx-auto">
+                ADVERTENCIA: La información presentada en esta página es solo para fines educativos. No constituye asesoramiento financiero. Invertir en criptomonedas es extremadamente arriesgado y puede resultar en la pérdida total de tu capital. Sneyder Estudio no es asesor financiero y toda inversión va bajo de su propio riesgo.
+            </p>
+            <p class="text-sm">
+                2025 Sneyder Estudio
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Script para el menú móvil
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelectorAll('#mobile-menu a, .hidden.lg\\:flex a');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

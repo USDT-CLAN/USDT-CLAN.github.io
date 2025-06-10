@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDT.CLAN - Comunidad Crypto Informativa</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e5e7eb;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .usdt-3d {
+            display: inline-block;
+            position: relative;
+            transform: perspective(1000px) rotateY(15deg);
+            transition: all 0.4s ease;
+        }
+        
+        .usdt-3d img {
+            filter: drop-shadow(0 15px 35px rgba(16, 185, 129, 0.6));
+            transition: all 0.3s ease;
+        }
+        
+        .usdt-3d:hover {
+            transform: perspective(1000px) rotateY(0deg) translateZ(30px) scale(1.05);
+        }
+        
+        .usdt-3d:hover img {
+            filter: drop-shadow(0 20px 40px rgba(16, 185, 129, 0.8));
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.5));
+            }
+            50% { 
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.8));
+            }
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+            transition: all 0.3s ease;
+            transform: translateY(-100%);
+        }
+        
+        header.visible {
+            transform: translateY(0);
+        }
+        
+        .card {
+            background: linear-gradient(145deg, #1f2937, #374151);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .card:hover::before {
+            left: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+        
+        .img-hover {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .img-hover img {
+            transition: all 0.4s ease;
+        }
+        
+        .img-hover:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.1) contrast(1.1);
+        }
+        
+        main {
+            padding-top: 2rem;
+        }
+        
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.98), rgba(26, 26, 46, 0.98));
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        #loading-screen.show {
+            display: flex;
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+        }
+        
+        .matrix-column {
+            position: absolute;
+            color: #10b981;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            animation: matrixRain linear infinite;
+        }
+        
+        @keyframes matrixRain {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        
+        .loading-progress {
+            width: 300px;
+            height: 8px;
+            background: rgba(31, 41, 55, 0.8);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .loading-bar {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6);
+            background-size: 200% 100%;
+            animation: loadProgress 4s ease-in-out forwards, shimmer 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes loadProgress {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .risk-indicator {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin: 0.25rem;
+            display: inline-block;
+        }
+        
+        .risk-low { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+        .risk-medium { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid #fbbf24; }
+        .risk-high { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #10b981;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2) rotateY(360deg);
+            color: #3b82f6;
+        }
+        
+        .parallax-section {
+            position: relative;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .crypto-particle {
+            position: absolute;
+            color: #10b981;
+            opacity: 0.6;
+            font-size: 1.2rem;
+            animation: particleFloat 8s linear infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        
+        @media (max-width: 640px) {
+            .usdt-3d img { width: 60px; height: 60px; }
+            h1 { font-size: 2rem; }
+            .container { padding-left: 1rem; padding-right: 1rem; }
+            .loading-progress { width: 200px; }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Matrix Background -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+    
+    <!-- Crypto Particles -->
+    <div id="crypto-particles"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="usdt-3d pulse-glow">
+            <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-32 h-32 sm:w-48 sm:h-48">
+        </div>
+        <p id="loading-text" class="text-white text-lg sm:text-2xl mt-4 gradient-text font-bold"></p>
+        <div class="loading-progress">
+            <div class="loading-bar"></div>
+        </div>
+        <p class="text-gray-400 text-sm mt-4 animate-pulse">Conectando con la blockchain...</p>
+    </div>
+
+    <!-- Header -->
+    <header id="header" class="py-4">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center items-center mb-3">
+                <div class="usdt-3d pulse-glow">
+                    <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-20 h-20 sm:w-28 sm:h-28">
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-bold gradient-text ml-3 sm:ml-4">USDT.CLAN</h1>
+            </div>
+            <p class="mt-1 text-base sm:text-xl text-gray-300">Comunidad informativa sobre criptomonedas y plataformas confiables</p>
+            <p class="text-white text-sm sm:text-base mt-2 flex items-center justify-center">
+                <i class="fas fa-cube mr-2 text-green-400"></i>
+                Información actualizada y verificada ✓
+            </p>
+            <a href="Menu.html" id="header-conoce-mas" class="mt-4 inline-block btn-primary text-white font-semibold py-2 px-6 sm:py-3 sm:px-8 rounded-full transition duration-300 shadow-lg">
+                <i class="fas fa-rocket mr-2"></i>Explorar Plataforma
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <!-- Hero Section -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl sm:text-6xl font-bold gradient-text mb-6">Bienvenidos a USDT.CLAN</h2>
+                <p class="text-gray-300 text-lg sm:text-xl max-w-4xl mx-auto leading-relaxed">
+                    Tu plataforma informativa completa para conocer el mundo de las criptomonedas. Compartimos información educativa sobre 
+                    <span class="text-green-400 font-semibold">minería y tecnología</span>, 
+                    <span class="text-blue-400 font-semibold">plataformas confiables</span> y 
+                    <span class="text-purple-400 font-semibold">innovaciones blockchain</span>.
+                </p>
+                <div class="mt-8 p-6 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl">
+                    <p class="text-yellow-400 font-semibold text-lg mb-2">
+                        <i class="fas fa-info-circle mr-2"></i>Aviso Importante
+                    </p>
+                    <p class="text-gray-300">
+                        Esta es una plataforma informativa y educativa. No ofrecemos asesoramiento financiero ni estrategias de inversión. 
+                        Solo conversamos y compartimos información sobre plataformas confiables en el ecosistema crypto.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mining Section -->
+        <section class="mb-20">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">
+                <i class="fas fa-microchip mr-3"></i>Información sobre Minería Cryptocurrency
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="card p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold text-green-400 mb-4">Equipos de Minería - Información Educativa</h3>
+                    <p class="text-gray-300 mb-6">Conoce los diferentes tipos de equipos de minería y cómo funcionan en el ecosistema blockchain.</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Información sobre rigs y configuraciones</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Conceptos de eficiencia energética</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                            <span>Educación sobre tecnología minera</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="img-hover rounded-2xl overflow-hidden">
+                    <img src="https://woolypooly.com/en/blog/wp-content/uploads/2023/09/Ethereum-Mining-Rig.jpg" alt="Ethereum Mining Rig Professional" class="w-full h-full object-cover">
+                </div>
+            </div>
+            
+            <!-- Mining Gallery -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card rounded-2xl overflow-hidden img-hover">
+                    <img src="https://m.media-amazon.com/images/I/81CK5erUg2L.jpg" alt="Complete Mining Server" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg text-green-400">Setup Informativo 8 GPU</h4>
+                        <p class="text-gray-400 text-sm">Ejemplo de rig profesional educativo</p>
+                    </div>
+                </div>
+                <div class="card rounded-2xl overflow-hidden img-hover">
+                    <img src="https://miningcave.com/wp-content/uploads/2022/03/KIT-6-MAIN.png" alt="6 GPU Mining Kit" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg text-green-400">Kit Educativo 6 GPU</h4>
+                        <p class="text-gray-400 text-sm">Información para principiantes</p>
+                    </div>
+                </div>
+                <div class="card rounded-2xl overflow-hidden img-hover">
+                    <img src="https://www.vice.com/wp-content/uploads/sites/2/2017/06/1496952311932-image5.jpeg" alt="Professional Mining Setup" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg text-green-400">Farm Educativa</h4>
+                        <p class="text-gray-400 text-sm">Conoce operaciones a gran escala</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section class="mb-20">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">
+                <i class="fas fa-graduation-cap mr-3"></i>Educación & Información
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="img-hover rounded-2xl overflow-hidden">
+                    <img src="https://www.visualcapitalist.com/wp-content/uploads/2024/11/BitcoinEthereum-Recovered-SITE.jpg" alt="Bitcoin vs Ethereum Analysis" class="w-full h-full object-cover">
+                </div>
+                <div class="card p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Información Educativa sobre Criptomonedas</h3>
+                    <p class="text-gray-300 mb-6">Contenido educativo y conversaciones informativas sobre el mundo blockchain y las criptomonedas.</p>
+                    
+                    <!-- Risk Indicators -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold mb-3">Categorías Informativas:</h4>
+                        <div class="flex flex-wrap">
+                            <span class="risk-indicator risk-low">Información - Stablecoins</span>
+                            <span class="risk-indicator risk-medium">Educativo - BTC/ETH</span>
+                            <span class="risk-indicator risk-high">Conversación - Altcoins</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-book text-blue-400 mr-3"></i>
+                            <span>Contenido educativo verificado</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-blue-400 mr-3"></i>
+                            <span>Conversaciones informativas</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-blue-400 mr-3"></i>
+                            <span>Información sobre plataformas confiables</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Educational Content -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card rounded-2xl overflow-hidden img-hover">
+                    <img src="https://images.ctfassets.net/4ua9vnmkuhzj/3sauSyEtnvha4FQmAUbiK0/5102e3fcb45095c7cb1beb8fa8a1e336/Crypto_Market_Cycle_Chart_16_9_Nov_2024.png" alt="Crypto Market Cycles" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h4 class="font-semibold text-lg text-blue-400 mb-2">Ciclos Educativos del Mercado</h4>
+                        <p class="text-gray-400 text-sm">Información educativa sobre patrones históricos</p>
+                    </div>
+                </div>
+                <div class="card rounded-2xl overflow-hidden img-hover">
+                    <img src="https://cryptocurrencyfacts.com/wp-content/uploads/2018/09/market-cycles-infographic.jpg" alt="Investment Cycles" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h4 class="font-semibold text-lg text-blue-400 mb-2">Psicología y Mercados</h4>
+                        <p class="text-gray-400 text-sm">Contenido educativo sobre comportamiento del mercado</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FinTech & Banking Section -->
+        <section class="mb-20">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">
+                <i class="fas fa-university mr-3"></i>Información FinTech & Banca Digital
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="card p-6 rounded-2xl feature-card">
+                    <div class="text-center">
+                        <i class="fas fa-mobile-alt feature-icon"></i>
+                        <h3 class="text-xl font-semibold text-green-400 mb-3">Pagos Digitales</h3>
+                        <p class="text-gray-300 text-sm">Información sobre wallets y exchanges confiables</p>
+                    </div>
+                </div>
+                <div class="card p-6 rounded-2xl feature-card">
+                    <div class="text-center">
+                        <i class="fas fa-info-circle feature-icon"></i>
+                        <h3 class="text-xl font-semibold text-blue-400 mb-3">Educación Tecnológica</h3>
+                        <p class="text-gray-300 text-sm">Conversaciones sobre nuevas tecnologías</p>
+                    </div>
+                </div>
+                <div class="card p-6 rounded-2xl feature-card">
+                    <div class="text-center">
+                        <i class="fas fa-lock feature-icon"></i>
+                        <h3 class="text-xl font-semibold text-purple-400 mb-3">Información de Seguridad</h3>
+                        <p class="text-gray-300 text-sm">Educación sobre protección de activos digitales</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                <div class="img-hover rounded-2xl overflow-hidden">
+                    <img src="https://www.investopedia.com/thmb/9DNaVQQhlHz0y2MSScuNyO6qaio=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FinancialTechnology_Final_4196400-3a7fb7e98adf4370b6e493034ade80bd.jpg" alt="Financial Technology" class="w-full h-64 object-cover">
+                </div>
+                <div class="img-hover rounded-2xl overflow-hidden">
+                    <img src="https://www.paymentsjournal.com/wp-content/uploads/2021/11/businessman-hold-fintech-financial-technology-concept-business-investment-banking-payment-cryptocurrency-investment-digital-money-business-concept-virtual-screen-2-scaled.jpg" alt="Digital Banking Investment" class="w-full h-64 object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- Security & Wallets Section -->
+        <section class="mb-20">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">
+                <i class="fas fa-wallet mr-3"></i>Información sobre Seguridad & Wallets
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="card p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold text-purple-400 mb-4">Educación en Protección de Activos</h3>
+                    <p class="text-gray-300 mb-6">Información educativa sobre las mejores prácticas de seguridad en criptomonedas.</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-key text-purple-400 mr-3"></i>
+                            <span>Información sobre gestión de claves</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-fingerprint text-purple-400 mr-3"></i>
+                            <span>Educación en autenticación</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-cloud text-purple-400 mr-3"></i>
+                            <span>Información sobre respaldos seguros</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="img-hover rounded-xl overflow-hidden">
+                        <img src="https://cryptopotato.com/wp-content/uploads/2020/12/Copy-of-9-security-Tips-Infographic-1_1-1-min.jpg" alt="Crypto Security Tips" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="img-hover rounded-xl overflow-hidden">
+                        <img src="https://www.investopedia.com/thmb/xdbHBrD9pUNKqGqTQokdAEwV8cw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bitcoin-wallet.asp_final-08487560d29e4ad69cf0f1f6337e6a66.png" alt="Cryptocurrency Wallets" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="img-hover rounded-xl overflow-hidden sm:col-span-2">
+                        <img src="https://101blockchains.com/wp-content/uploads/2024/03/Crypto-Wallet-Security.png" alt="Wallet Security Guide" class="w-full h-32 object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Section -->
+        <section class="mb-20">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">
+                <i class="fas fa-users mr-3"></i>Únete a Nuestra Comunidad Informativa
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <a href="https://chat.whatsapp.com/EyJWncjIkXoAjhLDGVYZYm" target="_blank" class="card p-8 rounded-2xl text-center hover:bg-gray-700 transition duration-300 group">
+                    <div class="mb-6">
+                        <i class="fab fa-whatsapp text-6xl text-green-400 group-hover:scale-110 transition-transform duration-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-green-400 mb-4">Grupo Informativo WhatsApp</h3>
+                    <p class="text-gray-300 mb-4">Únete a nuestras conversaciones informativas sobre criptomonedas y plataformas confiables.</p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-comments text-yellow-400 mr-2"></i>
+                            <span>Conversaciones educativas</span>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-info text-yellow-400 mr-2"></i>
+                            <span>Información actualizada</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://t.me/+QC90Va2yvRVmNDU5" target="_blank" class="card p-8 rounded-2xl text-center hover:bg-gray-700 transition duration-300 group">
+                    <div class="mb-6">
+                        <i class="fab fa-telegram text-6xl text-blue-400 group-hover:scale-110 transition-transform duration-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-4">Canal Educativo Telegram</h3>
+                    <p class="text-gray-300 mb-4">Contenido educativo, noticias y información sobre el ecosistema crypto.</p>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-newspaper text-blue-400 mr-2"></i>
+                            <span>Noticias informativas</span>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-blue-400 mr-2"></i>
+                            <span>Contenido educativo</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="text-center mb-20">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-8 gradient-text">
+                <i class="fas fa-headset mr-3"></i>Información y Consultas
+            </h2>
+            <p class="text-gray-300 text-lg mb-8 max-w-3xl mx-auto">
+                Conecta con <span class="text-green-400 font-semibold">Eva IA</span>, nuestra asistente informativa especializada en criptomonedas. 
+                Obtén información educativa sobre blockchain, tecnologías y plataformas confiables.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a href="https://wa.me/50672712037" target="_blank" id="eva-button" class="btn-primary text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg group">
+                    <i class="fas fa-robot mr-2 group-hover:animate-spin"></i>
+                    Consultar con Eva IA
+                </a>
+                <a href="Menu.html" id="contact-conoce-mas" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg">
+                    <i class="fas fa-compass mr-2"></i>
+                    Explorar Plataforma
+                </a>
+            </div>
+        </section>
+
+        <!-- Legacy Gallery -->
+        <section class="mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8 gradient-text">Galería Informativa</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card rounded-xl overflow-hidden img-hover">
+                    <img src="https://i.postimg.cc/zvXDzCzp/rs-w-776-h-776-cg-true.jpg" alt="Historic Crypto Image 1" class="w-full h-auto object-contain">
+                </div>
+                <div class="card rounded-xl overflow-hidden img-hover">
+                    <img src="https://i.postimg.cc/vHwFtLFK/Picsart-25-04-29-22-09-45-830.jpg" alt="Historic Crypto Image 2" class="w-full h-auto object-contain">
+                </div>
+                <div class="card rounded-xl overflow-hidden img-hover">
+                    <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-full h-auto object-contain">
+                </div>
+                <div class="card rounded-xl overflow-hidden img-hover">
+                    <img src="https://i.postimg.cc/59L0ppMG/Picsart-25-04-01-16-38-21-354.png" alt="Historic Crypto Image 4" class="w-full h-auto object-contain">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 py-12 text-center border-t border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="mb-6">
+                <h3 class="text-2xl font-bold gradient-text mb-2">USDT.CLAN</h3>
+                <p class="text-gray-400">Plataforma informativa y educativa sobre criptomonedas</p>
+            </div>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-gray-400 hover:text-green-400 transition-colors">
+                    <i class="fab fa-twitter text-2xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
+                    <i class="fab fa-youtube text-2xl"></i>
+                </a>
+            </div>
+            <p class="text-gray-400 text-sm">© 2025 Sneyder Estudio. Todos los derechos reservados. | Plataforma Informativa Blockchain</p>
+            <p class="text-gray-500 text-xs mt-2">Este sitio es únicamente informativo y educativo. No proporcionamos asesoramiento financiero.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Matrix Background Effect
+        function createMatrix() {
+            const matrix = document.getElementById('matrix-bg');
+            const chars = '0123456789ABCDEF₿Ξ⟐◈';
+            
+            for (let i = 0; i < 20; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                column.style.animationDelay = Math.random() * 2 + 's';
+                
+                let columnText = '';
+                for (let j = 0; j < 20; j++) {
+                    columnText += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+                }
+                column.innerHTML = columnText;
+                matrix.appendChild(column);
+            }
+        }
+
+        // Crypto Particles
+        function createCryptoParticles() {
+            const container = document.getElementById('crypto-particles');
+            const symbols = ['₿', 'Ξ', '⟐', '◈', '⬡', '◆'];
+            
+            setInterval(() => {
+                if (container.children.length < 10) {
+                    const particle = document.createElement('div');
+                    particle.className = 'crypto-particle';
+                    particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                    container.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 8000);
+                }
+            }, 2000);
+        }
+
+        // Scroll-based header visibility
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop < lastScrollTop && scrollTop > 50) {
+                header.classList.add('visible');
+            } else {
+                header.classList.remove('visible');
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        // Loading screen logic
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingText = document.getElementById('loading-text');
+
+        // Page load effect
+        window.addEventListener('load', () => {
+            loadingScreen.classList.add('show');
+            loadingText.textContent = 'Iniciando sistemas...';
+            
+            setTimeout(() => {
+                loadingText.textContent = 'Cargando información...';
+            }, 1000);
+            
+            setTimeout(() => {
+                loadingText.textContent = 'Verificando contenido...';
+            }, 2000);
+            
+            setTimeout(() => {
+                loadingText.textContent = '¡Bienvenido a USDT.CLAN!';
+            }, 3000);
+            
+            setTimeout(() => {
+                loadingScreen.classList.remove('show');
+            }, 4000);
+        });
+
+        // Enhanced button effects for platform exploration
+        document.querySelectorAll('#header-conoce-mas, #contact-conoce-mas').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetUrl = button.href;
+                loadingScreen.classList.add('show');
+                loadingText.textContent = 'Accediendo a la plataforma...';
+                setTimeout(() => {
+                    // Navigate to the new page in the same tab
+                    window.location.href = targetUrl;
+                }, 2000);
+            });
+        });
+
+        // Eva button effect
+        document.getElementById('eva-button').addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetUrl = e.currentTarget.href; // Use currentTarget
+            loadingScreen.classList.add('show');
+            loadingText.textContent = 'Inicializando Eva IA...';
+            
+            setTimeout(() => {
+                loadingText.textContent = 'Preparando consulta informativa...';
+            }, 1000);
+            
+            setTimeout(() => {
+                window.open(targetUrl, '_blank');
+                loadingScreen.classList.remove('show');
+            }, 2500);
+        });
+
+        // Community cards direct link
+        document.addEventListener('DOMContentLoaded', function() {
+            const communityCards = document.querySelectorAll('a[href*="whatsapp.com"], a[href*="t.me"]');
+            communityCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const url = this.href;
+                    loadingScreen.classList.add('show');
+                    
+                    if (url.includes('whatsapp.com')) {
+                        loadingText.textContent = 'Accediendo al grupo informativo...';
+                    } else if (url.includes('t.me')) {
+                        loadingText.textContent = 'Conectando con canal educativo...';
+                    }
+                    
+                    setTimeout(() => {
+                        window.open(url, '_blank');
+                        loadingScreen.classList.remove('show');
+                    }, 2000);
+                });
+            });
+            
+            // Initialize effects
+            createMatrix();
+            createCryptoParticles();
+        });
+
+        // Parallax effect for images
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.floating');
+            parallaxElements.forEach(element => {
+                const speed = 0.1;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
+
+
