@@ -3,93 +3,815 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Estudio Crypto</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>USDT.CLA - Juegos Bitcoin que Pagan 2025</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <style>
-        /* Usar la fuente Inter como predeterminada */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Estrellas y partículas flotantes */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Pantalla de carga */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #533483 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1s ease-in-out 8s forwards;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        .space-battle {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .spaceship {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation: battle 3s ease-in-out infinite;
+        }
+
+        .spaceship:nth-child(2) {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            animation-delay: -1s;
+        }
+
+        .spaceship:nth-child(3) {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            animation-delay: -2s;
+        }
+
+        @keyframes battle {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(200px, 100px) rotate(90deg); }
+            50% { transform: translate(100px, 200px) rotate(180deg); }
+            75% { transform: translate(-100px, 150px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        .laser {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to bottom, #ff0000, #ffff00);
+            animation: shoot 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shoot {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100px); }
+        }
+
+        .loading-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #00d4ff;
+            text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* Contenido principal */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 9s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(83, 52, 131, 0.1));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00d4ff, #ffd700, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 20px #00d4ff); }
+            100% { filter: drop-shadow(0 0 40px #ffd700); }
+        }
+
+        /* Tarjetas de juegos */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(45deg, #00d4ff, #ffd700, #ff6b35, #4ecdc4);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            z-index: -1;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
+        }
+
+        .game-card:hover::before {
+            animation: borderGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .game-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-image img {
+            transform: scale(1.1);
+        }
+
+        .game-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .game-description {
+            color: #e0e0e0;
+            text-align: center;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #c0c0c0, #e8e8e8);
+            color: #333;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(192, 192, 192, 0.5);
+        }
+
+        .download-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Sección de billetera */
+        .wallet-section {
+            margin: 4rem 0;
+            padding: 0 2rem;
+        }
+
+        .wallet-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .wallet-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(26, 26, 46, 0.8));
+            border-top: 2px solid rgba(0, 212, 255, 0.3);
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            color: #00d4ff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .free-games-notice {
+            color: #ffd700;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Efectos responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .loading-text {
+                font-size: 1.8rem;
+            }
+            
+            .game-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white antialiased">
+<body>
+    <!-- Estrellas de fondo -->
+    <div class="stars" id="stars"></div>
 
-    <div class="min-h-screen flex flex-col items-center justify-center p-4">
-        
-        <div class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                Plataforma de Estudio
-            </h1>
-            <p class="text-gray-400 text-lg">Tus recursos de crypto en un solo lugar.</p>
+    <!-- Pantalla de carga -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="space-battle">
+            <div class="spaceship"></div>
+            <div class="spaceship"></div>
+            <div class="spaceship"></div>
+            <div class="laser" style="top: 100px; left: 50px;"></div>
+            <div class="laser" style="top: 200px; left: 150px; animation-delay: 0.2s;"></div>
+            <div class="laser" style="top: 150px; left: 250px; animation-delay: 0.4s;"></div>
         </div>
-
-        <!-- El grid ahora puede acomodar mejor 4 elementos en pantallas grandes -->
-        <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-
-            <!-- Tarjeta 1: Estudio Informático 1 -->
-            <a href="Estudio-Informático1.html" class="block group">
-                <div class="bg-gray-800 rounded-xl shadow-lg p-6 h-full flex flex-col justify-between transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/20">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white mb-3">Estudio Informático 1</h2>
-                        <p class="text-gray-400">Análisis y recursos detallados sobre los fundamentos.</p>
-                    </div>
-                    <span class="mt-4 text-blue-400 font-semibold group-hover:underline">
-                        Ir al estudio &rarr;
-                    </span>
-                </div>
-            </a>
-
-            <!-- Tarjeta 2: Estudio Informático 2 -->
-            <a href="Estudio-Informático2.html" class="block group">
-                <div class="bg-gray-800 rounded-xl shadow-lg p-6 h-full flex flex-col justify-between transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white mb-3">Estudio Informático 2</h2>
-                        <p class="text-gray-400">Conceptos avanzados y nuevas perspectivas del sector.</p>
-                    </div>
-                    <span class="mt-4 text-purple-400 font-semibold group-hover:underline">
-                        Explorar ahora &rarr;
-                    </span>
-                </div>
-            </a>
-
-            <!-- Tarjeta 3: Enciclopedia Crypto -->
-            <a href="Enciclopedia-Crypto.html" class="block group">
-                <div class="bg-gray-800 rounded-xl shadow-lg p-6 h-full flex flex-col justify-between transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-500/20">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white mb-3">Enciclopedia Crypto</h2>
-                        <p class="text-gray-400">Términos, definiciones y guías de referencia rápida.</p>
-                    </div>
-                    <span class="mt-4 text-green-400 font-semibold group-hover:underline">
-                        Consultar &rarr;
-                    </span>
-                </div>
-            </a>
-            
-            <!-- Nueva Tarjeta: Juego -->
-            <a href="juego-estudio-cripto.html" class="block group">
-                <div class="bg-gray-800 rounded-xl shadow-lg p-6 h-full flex flex-col justify-between transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-yellow-500/20">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white mb-3">Juego</h2>
-                        <p class="text-gray-400">¿Aprendiste? ¡Supera todos los niveles y gana 10 USDT!</p>
-                    </div>
-                    <span class="mt-4 text-yellow-400 font-semibold group-hover:underline">
-                        Jugar ahora &rarr;
-                    </span>
-                </div>
-            </a>
-
-        </div>
-        
-        <footer class="mt-12 text-center text-gray-500">
-            <p>Todo es investigación de 2025 Sneyder Estudio</p>
-        </footer>
-
+        <div class="loading-text">CARGANDO...</div>
     </div>
 
+    <!-- Contenido principal -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <header class="header">
+            <h1>USDT.CLA</h1>
+        </header>
+
+        <!-- Grid de juegos -->
+        <div class="game-grid">
+            <!-- Bitcoin Miner -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/0c/68/7b/0c687b85-0d1e-cc98-1052-330114ea5099/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/1200x600wa.png" alt="Bitcoin Miner">
+                </div>
+                <h3 class="game-title">Bitcoin Miner</h3>
+                <p class="game-description">Juego idle mining con más de 5 millones de descargas. Construye tu imperio minero y gana Bitcoin real sin usar tu dispositivo para minar</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.fumbgames.bitcoinminor" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/bitcoin-miner-idle-tycoon/id1413770650" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bitcoin Bounce -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/6172735b07f309512a6f59ea/6175a283532420c2af825f8b_bitcoinbounce_icon.webp" alt="Bitcoin Bounce">
+                </div>
+                <h3 class="game-title">Bitcoin Bounce</h3>
+                <p class="game-description">Rebota la pelota a través de la blockchain y recolecta monedas Bitcoin reales mientras superas niveles desafiantes</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.thndrgames.bitcoinbounce" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://bitcoin-bounce.sng.link/Ddomi/01rz/u50x" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bitcoin Pop -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/63614a85ffeb1d88cdb1b46e/65089027ea2d5e30a55b827d_pop-Game-images.webp" alt="Bitcoin Pop">
+                </div>
+                <h3 class="game-title">Bitcoin Pop</h3>
+                <p class="game-description">Dispara burbujas de colores y gana Bitcoin real con este adictivo juego de Bling Financial. Diversión colorida con recompensas crypto</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.bling.bitcoinpop" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/bitcoin-pop-get-bitcoin/id1547137217" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bitcoin Blast -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/63614a85ffeb1d88cdb1b46e/65088f86ea2d5e30a55a8fa6_Blast-Game-images.webp" alt="Bitcoin Blast">
+                </div>
+                <h3 class="game-title">Bitcoin Blast</h3>
+                <p class="game-description">El famoso juego match-3 de Bling Financial. Combina elementos, resuelve puzzles y recibe pagos reales en Bitcoin</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=app.getloaded.bitcoinblast" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/bitcoin-blast/id1494240093" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Coin Hunt World -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn-images-1.medium.com/max/1200/1*8IRzPPu0q5lYbW9GMqJeEw.png" alt="Coin Hunt World">
+                </div>
+                <h3 class="game-title">Coin Hunt World</h3>
+                <p class="game-description">Explora el mundo real, encuentra tesoros digitales y gana criptomonedas auténticas. Geocaching con recompensas crypto</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=tech.posibillian.coinhunt" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/coin-hunt-world/id1498769436" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Club Bitcoin: Solitaire -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/6172735b07f309512a6f59ea/642ff847b6c0836369293cbe_bitcoin%20solitaire%20icon%20compressed.png" alt="Club Bitcoin Solitaire">
+                </div>
+                <h3 class="game-title">Club Bitcoin: Solitaire</h3>
+                <p class="game-description">Juega al solitario clásico de THNDR Games y participa en sorteos gratuitos de Bitcoin cada hora</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.thndrgames.solitaire" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/club-bitcoin-solitaire/id1619992672" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- ZBD Games -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7e/fa/eb/7efaebfa-dafe-b2bf-f90e-1eac7a1733a3/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/1200x600wa.png" alt="ZBD Games">
+                </div>
+                <h3 class="game-title">ZBD Games</h3>
+                <p class="game-description">Plataforma completa con múltiples juegos, encuestas y quests que pagan Bitcoin instantáneamente vía Lightning Network</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=io.zebedee.wallet" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/zbd-earn-bitcoin-rewards/id1484394401" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sweet Bitcoin -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/63614a85ffeb1d88cdb1b46e/65089061e7a9cb16fbaece4b_Sweet-Game-images.webp" alt="Sweet Bitcoin">
+                </div>
+                <h3 class="game-title">Sweet Bitcoin</h3>
+                <p class="game-description">El dulce juego estilo Candy Crush de Bling Financial. Combina caramelos Bitcoin y gana criptomonedas reales</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.bling.sweetbitcoin" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/sweet-bitcoin/id1600577059" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Ethereum Blast -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/63614a85ffeb1d88cdb1b46e/65088b6c1007a15475da8357_ETH-Blast.webp" alt="Ethereum Blast">
+                </div>
+                <h3 class="game-title">Ethereum Blast</h3>
+                <p class="game-description">Juego de puzzles con temática espacial sci-fi que te permite ganar Ethereum real. De los creadores de Bling Financial</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.bling.ethereumblast" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/ethereum-blast/id1609714964" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bitcoin Food Fight -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/63614a85ffeb1d88cdb1b46e/650891848edc56204674ef6b_ff-Game-images.webp" alt="Bitcoin Food Fight">
+                </div>
+                <h3 class="game-title">Bitcoin Food Fight</h3>
+                <p class="game-description">Divertido juego de batalla de comida de Bling Financial. Lanza comida y gana Bitcoin real en esta aventura culinaria</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.bling.bitcoinfoodfight" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/bitcoin-food-fight/id1638264456" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bitcoin Sudoku -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/63614a85ffeb1d88cdb1b46e/650891329e271ad9a41ebb6b_BTC-Sudoku.webp" alt="Bitcoin Sudoku">
+                </div>
+                <h3 class="game-title">Bitcoin Sudoku</h3>
+                <p class="game-description">El clásico juego de lógica Sudoku con recompensas Bitcoin. Entrena tu mente mientras ganas criptomonedas</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.bling.bitcoinsudoku" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/bitcoin-sudoku/id1628739384" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tetro Tiles -->
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="https://cdn.prod.website-files.com/6172735b07f309512a6f59ea/642ff72cf56ab3963d8e0a74_Tetro_Tiles_mobile_puzzle_game_Icon.png" alt="Tetro Tiles">
+                </div>
+                <h3 class="game-title">Tetro Tiles</h3>
+                <p class="game-description">Juego de rompecabezas de THNDR Games que combina Tetris con Sudoku. Coloca fichas estratégicamente y gana Bitcoin</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=com.thndrgames.tetrotiles" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://bitcoin-blocks.sng.link/Dqwp1/oslp/tku5" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de billetera -->
+        <div class="wallet-section">
+            <div class="wallet-card">
+                <h3 class="wallet-title">💰 Billetera Recomendada</h3>
+                <div class="game-image">
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/23/e3/b3/23e3b3af-1338-e59b-cfc5-302aa2f0cb86/AppIcon-0-0-1x_U007emarketing-0-1-85-220.png/1200x630wa.png" alt="Muun Wallet">
+                </div>
+                <h3 class="game-title">Muun Wallet</h3>
+                <p class="game-description">Billetera Bitcoin segura y fácil de usar para recibir tus ganancias de todos estos juegos</p>
+                <div class="download-buttons">
+                    <a href="https://play.google.com/store/apps/details?id=io.muun.apollo" class="download-btn" target="_blank">
+                        <i class="fab fa-android"></i>
+                        Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/muun-wallet/id1482037683" class="download-btn" target="_blank">
+                        <i class="fab fa-apple"></i>
+                        iPhone
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>2025 Sneyder Studio</p>
+            <p class="free-games-notice">✨ Todos los juegos son GRATIS y PAGAN REALMENTE ✨</p>
+        </footer>
+    </div>
+
+    <script>
+        // Crear estrellas de fondo
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Crear partículas flotantes
+        function createParticles() {
+            const starsContainer = document.getElementById('stars');
+            const numParticles = 20;
+            
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                starsContainer.appendChild(particle);
+            }
+        }
+
+        // Animación de carga con battle espacial
+        function initLoadingAnimation() {
+            const spaceBattle = document.querySelector('.space-battle');
+            
+            // Agregar más lásers dinámicos
+            setInterval(() => {
+                const laser = document.createElement('div');
+                laser.className = 'laser';
+                laser.style.left = Math.random() * 360 + 'px';
+                laser.style.top = Math.random() * 360 + 'px';
+                laser.style.animationDelay = '0s';
+                spaceBattle.appendChild(laser);
+                
+                setTimeout(() => {
+                    laser.remove();
+                }, 500);
+            }, 200);
+        }
+
+        // Efectos hover para las tarjetas
+        function initCardEffects() {
+            const gameCards = document.querySelectorAll('.game-card');
+            
+            gameCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    // Efecto de partículas al hover
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            const particle = document.createElement('div');
+                            particle.style.position = 'absolute';
+                            particle.style.width = '4px';
+                            particle.style.height = '4px';
+                            particle.style.background = '#00d4ff';
+                            particle.style.borderRadius = '50%';
+                            particle.style.pointerEvents = 'none';
+                            particle.style.left = Math.random() * card.offsetWidth + 'px';
+                            particle.style.top = Math.random() * card.offsetHeight + 'px';
+                            particle.style.animation = 'float 1s ease-out forwards';
+                            card.appendChild(particle);
+                            
+                            setTimeout(() => {
+                                particle.remove();
+                            }, 1000);
+                        }, i * 100);
+                    }
+                });
+            });
+        }
+
+        // Mostrar animación de carga al hacer clic en enlaces
+        function initGameClickEffects() {
+            const downloadBtns = document.querySelectorAll('.download-btn');
+            
+            downloadBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    // Crear efecto de loading mini
+                    const loadingOverlay = document.createElement('div');
+                    loadingOverlay.style.position = 'fixed';
+                    loadingOverlay.style.top = '0';
+                    loadingOverlay.style.left = '0';
+                    loadingOverlay.style.width = '100%';
+                    loadingOverlay.style.height = '100%';
+                    loadingOverlay.style.background = 'rgba(0,0,0,0.8)';
+                    loadingOverlay.style.display = 'flex';
+                    loadingOverlay.style.justifyContent = 'center';
+                    loadingOverlay.style.alignItems = 'center';
+                    loadingOverlay.style.zIndex = '9999';
+                    loadingOverlay.innerHTML = '<div class="loading-text">INICIANDO...</div>';
+                    
+                    document.body.appendChild(loadingOverlay);
+                    
+                    setTimeout(() => {
+                        loadingOverlay.remove();
+                    }, 2000);
+                });
+            });
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createParticles();
+            initLoadingAnimation();
+            
+            // Remover pantalla de carga después de 9 segundos
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loadingScreen');
+                loadingScreen.style.display = 'none';
+                
+                // Inicializar efectos después de cargar
+                setTimeout(() => {
+                    initCardEffects();
+                    initGameClickEffects();
+                }, 1000);
+            }, 9000);
+        });
+
+        // Parallax effect para las estrellas
+        document.addEventListener('mousemove', (e) => {
+            const stars = document.querySelectorAll('.star');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            stars.forEach((star, index) => {
+                const speed = (index % 3 + 1) * 0.5;
+                star.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
 </body>
 </html>
-
-
