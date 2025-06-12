@@ -302,7 +302,7 @@
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="usdt-3d pulse-glow">
-            <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-32 h-32 sm:w-48 sm:h-48">
+            <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-32 h-32 sm:w-48 sm:h-48" onerror="this.onerror=null;this.src='https://placehold.co/192x192/1a1a2e/e5e7eb?text=USDT';">
         </div>
         <p id="loading-text" class="text-white text-lg sm:text-2xl mt-4 gradient-text font-bold"></p>
         <div class="loading-progress">
@@ -316,7 +316,7 @@
         <div class="container mx-auto px-4 text-center">
             <div class="flex justify-center items-center mb-3">
                 <div class="usdt-3d pulse-glow">
-                    <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-20 h-20 sm:w-28 sm:h-28">
+                    <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-20 h-20 sm:w-28 sm:h-28" onerror="this.onerror=null;this.src='https://placehold.co/112x112/1a1a2e/e5e7eb?text=USDT';">
                 </div>
                 <h1 class="text-3xl sm:text-5xl font-bold gradient-text ml-3 sm:ml-4">USDT.CLAN</h1>
             </div>
@@ -325,9 +325,14 @@
                 <i class="fas fa-cube mr-2 text-green-400"></i>
                 Información actualizada y verificada ✓
             </p>
-            <a href="Menu.html" id="header-conoce-mas" class="mt-4 inline-block btn-primary text-white font-semibold py-2 px-6 sm:py-3 sm:px-8 rounded-full transition duration-300 shadow-lg">
-                <i class="fas fa-rocket mr-2"></i>Explorar Plataforma
-            </a>
+            <div class="flex justify-center items-center gap-4 mt-4">
+                 <a href="Menu.html" id="header-conoce-mas" class="btn-primary text-white font-semibold py-2 px-6 sm:py-3 sm:px-8 rounded-full transition duration-300 shadow-lg">
+                    <i class="fas fa-rocket mr-2"></i>Explorar
+                </a>
+                <button id="share-button" class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 px-6 sm:py-3 sm:px-8 rounded-full transition duration-300 shadow-lg flex items-center">
+                    <i class="fas fa-share-alt mr-2"></i>Compartir
+                </button>
+            </div>
         </div>
     </header>
 
@@ -351,6 +356,27 @@
                         Esta es una plataforma informativa y educativa. No ofrecemos asesoramiento financiero ni estrategias de inversión. 
                         Solo conversamos y compartimos información sobre plataformas confiables en el ecosistema crypto.
                     </p>
+                </div>
+
+                <!-- Review and Comment Section -->
+                <div class="mt-8 p-6 bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20 rounded-xl text-center card">
+                    <h3 class="text-green-400 font-semibold text-lg mb-3">
+                        <i class="fas fa-star mr-2"></i>Reseña y Comentario
+                    </h3>
+                    <p class="text-gray-300 mb-4">
+                        Tu opinión es importante para nosotros. ¡Ayúdanos a mejorar!
+                    </p>
+                    <a href="reseña.html" class="btn-primary text-white font-semibold py-2 px-6 rounded-full transition duration-300 shadow-lg inline-block">
+                        Comenta
+                    </a>
+                </div>
+
+                <!-- Download Button Section -->
+                <div class="mt-6 text-center">
+                    <a href="https://tinyurl.com/bdex7vnv" target="_blank" class="bg-gradient-to-r from-green-400 to-teal-500 hover:from-green-500 hover:to-teal-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg inline-flex items-center">
+                        <i class="fas fa-download mr-3"></i>
+                        Descargar USDT.CLAN
+                    </a>
                 </div>
             </div>
         </section>
@@ -380,28 +406,28 @@
                     </div>
                 </div>
                 <div class="img-hover rounded-2xl overflow-hidden">
-                    <img src="https://woolypooly.com/en/blog/wp-content/uploads/2023/09/Ethereum-Mining-Rig.jpg" alt="Ethereum Mining Rig Professional" class="w-full h-full object-cover">
+                    <img src="https://woolypooly.com/en/blog/wp-content/uploads/2023/09/Ethereum-Mining-Rig.jpg" alt="Ethereum Mining Rig Professional" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1a1a2e/e5e7eb?text=Mining+Rig';">
                 </div>
             </div>
             
             <!-- Mining Gallery -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="card rounded-2xl overflow-hidden img-hover">
-                    <img src="https://m.media-amazon.com/images/I/81CK5erUg2L.jpg" alt="Complete Mining Server" class="w-full h-64 object-cover">
+                    <img src="https://m.media-amazon.com/images/I/81CK5erUg2L.jpg" alt="Complete Mining Server" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x256/1a1a2e/e5e7eb?text=Mining+Setup';">
                     <div class="p-4">
                         <h4 class="font-semibold text-lg text-green-400">Setup Informativo 8 GPU</h4>
                         <p class="text-gray-400 text-sm">Ejemplo de rig profesional educativo</p>
                     </div>
                 </div>
                 <div class="card rounded-2xl overflow-hidden img-hover">
-                    <img src="https://miningcave.com/wp-content/uploads/2022/03/KIT-6-MAIN.png" alt="6 GPU Mining Kit" class="w-full h-64 object-cover">
+                    <img src="https://miningcave.com/wp-content/uploads/2022/03/KIT-6-MAIN.png" alt="6 GPU Mining Kit" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x256/1a1a2e/e5e7eb?text=GPU+Kit';">
                     <div class="p-4">
                         <h4 class="font-semibold text-lg text-green-400">Kit Educativo 6 GPU</h4>
                         <p class="text-gray-400 text-sm">Información para principiantes</p>
                     </div>
                 </div>
                 <div class="card rounded-2xl overflow-hidden img-hover">
-                    <img src="https://www.vice.com/wp-content/uploads/sites/2/2017/06/1496952311932-image5.jpeg" alt="Professional Mining Setup" class="w-full h-64 object-cover">
+                    <img src="https://www.vice.com/wp-content/uploads/sites/2/2017/06/1496952311932-image5.jpeg" alt="Professional Mining Setup" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x256/1a1a2e/e5e7eb?text=Mining+Farm';">
                     <div class="p-4">
                         <h4 class="font-semibold text-lg text-green-400">Farm Educativa</h4>
                         <p class="text-gray-400 text-sm">Conoce operaciones a gran escala</p>
@@ -417,7 +443,7 @@
             </h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
                 <div class="img-hover rounded-2xl overflow-hidden">
-                    <img src="https://www.visualcapitalist.com/wp-content/uploads/2024/11/BitcoinEthereum-Recovered-SITE.jpg" alt="Bitcoin vs Ethereum Analysis" class="w-full h-full object-cover">
+                    <img src="https://www.visualcapitalist.com/wp-content/uploads/2024/11/BitcoinEthereum-Recovered-SITE.jpg" alt="Bitcoin vs Ethereum Analysis" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1a1a2e/e5e7eb?text=BTC+vs+ETH';">
                 </div>
                 <div class="card p-8 rounded-2xl">
                     <h3 class="text-2xl font-bold text-blue-400 mb-4">Información Educativa sobre Criptomonedas</h3>
@@ -453,14 +479,14 @@
             <!-- Educational Content -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="card rounded-2xl overflow-hidden img-hover">
-                    <img src="https://images.ctfassets.net/4ua9vnmkuhzj/3sauSyEtnvha4FQmAUbiK0/5102e3fcb45095c7cb1beb8fa8a1e336/Crypto_Market_Cycle_Chart_16_9_Nov_2024.png" alt="Crypto Market Cycles" class="w-full h-48 object-cover">
+                    <img src="https://images.ctfassets.net/4ua9vnmkuhzj/3sauSyEtnvha4FQmAUbiK0/5102e3fcb45095c7cb1beb8fa8a1e336/Crypto_Market_Cycle_Chart_16_9_Nov_2024.png" alt="Crypto Market Cycles" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x200/1a1a2e/e5e7eb?text=Market+Cycles';">
                     <div class="p-6">
                         <h4 class="font-semibold text-lg text-blue-400 mb-2">Ciclos Educativos del Mercado</h4>
                         <p class="text-gray-400 text-sm">Información educativa sobre patrones históricos</p>
                     </div>
                 </div>
                 <div class="card rounded-2xl overflow-hidden img-hover">
-                    <img src="https://cryptocurrencyfacts.com/wp-content/uploads/2018/09/market-cycles-infographic.jpg" alt="Investment Cycles" class="w-full h-48 object-cover">
+                    <img src="https://cryptocurrencyfacts.com/wp-content/uploads/2018/09/market-cycles-infographic.jpg" alt="Investment Cycles" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x200/1a1a2e/e5e7eb?text=Market+Psychology';">
                     <div class="p-6">
                         <h4 class="font-semibold text-lg text-blue-400 mb-2">Psicología y Mercados</h4>
                         <p class="text-gray-400 text-sm">Contenido educativo sobre comportamiento del mercado</p>
@@ -500,10 +526,10 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
                 <div class="img-hover rounded-2xl overflow-hidden">
-                    <img src="https://www.investopedia.com/thmb/9DNaVQQhlHz0y2MSScuNyO6qaio=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FinancialTechnology_Final_4196400-3a7fb7e98adf4370b6e493034ade80bd.jpg" alt="Financial Technology" class="w-full h-64 object-cover">
+                    <img src="https://www.investopedia.com/thmb/9DNaVQQhlHz0y2MSScuNyO6qaio=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FinancialTechnology_Final_4196400-3a7fb7e98adf4370b6e493034ade80bd.jpg" alt="Financial Technology" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x256/1a1a2e/e5e7eb?text=FinTech';">
                 </div>
                 <div class="img-hover rounded-2xl overflow-hidden">
-                    <img src="https://www.paymentsjournal.com/wp-content/uploads/2021/11/businessman-hold-fintech-financial-technology-concept-business-investment-banking-payment-cryptocurrency-investment-digital-money-business-concept-virtual-screen-2-scaled.jpg" alt="Digital Banking Investment" class="w-full h-64 object-cover">
+                    <img src="https://www.paymentsjournal.com/wp-content/uploads/2021/11/businessman-hold-fintech-financial-technology-concept-business-investment-banking-payment-cryptocurrency-investment-digital-money-business-concept-virtual-screen-2-scaled.jpg" alt="Digital Banking Investment" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x256/1a1a2e/e5e7eb?text=Digital+Banking';">
                 </div>
             </div>
         </section>
@@ -534,13 +560,13 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="img-hover rounded-xl overflow-hidden">
-                        <img src="https://cryptopotato.com/wp-content/uploads/2020/12/Copy-of-9-security-Tips-Infographic-1_1-1-min.jpg" alt="Crypto Security Tips" class="w-full h-48 object-cover">
+                        <img src="https://cryptopotato.com/wp-content/uploads/2020/12/Copy-of-9-security-Tips-Infographic-1_1-1-min.jpg" alt="Crypto Security Tips" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/300x192/1a1a2e/e5e7eb?text=Security+Tips';">
                     </div>
                     <div class="img-hover rounded-xl overflow-hidden">
-                        <img src="https://www.investopedia.com/thmb/xdbHBrD9pUNKqGqTQokdAEwV8cw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bitcoin-wallet.asp_final-08487560d29e4ad69cf0f1f6337e6a66.png" alt="Cryptocurrency Wallets" class="w-full h-48 object-cover">
+                        <img src="https://www.investopedia.com/thmb/xdbHBrD9pUNKqGqTQokdAEwV8cw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bitcoin-wallet.asp_final-08487560d29e4ad69cf0f1f6337e6a66.png" alt="Cryptocurrency Wallets" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/300x192/1a1a2e/e5e7eb?text=Wallets';">
                     </div>
                     <div class="img-hover rounded-xl overflow-hidden sm:col-span-2">
-                        <img src="https://101blockchains.com/wp-content/uploads/2024/03/Crypto-Wallet-Security.png" alt="Wallet Security Guide" class="w-full h-32 object-cover">
+                        <img src="https://101blockchains.com/wp-content/uploads/2024/03/Crypto-Wallet-Security.png" alt="Wallet Security Guide" class="w-full h-32 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x128/1a1a2e/e5e7eb?text=Wallet+Security';">
                     </div>
                 </div>
             </div>
@@ -615,16 +641,16 @@
             <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8 gradient-text">Galería Informativa</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="card rounded-xl overflow-hidden img-hover">
-                    <img src="https://i.postimg.cc/zvXDzCzp/rs-w-776-h-776-cg-true.jpg" alt="Historic Crypto Image 1" class="w-full h-auto object-contain">
+                    <img src="https://i.postimg.cc/zvXDzCzp/rs-w-776-h-776-cg-true.jpg" alt="Historic Crypto Image 1" class="w-full h-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/300x300/1a1a2e/e5e7eb?text=Gallery+1';">
                 </div>
                 <div class="card rounded-xl overflow-hidden img-hover">
-                    <img src="https://i.postimg.cc/vHwFtLFK/Picsart-25-04-29-22-09-45-830.jpg" alt="Historic Crypto Image 2" class="w-full h-auto object-contain">
+                    <img src="https://i.postimg.cc/vHwFtLFK/Picsart-25-04-29-22-09-45-830.jpg" alt="Historic Crypto Image 2" class="w-full h-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/300x300/1a1a2e/e5e7eb?text=Gallery+2';">
                 </div>
                 <div class="card rounded-xl overflow-hidden img-hover">
-                    <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-full h-auto object-contain">
+                    <img src="https://i.postimg.cc/6Qj5QpmY/USDT-2.png" alt="USDT Logo" class="w-full h-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/300x300/1a1a2e/e5e7eb?text=USDT';">
                 </div>
                 <div class="card rounded-xl overflow-hidden img-hover">
-                    <img src="https://i.postimg.cc/59L0ppMG/Picsart-25-04-01-16-38-21-354.png" alt="Historic Crypto Image 4" class="w-full h-auto object-contain">
+                    <img src="https://i.postimg.cc/59L0ppMG/Picsart-25-04-01-16-38-21-354.png" alt="Historic Crypto Image 4" class="w-full h-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/300x300/1a1a2e/e5e7eb?text=Gallery+4';">
                 </div>
             </div>
         </section>
@@ -657,6 +683,7 @@
         // Matrix Background Effect
         function createMatrix() {
             const matrix = document.getElementById('matrix-bg');
+            if (!matrix) return;
             const chars = '0123456789ABCDEF₿Ξ⟐◈';
             
             for (let i = 0; i < 20; i++) {
@@ -678,6 +705,7 @@
         // Crypto Particles
         function createCryptoParticles() {
             const container = document.getElementById('crypto-particles');
+            if (!container) return;
             const symbols = ['₿', 'Ξ', '⟐', '◈', '⬡', '◆'];
             
             setInterval(() => {
@@ -700,6 +728,7 @@
         let lastScrollTop = 0;
         const header = document.getElementById('header');
         window.addEventListener('scroll', () => {
+            if (!header) return;
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollTop < lastScrollTop && scrollTop > 50) {
                 header.classList.add('visible');
@@ -715,6 +744,7 @@
 
         // Page load effect
         window.addEventListener('load', () => {
+            if (!loadingScreen || !loadingText) return;
             loadingScreen.classList.add('show');
             loadingText.textContent = 'Iniciando sistemas...';
             
@@ -739,32 +769,88 @@
         document.querySelectorAll('#header-conoce-mas, #contact-conoce-mas').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (!loadingScreen || !loadingText) return;
                 const targetUrl = button.href;
                 loadingScreen.classList.add('show');
                 loadingText.textContent = 'Accediendo a la plataforma...';
                 setTimeout(() => {
-                    // Navigate to the new page in the same tab
                     window.location.href = targetUrl;
                 }, 2000);
             });
         });
 
         // Eva button effect
-        document.getElementById('eva-button').addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetUrl = e.currentTarget.href; // Use currentTarget
-            loadingScreen.classList.add('show');
-            loadingText.textContent = 'Inicializando Eva IA...';
-            
-            setTimeout(() => {
-                loadingText.textContent = 'Preparando consulta informativa...';
-            }, 1000);
-            
-            setTimeout(() => {
-                window.open(targetUrl, '_blank');
-                loadingScreen.classList.remove('show');
-            }, 2500);
-        });
+        const evaButton = document.getElementById('eva-button');
+        if (evaButton) {
+            evaButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!loadingScreen || !loadingText) return;
+                const targetUrl = e.currentTarget.href; 
+                loadingScreen.classList.add('show');
+                loadingText.textContent = 'Inicializando Eva IA...';
+                
+                setTimeout(() => {
+                    loadingText.textContent = 'Preparando consulta informativa...';
+                }, 1000);
+                
+                setTimeout(() => {
+                    window.open(targetUrl, '_blank');
+                    loadingScreen.classList.remove('show');
+                }, 2500);
+            });
+        }
+
+        // Share button logic
+        const shareButton = document.getElementById('share-button');
+        if (shareButton) {
+            shareButton.addEventListener('click', async () => {
+                const shareData = {
+                    title: 'USDT.CLAN - Comunidad Crypto Informativa',
+                    text: 'Únete a la comunidad informativa de USDT.CLAN para aprender sobre criptomonedas, minería y plataformas confiables.',
+                    url: 'https://usdt-clan.github.io/'
+                };
+
+                try {
+                    // Use Web Share API if available
+                    if (navigator.share) {
+                        await navigator.share(shareData);
+                    } else {
+                        // Fallback: copy to clipboard
+                        const urlToCopy = shareData.url;
+                        const textArea = document.createElement('textarea');
+                        textArea.value = urlToCopy;
+                        textArea.style.position = 'fixed';
+                        textArea.style.opacity = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        try {
+                            document.execCommand('copy');
+                            if (loadingScreen && loadingText) {
+                                loadingText.textContent = '¡Enlace copiado al portapapeles!';
+                                const progressBar = loadingScreen.querySelector('.loading-progress');
+                                const subText = loadingScreen.querySelector('.animate-pulse');
+                                if(progressBar) progressBar.style.display = 'none';
+                                if(subText) subText.style.display = 'none';
+                                
+                                loadingScreen.classList.add('show');
+                                
+                                setTimeout(() => {
+                                   loadingScreen.classList.remove('show');
+                                   if(progressBar) progressBar.style.display = 'block';
+                                   if(subText) subText.style.display = 'block';
+                                }, 2000);
+                            }
+                        } catch (err) {
+                             console.error('No se pudo copiar el enlace', err);
+                        }
+                        document.body.removeChild(textArea);
+                    }
+                } catch (err) {
+                    console.error('Error al compartir:', err);
+                }
+            });
+        }
 
         // Community cards direct link
         document.addEventListener('DOMContentLoaded', function() {
@@ -772,6 +858,7 @@
             communityCards.forEach(card => {
                 card.addEventListener('click', function(e) {
                     e.preventDefault();
+                    if (!loadingScreen || !loadingText) return;
                     const url = this.href;
                     loadingScreen.classList.add('show');
                     
@@ -805,5 +892,4 @@
     </script>
 </body>
 </html>
-
 
