@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptos Pregunta - Juego Inteligente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap');
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .orbitron {
+      font-family: 'Orbitron', monospace;
+    }
+
+    .neon-glow {
+      text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+    }
+
+    .coin-float {
+      animation: coinFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes coinFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    .coin-spin {
+      animation: coinSpin 2s linear;
+    }
+
+    @keyframes coinSpin {
+      0% { transform: rotateY(0deg) scale(0.5); }
+      50% { transform: rotateY(180deg) scale(1.2); }
+      100% { transform: rotateY(360deg) scale(1); }
+    }
+
+    .pulse-glow {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+      50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8), 0 0 60px rgba(59, 130, 246, 0.6); }
+    }
+
+    .celebration-particle {
+      position: absolute;
+      pointer-events: none;
+      animation: celebrate 3s ease-out forwards;
+    }
+
+    @keyframes celebrate {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-200px) scale(0);
+        opacity: 0;
+      }
+    }
+
+    .shake {
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.8s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .level-up-animation {
+      animation: levelUp 2s ease-in-out;
+    }
+
+    @keyframes levelUp {
+      0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+      50% { transform: scale(1.2) rotate(0deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .wrong-answer-effect {
+      animation: wrongAnswer 1s ease-in-out;
+    }
+
+    @keyframes wrongAnswer {
+      0%, 100% { background-color: transparent; }
+      50% { background-color: rgba(239, 68, 68, 0.3); }
+    }
+
+    .gradient-text {
+      background: linear-gradient(45deg, #06b6d4, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="fixed inset-0 bg-gray-900 flex flex-col items-center justify-center z-50">
+    <div class="orbitron text-4xl font-bold gradient-text neon-glow mb-8">SNEYDER STUDIO</div>
+    <div class="loading-spinner mb-4"></div>
+    <div class="text-xl animate-pulse">Cargando Criptos Pregunta...</div>
+  </div>
+
+  <!-- Main Game Container -->
+  <div id="game-container" class="hidden max-w-lg w-full p-6 relative">
+    
+    <!-- Background Particles -->
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Game Header -->
+    <div class="text-center mb-6 relative z-10">
+      <h1 class="text-4xl font-bold orbitron gradient-text neon-glow mb-2">CRIPTOS PREGUNTA</h1>
+      <p class="text-gray-400">Juego Inteligente con IA</p>
+    </div>
+
+    <!-- Level Display -->
+    <div id="level-display" class="bg-gray-800 rounded-lg p-6 mb-6 pulse-glow fade-in">
+      <div class="flex items-center justify-between mb-4">
+        <div id="coin-image" class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center coin-float">
+          <i class="fas fa-coins text-2xl text-yellow-100"></i>
+        </div>
+        <div class="text-right">
+          <h2 id="level-title" class="text-2xl font-bold orbitron text-yellow-400"></h2>
+          <p id="level-subtitle" class="text-gray-400"></p>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div class="text-center">
+          <p class="text-gray-400">Puntuación</p>
+          <p id="score" class="text-2xl font-bold text-green-400">0</p>
+        </div>
+        <div class="text-center">
+          <p class="text-gray-400">Pregunta</p>
+          <p id="question-number" class="text-2xl font-bold text-blue-400">1/8</p>
+        </div>
+      </div>
+      
+      <div class="mt-4">
+        <p class="text-gray-400 text-sm mb-2">Fallos</p>
+        <div class="flex space-x-1">
+          <div id="fail-1" class="w-6 h-6 rounded-full bg-gray-600"></div>
+          <div id="fail-2" class="w-6 h-6 rounded-full bg-gray-600"></div>
+          <div id="fail-3" class="w-6 h-6 rounded-full bg-gray-600"></div>
+          <div id="fail-4" class="w-6 h-6 rounded-full bg-gray-600"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Display -->
+    <div id="question-container" class="bg-gray-800 rounded-lg p-6 mb-6 fade-in">
+      <div id="question-text" class="text-lg mb-6 leading-relaxed"></div>
+      <div id="options-container" class="grid gap-3"></div>
+    </div>
+
+    <!-- Feedback Display -->
+    <div id="feedback-container" class="hidden bg-gray-800 rounded-lg p-6 mb-6 text-center">
+      <div id="feedback-icon" class="text-4xl mb-4"></div>
+      <div id="feedback-text" class="text-lg mb-4"></div>
+      <div id="educational-link" class="hidden">
+        <a id="learn-more" href="#" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-graduation-cap mr-2"></i>Aprende más sobre esta cripto
+        </a>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div id="action-buttons" class="space-y-3">
+      <button id="next-btn" class="hidden w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105">
+        <i class="fas fa-arrow-right mr-2"></i>Siguiente Pregunta
+      </button>
+      <button id="restart-btn" class="hidden w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105">
+        <i class="fas fa-redo mr-2"></i>Reiniciar Juego
+      </button>
+    </div>
+
+    <!-- Level Up Animation Container -->
+    <div id="level-up-overlay" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+      <div class="text-center level-up-animation">
+        <div id="level-up-coin" class="w-32 h-32 mx-auto mb-6 coin-spin"></div>
+        <h2 class="text-4xl font-bold orbitron gradient-text neon-glow mb-4">¡NIVEL COMPLETADO!</h2>
+        <p id="level-up-text" class="text-xl text-gray-300"></p>
+        <div class="mt-6">
+          <button id="continue-btn" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-8 rounded-lg">
+            <i class="fas fa-play mr-2"></i>Continuar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Game Configuration
+    const COIN_IMAGES = {
+      'PEPE': 'https://cdn1.genspark.ai/user-upload-image/22_generated/15021bc6-f594-4435-a380-f264ecb1cee3',
+      'SHIB': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/shib.svg',
+      'DOGE': 'https://cdn1.genspark.ai/user-upload-image/22_generated/1abfd9fc-0e40-4a10-8719-076755217c35',
+      'USDT': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/usdt.svg',
+      'BNB': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/bnb.svg',
+      'LTC': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/ltc.svg',
+      'SOL': 'https://cdn1.genspark.ai/user-upload-image/22_generated/9226861b-2138-4231-807e-44608182312b',
+      'ETH': 'https://cdn1.genspark.ai/user-upload-image/22_generated/52704ba8-0acd-4cb2-a22e-8de832cd8aa6',
+      'BTC': 'https://cdn1.genspark.ai/user-upload-image/22_generated/53c3c5e6-a17e-4be3-bd93-cdd9b13d1d38'
+    };
+
+    const EDUCATIONAL_LINKS = {
+      'PEPE': 'https://coinmarketcap.com/currencies/pepe/',
+      'SHIB': 'https://coinmarketcap.com/currencies/shiba-inu/',
+      'DOGE': 'https://coinmarketcap.com/currencies/dogecoin/',
+      'USDT': 'https://coinmarketcap.com/currencies/tether/',
+      'BNB': 'https://coinmarketcap.com/currencies/bnb/',
+      'LTC': 'https://coinmarketcap.com/currencies/litecoin/',
+      'SOL': 'https://coinmarketcap.com/currencies/solana/',
+      'ETH': 'https://coinmarketcap.com/currencies/ethereum/',
+      'BTC': 'https://coinmarketcap.com/currencies/bitcoin/'
+    };
+
+    const levels = [
+      { name: "Pepe Coin", crypto: "PEPE", color: "green" },
+      { name: "Shiba Inu", crypto: "SHIB", color: "orange" },
+      { name: "Dogecoin", crypto: "DOGE", color: "yellow" },
+      { name: "Tether USDT", crypto: "USDT", color: "green" },
+      { name: "BNB Chain", crypto: "BNB", color: "yellow" },
+      { name: "Litecoin", crypto: "LTC", color: "gray" },
+      { name: "Solana", crypto: "SOL", color: "purple" },
+      { name: "Ethereum", crypto: "ETH", color: "blue" },
+      { name: "Bitcoin", crypto: "BTC", color: "orange" }
+    ];
+
+    // Extended question bank - More dynamic and varied
+    const questionBank = {
+      PEPE: [
+        { question: "¿En qué año se lanzó oficialmente Pepe Coin?", options: ["2021", "2022", "2023", "2024"], correct: "2023" },
+        { question: "¿Pepe Coin está inspirada en qué famoso meme de internet?", options: ["Doge", "Pepe the Frog", "Grumpy Cat", "Success Kid"], correct: "Pepe the Frog" },
+        { question: "¿En qué blockchain fue construida Pepe Coin inicialmente?", options: ["Ethereum", "Solana", "BNB Chain", "Polygon"], correct: "Ethereum" },
+        { question: "¿Qué clasificación tiene Pepe en el mundo crypto?", options: ["Stablecoin", "Memecoin", "Utility Token", "DeFi Token"], correct: "Memecoin" },
+        { question: "¿Cuál es aproximadamente el suministro total de Pepe Coin?", options: ["420 Billones", "100 Billones", "1 Trillón", "69 Billones"], correct: "420 Billones" },
+        { question: "¿Pepe Coin tiene un sistema de gobernanza descentralizada?", options: ["Sí, con voting", "No, es memecoin", "Solo para holders", "Próximamente"], correct: "No, es memecoin" },
+        { question: "¿Dónde se puede tradear Pepe Coin principalmente?", options: ["Solo Binance", "DEXs como Uniswap", "Solo exchanges centralizados", "No se puede tradear"], correct: "DEXs como Uniswap" },
+        { question: "¿Pepe Coin fue creada por un equipo anónimo?", options: ["Sí, totalmente anónimo", "No, equipo público", "Semi-anónimo", "Por Vitalik Buterin"], correct: "Sí, totalmente anónimo" },
+        { question: "¿Qué evento impulsó significativamente el precio de Pepe en 2023?", options: ["Listado en Binance", "Hype en redes sociales", "Partnership con Ethereum", "Quema de tokens"], correct: "Hype en redes sociales" },
+        { question: "¿Cuál es la principal utilidad de Pepe Coin?", options: ["DeFi farming", "NFT minting", "Especulación y memes", "Pagos P2P"], correct: "Especulación y memes" }
+      ],
+      SHIB: [
+        { question: "¿Cuál es el símbolo ticker de Shiba Inu?", options: ["DOGE", "SHIB", "INU", "SHIBA"], correct: "SHIB" },
+        { question: "¿Shiba Inu fue construida en qué blockchain?", options: ["Bitcoin", "Ethereum", "Solana", "Cardano"], correct: "Ethereum" },
+        { question: "¿Quién es el creador pseudónimo de Shiba Inu?", options: ["Vitalik Buterin", "Ryoshi", "Elon Musk", "Satoshi Nakamoto"], correct: "Ryoshi" },
+        { question: "¿Cómo se llama el DEX oficial del ecosistema Shiba?", options: ["UniSwap", "ShibaSwap", "PancakeSwap", "SushiSwap"], correct: "ShibaSwap" },
+        { question: "¿Cuál era el suministro inicial total de SHIB?", options: ["1 Trillón", "1 Cuatrillón", "100 Billones", "500 Billones"], correct: "1 Cuatrillón" },
+        { question: "¿Cuál es el token de gobernanza del ecosistema Shiba?", options: ["SHIB", "BONE", "LEASH", "TREAT"], correct: "BONE" },
+        { question: "¿En qué año fue lanzado Shiba Inu?", options: ["2019", "2020", "2021", "2022"], correct: "2020" },
+        { question: "¿Cómo se llaman los NFTs oficiales de Shiba Inu?", options: ["ShibaPunks", "Shiboshis", "ShibaNFT", "DogeNFT"], correct: "Shiboshis" },
+        { question: "¿Qué famoso hizo una donación masiva de SHIB?", options: ["Elon Musk", "Vitalik Buterin", "Jack Dorsey", "Mark Cuban"], correct: "Vitalik Buterin" },
+        { question: "¿Cuál es el token más escaso del ecosistema Shiba?", options: ["SHIB", "BONE", "LEASH", "TREAT"], correct: "LEASH" }
+      ],
+      DOGE: [
+        { question: "¿Quiénes fueron los co-creadores de Dogecoin?", options: ["Billy Markus y Jackson Palmer", "Vitalik y Gavin", "Satoshi y Hal", "Charlie y Adam"], correct: "Billy Markus y Jackson Palmer" },
+        { question: "¿En qué año se lanzó Dogecoin?", options: ["2011", "2013", "2015", "2017"], correct: "2013" },
+        { question: "¿Qué algoritmo de minería utiliza Dogecoin?", options: ["SHA-256", "Scrypt", "Ethash", "X11"], correct: "Scrypt" },
+        { question: "¿Dogecoin tiene un suministro máximo fijo?", options: ["Sí, 100B", "No, es inflacionario", "Sí, 21M", "Sí, 84M"], correct: "No, es inflacionario" },
+        { question: "¿De qué raza de perro proviene el meme de Doge?", options: ["Golden Retriever", "Shiba Inu", "Akita", "Corgi"], correct: "Shiba Inu" },
+        { question: "¿Dogecoin fue creado originalmente como?", options: ["Moneda seria", "Broma/meme", "DeFi protocol", "Stablecoin"], correct: "Broma/meme" },
+        { question: "¿Qué empresa de Elon Musk acepta pagos en DOGE?", options: ["SpaceX", "Tesla", "Neuralink", "Todas las anteriores"], correct: "Tesla" },
+        { question: "¿Cuántos Dogecoins se minan por bloque actualmente?", options: ["50", "25", "10000", "12.5"], correct: "10000" },
+        { question: "¿Dogecoin fue el primer memecoin exitoso?", options: ["Sí", "No", "Fue el segundo", "No está claro"], correct: "Sí" },
+        { question: "¿Qué tiempo promedio tiene cada bloque de Dogecoin?", options: ["10 minutos", "1 minuto", "2.5 minutos", "30 segundos"], correct: "1 minuto" }
+      ],
+      USDT: [
+        { question: "¿Qué tipo de criptomoneda es USDT?", options: ["Memecoin", "Stablecoin", "Utility Token", "Governance Token"], correct: "Stablecoin" },
+        { question: "¿A qué moneda fiat está anclado USDT?", options: ["Euro", "Dólar estadounidense", "Yen japonés", "Libra esterlina"], correct: "Dólar estadounidense" },
+        { question: "¿Qué empresa es responsable de emitir USDT?", options: ["Tether Limited", "Circle", "Binance", "Coinbase"], correct: "Tether Limited" },
+        { question: "¿En qué blockchain se emitió USDT por primera vez?", options: ["Ethereum", "Bitcoin (Omni)", "Tron", "BNB Chain"], correct: "Bitcoin (Omni)" },
+        { question: "¿Qué estándar de token usa USDT en Ethereum?", options: ["ERC-20", "ERC-721", "ERC-1155", "BEP-20"], correct: "ERC-20" },
+        { question: "¿En qué año se lanzó oficialmente USDT?", options: ["2012", "2014", "2016", "2018"], correct: "2014" },
+        { question: "¿USDT es una stablecoin centralizada o descentralizada?", options: ["Descentralizada", "Centralizada", "Semi-centralizada", "Híbrida"], correct: "Centralizada" },
+        { question: "¿En qué blockchain tiene USDT la mayor circulación?", options: ["Ethereum", "Tron", "BNB Chain", "Solana"], correct: "Tron" },
+        { question: "¿USDT requiere KYC para transacciones?", options: ["Siempre", "Solo en exchanges", "Nunca", "Solo grandes montos"], correct: "Solo en exchanges" },
+        { question: "¿Cuál es el respaldo principal que afirma tener USDT?", options: ["Solo efectivo", "Efectivo y equivalentes", "Solo bonos", "Crypto diversa"], correct: "Efectivo y equivalentes" }
+      ],
+      BNB: [
+        { question: "¿BNB es el token nativo de qué plataforma?", options: ["Ethereum", "Binance", "Coinbase", "Kraken"], correct: "Binance" },
+        { question: "¿En qué año se lanzó BNB por primera vez?", options: ["2015", "2017", "2019", "2021"], correct: "2017" },
+        { question: "¿Qué estándar utilizaba BNB originalmente?", options: ["ERC-20", "BEP-20", "TRC-20", "SPL"], correct: "ERC-20" },
+        { question: "¿Cómo se llama la blockchain actual de BNB?", options: ["Ethereum", "BNB Smart Chain", "Binance Chain", "BNB Chain"], correct: "BNB Chain" },
+        { question: "¿BNB implementa quemas regulares de tokens?", options: ["Sí, trimestrales", "No, nunca", "Solo anuales", "Solo cuando hay profits"], correct: "Sí, trimestrales" },
+        { question: "¿Cuál fue el suministro inicial total de BNB?", options: ["100 millones", "200 millones", "500 millones", "1 billón"], correct: "200 millones" },
+        { question: "¿Para qué se usa principalmente BNB en su blockchain?", options: ["Staking", "Gas fees", "Governance", "NFT minting"], correct: "Gas fees" },
+        { question: "¿Quién es el actual CEO de Binance?", options: ["Changpeng Zhao", "Brian Armstrong", "Sam Bankman-Fried", "Vitalik Buterin"], correct: "Changpeng Zhao" },
+        { question: "¿BNB Chain soporta contratos inteligentes?", options: ["Sí, compatibles con EVM", "No", "Solo básicos", "Solo con permiso"], correct: "Sí, compatibles con EVM" },
+        { question: "¿Qué ventaja principal ofrece BNB Chain vs Ethereum?", options: ["Más seguridad", "Fees más bajos", "Más descentralización", "Mejor tecnología"], correct: "Fees más bajos" }
+      ],
+      LTC: [
+        { question: "¿Quién creó Litecoin?", options: ["Charlie Lee", "Vitalik Buterin", "Satoshi Nakamoto", "Gavin Andresen"], correct: "Charlie Lee" },
+        { question: "¿En qué año se lanzó Litecoin?", options: ["2009", "2011", "2013", "2015"], correct: "2011" },
+        { question: "¿Qué algoritmo de minería utiliza Litecoin?", options: ["SHA-256", "Scrypt", "Ethash", "Blake2b"], correct: "Scrypt" },
+        { question: "¿Cuál es el suministro máximo de Litecoin?", options: ["21 millones", "84 millones", "100 millones", "Ilimitado"], correct: "84 millones" },
+        { question: "¿Litecoin es conocido como?", options: ["Oro digital", "Plata digital", "Cobre digital", "Platino digital"], correct: "Plata digital" },
+        { question: "¿Litecoin implementó SegWit?", options: ["Sí, antes que Bitcoin", "No", "Sí, después de Bitcoin", "Está en desarrollo"], correct: "Sí, antes que Bitcoin" },
+        { question: "¿Cuál es el tiempo promedio de bloque en Litecoin?", options: ["10 minutos", "2.5 minutos", "1 minuto", "5 minutos"], correct: "2.5 minutos" },
+        { question: "¿Litecoin soporta Lightning Network?", options: ["Sí", "No", "En desarrollo", "Solo parcialmente"], correct: "Sí" },
+        { question: "¿Cuál es la principal ventaja de Litecoin sobre Bitcoin?", options: ["Mayor seguridad", "Transacciones más rápidas", "Más privacidad", "Mejor gobierno"], correct: "Transacciones más rápidas" },
+        { question: "¿Litecoin utiliza el mismo protocolo base que?", options: ["Ethereum", "Bitcoin", "Dogecoin", "Monero"], correct: "Bitcoin" }
+      ],
+      SOL: [
+        { question: "¿Quién es el fundador principal de Solana?", options: ["Vitalik Buterin", "Anatoly Yakovenko", "Gavin Wood", "Charles Hoskinson"], correct: "Anatoly Yakovenko" },
+        { question: "¿En qué año se lanzó la mainnet de Solana?", options: ["2018", "2019", "2020", "2021"], correct: "2020" },
+        { question: "¿Qué innovación principal utiliza Solana para el consenso?", options: ["Proof of Work", "Proof of Stake", "Proof of History", "Delegated PoS"], correct: "Proof of History" },
+        { question: "¿Qué significa PoH en el contexto de Solana?", options: ["Proof of Honor", "Proof of History", "Proof of Holding", "Proof of Hash"], correct: "Proof of History" },
+        { question: "¿Cuál es el token nativo de la red Solana?", options: ["SOL", "SLN", "SOLANA", "SNA"], correct: "SOL" },
+        { question: "¿Por qué es conocida principalmente Solana?", options: ["Privacidad", "Alta velocidad y baja latencia", "Smart contracts complejos", "Minería ecológica"], correct: "Alta velocidad y baja latencia" },
+        { question: "¿Qué estándar utilizan los tokens en Solana?", options: ["ERC-20", "BEP-20", "SPL", "TRC-20"], correct: "SPL" },
+        { question: "¿Solana puede procesar cuántas transacciones por segundo teóricamente?", options: ["15 TPS", "1,000 TPS", "50,000+ TPS", "100 TPS"], correct: "50,000+ TPS" },
+        { question: "¿Qué lenguaje de programación se usa principalmente en Solana?", options: ["Solidity", "Rust", "JavaScript", "Python"], correct: "Rust" },
+        { question: "¿Solana ha experimentado interrupciones de red?", options: ["Nunca", "Sí, varias veces", "Solo una vez", "Solo mantenimientos"], correct: "Sí, varias veces" }
+      ],
+      ETH: [
+        { question: "¿Quién es el co-fundador más conocido de Ethereum?", options: ["Satoshi Nakamoto", "Vitalik Buterin", "Charlie Lee", "Roger Ver"], correct: "Vitalik Buterin" },
+        { question: "¿En qué año se lanzó oficialmente Ethereum?", options: ["2013", "2015", "2017", "2019"], correct: "2015" },
+        { question: "¿Cuál es el token nativo de Ethereum?", options: ["ETH", "ETC", "ERC", "ETR"], correct: "ETH" },
+        { question: "¿Qué mecanismo de consenso usa Ethereum actualmente?", options: ["Proof of Work", "Proof of Stake", "Proof of Authority", "Hybrid PoW/PoS"], correct: "Proof of Stake" },
+        { question: "¿Cómo se llamó la transición de PoW a PoS en Ethereum?", options: ["The Flippening", "The Merge", "The Upgrade", "The Transition"], correct: "The Merge" },
+        { question: "¿Qué estándar es más común para tokens en Ethereum?", options: ["ERC-20", "ERC-721", "ERC-1155", "ERC-777"], correct: "ERC-20" },
+        { question: "¿Ethereum es considerado la base de qué ecosistema?", options: ["Bitcoin DeFi", "DeFi y dApps", "Solo NFTs", "Solo stablecoins"], correct: "DeFi y dApps" },
+        { question: "¿Qué actualización introdujo la quema de fees en Ethereum?", options: ["London (EIP-1559)", "Berlin", "Istanbul", "Constantinople"], correct: "London (EIP-1559)" },
+        { question: "¿Cuál es aproximadamente el tiempo de bloque en Ethereum?", options: ["10 minutos", "12-15 segundos", "1 minuto", "30 segundos"], correct: "12-15 segundos" },
+        { question: "¿Ethereum planea implementar sharding?", options: ["No", "Sí, en Ethereum 2.0", "Ya está implementado", "Solo para L2"], correct: "Sí, en Ethereum 2.0" }
+      ],
+      BTC: [
+        { question: "¿Quién es el creador pseudónimo de Bitcoin?", options: ["Vitalik Buterin", "Satoshi Nakamoto", "Charlie Lee", "Hal Finney"], correct: "Satoshi Nakamoto" },
+        { question: "¿En qué año se minó el primer bloque de Bitcoin?", options: ["2008", "2009", "2010", "2011"], correct: "2009" },
+        { question: "¿Qué algoritmo de hash utiliza Bitcoin?", options: ["SHA-256", "Scrypt", "Ethash", "Blake2b"], correct: "SHA-256" },
+        { question: "¿Cuál es el suministro máximo total de Bitcoin?", options: ["21 millones", "100 millones", "50 millones", "Ilimitado"], correct: "21 millones" },
+        { question: "¿Bitcoin es conocido popularmente como?", options: ["Plata digital", "Oro digital", "Efectivo digital", "Reserva digital"], correct: "Oro digital" },
+        { question: "¿Bitcoin implementó SegWit en qué año?", options: ["2015", "2017", "2019", "2021"], correct: "2017" },
+        { question: "¿Cuál es el tiempo promedio entre bloques en Bitcoin?", options: ["1 minuto", "5 minutos", "10 minutos", "15 minutos"], correct: "10 minutos" },
+        { question: "¿Bitcoin soporta Lightning Network?", options: ["No", "Sí", "En desarrollo", "Solo testnet"], correct: "Sí" },
+        { question: "¿Cada cuánto ocurre el halving de Bitcoin?", options: ["Cada año", "Cada 2 años", "Cada 4 años", "Cada 6 años"], correct: "Cada 4 años" },
+        { question: "¿El último halving de Bitcoin fue en?", options: ["2016", "2020", "2024", "2022"], correct: "2024" }
+      ]
+    };
+
+    // Game State
+    let gameState = {
+      currentLevel: parseInt(localStorage.getItem("currentLevel")) || 0,
+      currentQuestion: parseInt(localStorage.getItem("currentQuestion")) || 0,
+      score: parseInt(localStorage.getItem("score")) || 0,
+      fails: parseInt(localStorage.getItem("fails")) || 0,
+      gameOver: false,
+      usedQuestions: JSON.parse(localStorage.getItem("usedQuestions")) || {},
+      answeredCorrectly: false
+    };
+
+    // DOM Elements
+    const elements = {
+      loadingScreen: document.getElementById("loading-screen"),
+      gameContainer: document.getElementById("game-container"),
+      coinImage: document.getElementById("coin-image"),
+      levelTitle: document.getElementById("level-title"),
+      levelSubtitle: document.getElementById("level-subtitle"),
+      score: document.getElementById("score"),
+      questionNumber: document.getElementById("question-number"),
+      questionText: document.getElementById("question-text"),
+      optionsContainer: document.getElementById("options-container"),
+      feedbackContainer: document.getElementById("feedback-container"),
+      feedbackIcon: document.getElementById("feedback-icon"),
+      feedbackText: document.getElementById("feedback-text"),
+      educationalLink: document.getElementById("educational-link"),
+      learnMore: document.getElementById("learn-more"),
+      nextBtn: document.getElementById("next-btn"),
+      restartBtn: document.getElementById("restart-btn"),
+      levelUpOverlay: document.getElementById("level-up-overlay"),
+      levelUpCoin: document.getElementById("level-up-coin"),
+      levelUpText: document.getElementById("level-up-text"),
+      continueBtn: document.getElementById("continue-btn")
+    };
+
+    // Initialize game
+    function init() {
+      setTimeout(() => {
+        elements.loadingScreen.classList.add("hidden");
+        elements.gameContainer.classList.remove("hidden");
+        loadQuestion();
+        createBackgroundParticles();
+      }, 3000);
+    }
+
+    // Create background particles
+    function createBackgroundParticles() {
+      const particles = document.getElementById("particles");
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement("div");
+        particle.className = "absolute w-1 h-1 bg-blue-400 rounded-full opacity-30";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.top = Math.random() * 100 + "%";
+        particle.style.animationDelay = Math.random() * 3 + "s";
+        particle.style.animation = "pulse 3s ease-in-out infinite";
+        particles.appendChild(particle);
+      }
+    }
+
+    // Get random question that hasn't been used
+    function getRandomQuestion(crypto) {
+      const questions = questionBank[crypto] || [];
+      if (!gameState.usedQuestions[crypto]) {
+        gameState.usedQuestions[crypto] = [];
+      }
+      
+      const availableQuestions = questions.filter((_, index) => 
+        !gameState.usedQuestions[crypto].includes(index)
+      );
+      
+      if (availableQuestions.length === 0) {
+        // Reset used questions if all have been used
+        gameState.usedQuestions[crypto] = [];
+        return questions[Math.floor(Math.random() * questions.length)];
+      }
+      
+      const selectedQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+      const originalIndex = questions.indexOf(selectedQuestion);
+      gameState.usedQuestions[crypto].push(originalIndex);
+      
+      localStorage.setItem("usedQuestions", JSON.stringify(gameState.usedQuestions));
+      return selectedQuestion;
+    }
+
+    // Load current question
+    function loadQuestion() {
+      if (gameState.gameOver || gameState.currentLevel >= levels.length) return;
+
+      const level = levels[gameState.currentLevel];
+      const questionData = getRandomQuestion(level.crypto);
+
+      // Update level display
+      elements.levelTitle.textContent = `Nivel ${gameState.currentLevel + 1}`;
+      elements.levelSubtitle.textContent = level.name;
+      elements.score.textContent = gameState.score;
+      elements.questionNumber.textContent = `${gameState.currentQuestion + 1}/8`;
+
+      // Update coin image
+      const coinImg = document.createElement("img");
+      coinImg.src = COIN_IMAGES[level.crypto];
+      coinImg.className = "w-16 h-16 rounded-full object-cover coin-float";
+      coinImg.onerror = () => {
+        elements.coinImage.innerHTML = `<i class="fas fa-coins text-2xl text-yellow-100"></i>`;
+      };
+      elements.coinImage.innerHTML = "";
+      elements.coinImage.appendChild(coinImg);
+
+      // Update fail indicators
+      for (let i = 1; i <= 4; i++) {
+        const failElement = document.getElementById(`fail-${i}`);
+        if (i <= gameState.fails) {
+          failElement.className = "w-6 h-6 rounded-full bg-red-500";
+        } else {
+          failElement.className = "w-6 h-6 rounded-full bg-gray-600";
+        }
+      }
+
+      // Load question
+      elements.questionText.textContent = questionData.question;
+      elements.optionsContainer.innerHTML = "";
+      
+      // Shuffle options
+      const shuffledOptions = [...questionData.options].sort(() => Math.random() - 0.5);
+      
+      shuffledOptions.forEach((option, index) => {
+        const btn = document.createElement("button");
+        btn.className = "w-full bg-gray-700 hover:bg-gray-600 text-left py-3 px-4 rounded-lg transition-all transform hover:scale-105 hover:shadow-lg";
+        btn.innerHTML = `
+          <span class="mr-3 text-blue-400 font-bold">${String.fromCharCode(65 + index)})</span>
+          ${option}
+        `;
+        btn.onclick = () => checkAnswer(option, questionData.correct);
+        elements.optionsContainer.appendChild(btn);
+      });
+
+      // Hide feedback and buttons
+      elements.feedbackContainer.classList.add("hidden");
+      elements.nextBtn.classList.add("hidden");
+      gameState.answeredCorrectly = false;
+    }
+
+    // Check answer
+    function checkAnswer(selected, correct) {
+      if (gameState.gameOver) return;
+
+      const isCorrect = selected === correct;
+      gameState.answeredCorrectly = isCorrect;
+
+      // Update score and fails
+      if (isCorrect) {
+        gameState.score += 10;
+        elements.feedbackIcon.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+        elements.feedbackText.innerHTML = '<span class="text-green-400 font-bold">¡Correcto!</span> +10 puntos';
+        elements.feedbackContainer.className = "bg-green-900 bg-opacity-50 rounded-lg p-6 mb-6 text-center border border-green-500";
+        createCelebrationParticles();
+      } else {
+        gameState.fails += 1;
+        gameState.score = Math.max(0, gameState.score - 5);
+        elements.feedbackIcon.innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
+        elements.feedbackText.innerHTML = `
+          <span class="text-red-400 font-bold">¡Estudia tonto!</span><br>
+          <span class="text-gray-300">Respuesta correcta: <strong>${correct}</strong></span><br>
+          <span class="text-red-300">-5 puntos</span>
+        `;
+        elements.feedbackContainer.className = "bg-red-900 bg-opacity-50 rounded-lg p-6 mb-6 text-center border border-red-500 wrong-answer-effect";
+        
+        // Show educational link
+        const level = levels[gameState.currentLevel];
+        elements.learnMore.href = EDUCATIONAL_LINKS[level.crypto];
+        elements.educationalLink.classList.remove("hidden");
+        
+        // Shake effect
+        elements.gameContainer.classList.add("shake");
+        setTimeout(() => elements.gameContainer.classList.remove("shake"), 500);
+      }
+
+      // Show feedback
+      elements.feedbackContainer.classList.remove("hidden");
+      elements.nextBtn.classList.remove("hidden");
+
+      // Save state
+      localStorage.setItem("score", gameState.score);
+      localStorage.setItem("fails", gameState.fails);
+
+      // Check game over
+      if (gameState.fails >= 4) {
+        gameState.gameOver = true;
+        elements.feedbackText.innerHTML += '<br><br><span class="text-red-500 font-bold text-xl">¡GAME OVER!</span>';
+        elements.nextBtn.classList.add("hidden");
+        elements.restartBtn.classList.remove("hidden");
+      }
+
+      // Disable option buttons
+      const optionBtns = elements.optionsContainer.querySelectorAll("button");
+      optionBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.add("opacity-50");
+        if (btn.textContent.includes(correct)) {
+          btn.classList.add("bg-green-600");
+        } else if (btn.textContent.includes(selected) && !isCorrect) {
+          btn.classList.add("bg-red-600");
+        }
+      });
+    }
+
+    // Create celebration particles
+    function createCelebrationParticles() {
+      const colors = ["🎉", "⭐", "💎", "🚀", "💰"];
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          const particle = document.createElement("div");
+          particle.className = "celebration-particle text-2xl";
+          particle.textContent = colors[Math.floor(Math.random() * colors.length)];
+          particle.style.left = Math.random() * window.innerWidth + "px";
+          particle.style.top = window.innerHeight - 100 + "px";
+          document.body.appendChild(particle);
+          
+          setTimeout(() => particle.remove(), 3000);
+        }, i * 100);
+      }
+    }
+
+    // Next question
+    elements.nextBtn.onclick = () => {
+      elements.educationalLink.classList.add("hidden");
+      gameState.currentQuestion++;
+      
+      if (gameState.currentQuestion >= 8) {
+        // Level completed
+        showLevelUpAnimation();
+      } else {
+        localStorage.setItem("currentQuestion", gameState.currentQuestion);
+        loadQuestion();
+      }
+    };
+
+    // Show level up animation
+    function showLevelUpAnimation() {
+      const level = levels[gameState.currentLevel];
+      
+      // Setup level up display
+      const levelUpCoinImg = document.createElement("img");
+      levelUpCoinImg.src = COIN_IMAGES[level.crypto];
+      levelUpCoinImg.className = "w-32 h-32 rounded-full object-cover mx-auto";
+      levelUpCoinImg.onerror = () => {
+        elements.levelUpCoin.innerHTML = '<i class="fas fa-trophy text-8xl text-yellow-400"></i>';
+      };
+      elements.levelUpCoin.innerHTML = "";
+      elements.levelUpCoin.appendChild(levelUpCoinImg);
+      
+      elements.levelUpText.textContent = `¡Has completado el nivel ${gameState.currentLevel + 1}: ${level.name}!`;
+      
+      // Show overlay
+      elements.levelUpOverlay.classList.remove("hidden");
+      
+      // Create massive celebration
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => createCelebrationParticles(), i * 100);
+      }
+    };
+
+    // Continue to next level
+    elements.continueBtn.onclick = () => {
+      elements.levelUpOverlay.classList.add("hidden");
+      
+      gameState.currentQuestion = 0;
+      gameState.currentLevel++;
+      gameState.fails = 0; // Reset fails
+      
+      localStorage.setItem("currentLevel", gameState.currentLevel);
+      localStorage.setItem("currentQuestion", gameState.currentQuestion);
+      localStorage.setItem("fails", gameState.fails);
+      
+      if (gameState.currentLevel >= levels.length) {
+        // Game completed
+        showGameCompletedScreen();
+      } else {
+        loadQuestion();
+      }
+    };
+
+    // Show game completed screen
+    function showGameCompletedScreen() {
+      elements.feedbackContainer.classList.remove("hidden");
+      elements.feedbackContainer.className = "bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg p-8 mb-6 text-center";
+      elements.feedbackIcon.innerHTML = '<i class="fas fa-crown text-6xl text-yellow-100 animate-bounce"></i>';
+      elements.feedbackText.innerHTML = `
+        <div class="text-3xl font-bold orbitron text-white mb-4">¡FELICIDADES!</div>
+        <div class="text-xl text-yellow-100">Has completado todos los niveles</div>
+        <div class="text-lg text-yellow-200 mt-2">Puntuación final: ${gameState.score} puntos</div>
+        <div class="text-sm text-yellow-300 mt-4">¡Eres un verdadero experto en criptomonedas!</div>
+      `;
+      elements.nextBtn.classList.add("hidden");
+      elements.restartBtn.classList.remove("hidden");
+      gameState.gameOver = true;
+      
+      // Epic celebration
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => createCelebrationParticles(), i * 50);
+      }
+    };
+
+    // Restart game
+    elements.restartBtn.onclick = () => {
+      gameState = {
+        currentLevel: 0,
+        currentQuestion: 0,
+        score: 0,
+        fails: 0,
+        gameOver: false,
+        usedQuestions: {},
+        answeredCorrectly: false
+      };
+      
+      localStorage.setItem("currentLevel", gameState.currentLevel);
+      localStorage.setItem("currentQuestion", gameState.currentQuestion);
+      localStorage.setItem("score", gameState.score);
+      localStorage.setItem("fails", gameState.fails);
+      localStorage.setItem("usedQuestions", JSON.stringify(gameState.usedQuestions));
+      
+      elements.restartBtn.classList.add("hidden");
+      elements.levelUpOverlay.classList.add("hidden");
+      loadQuestion();
+    };
+
+    // Start the game
+    init();
+  </script>
+</body>
+</html>
