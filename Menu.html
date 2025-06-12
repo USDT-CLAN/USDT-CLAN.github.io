@@ -1,4 +1,3 @@
-Claro, aquí tienes el código HTML con los enlaces actualizados según tus instrucciones.
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -250,10 +249,11 @@ Claro, aquí tienes el código HTML con los enlaces actualizados según tus inst
         .service-card:nth-child(3):hover { border-color: #ffaa00; box-shadow: 0 20px 40px rgba(255, 170, 0, 0.3); }
         .service-card:nth-child(4):hover { border-color: #ff00aa; box-shadow: 0 20px 40px rgba(255, 0, 170, 0.3); }
         .service-card:nth-child(5):hover { border-color: #38bdf8; box-shadow: 0 20px 40px rgba(56, 189, 248, 0.3); }
-        .service-card:nth-child(6):hover { border-color: #fb923c; box-shadow: 0 20px 40px rgba(251, 146, 60, 0.3); } /* Orange */
-        .service-card:nth-child(7):hover { border-color: #f472b6; box-shadow: 0 20px 40px rgba(244, 114, 182, 0.3); } /* Pink */
-        .service-card:nth-child(8):hover { border-color: #a78bfa; box-shadow: 0 20px 40px rgba(167, 139, 250, 0.3); } /* Purple */
-
+        .service-card:nth-child(6):hover { border-color: #fb923c; box-shadow: 0 20px 40px rgba(251, 146, 60, 0.3); }
+        .service-card:nth-child(7):hover { border-color: #10b981; box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3); }
+        .service-card:nth-child(8):hover { border-color: #f472b6; box-shadow: 0 20px 40px rgba(244, 114, 182, 0.3); }
+        .service-card:nth-child(9):hover { border-color: #a78bfa; box-shadow: 0 20px 40px rgba(167, 139, 250, 0.3); }
+        .service-card:nth-child(10):hover { border-color: #00ff88; box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3); } /* Hover for the first card */
 
         .service-image {
             width: 100%;
@@ -328,14 +328,17 @@ Claro, aquí tienes el código HTML con los enlaces actualizados según tus inst
             transform: translateY(-3px) scale(1.05);
             box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4);
         }
-
+        
+        .service-card:nth-child(1) .service-button { background: linear-gradient(45deg, #00ff88, #00bbff); }
         .service-card:nth-child(2) .service-button { background: linear-gradient(45deg, #0088ff, #00ff88); }
         .service-card:nth-child(3) .service-button { background: linear-gradient(45deg, #ffaa00, #ff6600); }
         .service-card:nth-child(4) .service-button { background: linear-gradient(45deg, #ff00aa, #aa00ff); }
         .service-card:nth-child(5) .service-button { background: linear-gradient(45deg, #38bdf8, #0ea5e9); }
-        .service-card:nth-child(6) .service-button { background: linear-gradient(45deg, #fb923c, #f97316); } /* Orange Gradient */
-        .service-card:nth-child(7) .service-button { background: linear-gradient(45deg, #f472b6, #ec4899); } /* Pink Gradient */
-        .service-card:nth-child(8) .service-button { background: linear-gradient(45deg, #a78bfa, #8b5cf6); } /* Purple Gradient */
+        .service-card:nth-child(6) .service-button { background: linear-gradient(45deg, #fb923c, #f97316); }
+        .service-card:nth-child(7) .service-button { background: linear-gradient(45deg, #10b981, #059669); }
+        .service-card:nth-child(8) .service-button { background: linear-gradient(45deg, #f472b6, #ec4899); }
+        .service-card:nth-child(9) .service-button { background: linear-gradient(45deg, #a78bfa, #8b5cf6); }
+        .service-card:nth-child(10) .service-button { background: linear-gradient(45deg, #00ff88, #0088ff); }
 
         /* Footer */
         .footer {
@@ -389,6 +392,17 @@ Claro, aquí tienes el código HTML con los enlaces actualizados según tus inst
         </header>
 
         <section class="services-grid">
+
+            <!-- Nueva Tarjeta NC Wallet con enlace actualizado -->
+            <div class="service-card">
+                <img src="https://i.postimg.cc/8PpTJpCQ/unnamed.png" alt="NC Wallet" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/00ff88?text=NC+Wallet';">
+                <h3 class="service-title"><i class="fas fa-wallet"></i> NC Wallet</h3>
+                <p class="service-description">Wallet recomendada para guardar tus activos de forma segura. Confiable, con comisiones flexibles y fácil de usar.</p>
+                <a href="NC.html" class="service-button">
+                    <i class="fas fa-external-link-alt"></i> Visitar Wallet
+                </a>
+            </div>
+
             <div class="service-card">
                 <img src="https://www.investopedia.com/thmb/Ab_C9f2b7gt2ceH3eVLwfic16Ss=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-929584582-9d7790de3ee44f658a9580cc598c641f.jpg" alt="Crypto Mining" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/00ff88?text=Mineria';">
                 <h3 class="service-title"><i class="fas fa-coins"></i> Minería Crypto</h3>
@@ -440,6 +454,15 @@ Claro, aquí tienes el código HTML con los enlaces actualizados según tus inst
                 <p class="service-description">Accede a nuestro centro de estudio para aprender todo sobre criptomonedas, blockchain, y estrategias de inversión de forma clara y concisa.</p>
                 <a href="Estudio.html" class="service-button">
                     <i class="fas fa-chalkboard-teacher"></i> Ir a Estudio
+                </a>
+            </div>
+
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1556438064-2d7646166914?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Juegos Crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/10b981?text=Juegos';">
+                <h3 class="service-title"><i class="fas fa-gamepad"></i> Juegos Crypto</h3>
+                <p class="service-description">¡GANA SATOSHIS DE BITCOIN GRATIS! Juega y recibe recompensas reales en Bitcoin, Ethereum, USDT y más cryptos. ¡Cada partida puede ser tu próxima ganancia!</p>
+                <a href="juegos.html" class="service-button">
+                    <i class="fas fa-coins"></i> Ganar Cryptos
                 </a>
             </div>
             
@@ -532,5 +555,4 @@ Claro, aquí tienes el código HTML con los enlaces actualizados según tus inst
     </script>
 </body>
 </html>
-
 
