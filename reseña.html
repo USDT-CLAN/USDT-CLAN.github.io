@@ -4,246 +4,489 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reseñas - USDT.CLAN</title>
-    <!-- Supabase Client -->
+    <!-- Librerías Externas -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Tailwind CSS y Fuentes -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0D1117; color: #E6EDF3; }
-        @keyframes neon-glow {
-            0%, 100% { box-shadow: 0 2px 20px 5px rgba(0, 255, 255, 0.6); }
-            33% { box-shadow: 0 2px 20px 5px rgba(255, 0, 255, 0.6); }
-            66% { box-shadow: 0 2px 20px 5px rgba(50, 255, 50, 0.6); }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0D1117; 
+            color: #E6EDF3; 
+            overflow-x: hidden; 
         }
-        .neon-light-effect { animation: neon-glow 4s linear infinite; }
-        .neon-glow-border { box-shadow: 0 0 5px rgba(0, 255, 255, 0.4), 0 0 10px rgba(0, 255, 255, 0.3); }
-        .glass-effect { background-color: rgba(19, 27, 39, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(0, 255, 255, 0.2); }
-        .form-wrapper { transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.7s ease-in-out; max-height: 0; overflow: hidden; opacity: 0; }
-        .form-wrapper.expanded { max-height: 1000px; opacity: 1; margin-top: 1.5rem; }
-        .floating-button { transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0, 200, 255, 0.3); }
-        .floating-button:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 25px rgba(0, 255, 255, 0.4); }
-        .rating-icon { transition: all 0.2s ease-in-out; cursor: pointer; }
-        .rating-icon:hover, .rating-icon.selected { transform: scale(1.2); }
+
+        /* --- ESTILOS DE ESTADO Y UTILIDADES --- */
+        .glass-effect { 
+            background-color: rgba(19, 27, 39, 0.7); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(0, 255, 255, 0.2); 
+        }
+        
+        .form-wrapper { 
+            transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out, transform 0.7s ease-in-out; 
+            max-height: 0; 
+            overflow: hidden; 
+            opacity: 0; 
+            transform: translateY(-20px); 
+        }
+        
+        .form-wrapper.expanded { 
+            max-height: 1000px; 
+            opacity: 1; 
+            margin-top: 1.5rem; 
+            transform: translateY(0); 
+        }
+        
+        .rating-icon:hover, .rating-icon.selected { 
+            transform: scale(1.2); 
+        }
+        
+        .hidden-initially { 
+            opacity: 0; 
+        }
+
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 110;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            transform: translateX(110%);
+            opacity: 0;
+        }
+        #notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .copper-plate {
+            background: linear-gradient(145deg, #b87333, #d9a771, #b87333);
+            border: 2px solid #e6a75a;
+            box-shadow: 0 0 15px #b87333, inset 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        
+        .review-card { 
+            transition: opacity 0.5s, transform 0.8s; 
+        }
+
+        /* **AÑADIDO: Estilo platino brillante para la tarjeta de Sneyder** */
+        .platinum-card {
+            background: linear-gradient(145deg, #d4d4d8, #f5f5f5, #d4d4d8);
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 0 20px rgba(230, 230, 255, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden; /* Clave para el efecto de brillo */
+        }
+        .platinum-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(100deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%);
+            transform: skewX(-25deg);
+            animation: shine-effect 4s infinite linear;
+        }
+
+        /* --- ANIMACIONES --- */
+        @keyframes shine-effect {
+            100% {
+                left: 150%;
+            }
+        }
+        @keyframes strong-pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); }
+            50% { transform: scale(1.1); box-shadow: 0 0 35px rgba(0, 255, 255, 0.8); }
+        }
+        .animate-strong-pulse { animation: strong-pulse 1.2s infinite ease-in-out; }
+
+        @keyframes red-glow {
+            0%, 100% { background-color: #DC2626; box-shadow: 0 0 20px #f87171; }
+            50% { background-color: #F87171; box-shadow: 0 0 30px #ef4444; }
+        }
+        .animate-red-glow { animation: red-glow 1.5s infinite; }
+        
+        @keyframes card-fly-out { to { opacity: 0; transform: translateX(120%) rotate(25deg) scale(0.5); } }
+        .card-flying-out { animation: card-fly-out 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+        
+        @keyframes card-fly-in { from { opacity: 0; transform: translateX(120%) rotate(25deg) scale(0.5); } to { opacity: 1; transform: translateX(0) rotate(0) scale(1); } }
+        .card-flying-in { animation: card-fly-in 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+
+        @keyframes disintegrate { to { transform: scale(0.8) translateY(50px); filter: blur(15px); opacity: 0; } }
+        .form-disintegrating { animation: disintegrate 0.7s ease-in forwards; }
+
+        @keyframes stamp-effect { from { opacity: 0; transform: scale(0.5) rotate(-10deg); } to { opacity: 1; transform: scale(1) rotate(0deg); } }
+        .card-stamping { animation: stamp-effect 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        @keyframes icon-impact {
+            0% { transform: scale(3) rotate(360deg); opacity: 0; filter: brightness(3); }
+            60% { transform: scale(0.9); opacity: 1; filter: brightness(1.5); }
+            100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+        }
+        .icon-impacting { animation: icon-impact 0.5s ease-out forwards; }
     </style>
 </head>
 <body class="bg-gray-900">
 
-    <!-- Pantalla de Carga -->
-    <div id="loader" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0D1117] transition-opacity duration-1000 ease-in-out">
-        <div class="relative">
-            <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Cargando USDT.CLAN Logo" class="w-40 h-40 rounded-full relative z-10" onerror="this.style.display='none'">
-            <div class="absolute inset-0 rounded-full neon-light-effect"></div>
+    <div id="loader" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0D1117]">
+        <div class="text-center">
+            <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Cargando Logo" class="w-40 h-40 mx-auto animate-pulse" onerror="this.src='https://placehold.co/160x160/0D1117/FFFFFF?text=L'">
+            <div class="mt-4 text-cyan-400 text-lg">Cargando...</div>
         </div>
-        <p id="loader-text" class="text-cyan-300 text-lg mt-8 tracking-widest">Cargando reseñas...</p>
     </div>
 
-    <!-- Contenido Principal -->
+    <div id="notification" class="bg-red-600 text-white py-2 px-4 rounded-lg shadow-lg">
+        <p id="notification-message"></p>
+    </div>
+
     <main id="main-content" class="opacity-0 transition-opacity duration-500">
-        <!-- Logo y Botón flotante -->
-        <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="USDT.CLAN Logo" class="fixed top-4 left-4 sm:top-6 sm:left-6 w-14 h-14 sm:w-16 sm:h-16 z-40 rounded-full shadow-lg border-2 border-cyan-400/50" onerror="this.onerror=null; this.src='https://placehold.co/64x64/0D1117/FFFFFF?text=Logo';">
-        <button id="toggle-form-btn" class="floating-button fixed top-4 right-4 sm:top-6 sm:right-6 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold py-2 px-4 sm:py-3 sm:px-6 rounded-full flex items-center space-x-2">
-            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-            <span id="btn-text" class="hidden sm:block">Comenta</span>
+        <img id="main-logo" src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Logo" class="fixed top-4 left-4 sm:top-6 sm:left-6 w-16 h-16 z-40 rounded-full shadow-lg border-2 border-cyan-400/50 transition-all duration-300" onerror="this.onerror=null; this.src='https://placehold.co/64x64/0D1117/FFFFFF?text=L';">
+        
+        <button id="toggle-form-btn" class="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold py-3 px-5 rounded-full flex items-center transition-all duration-300 hover:scale-105">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
         </button>
         
-        <!-- Contenedor de la página -->
         <div class="container mx-auto p-4 sm:p-6 max-w-3xl pt-24 sm:pt-28">
             <div class="text-center mb-8">
                 <h1 class="text-3xl sm:text-4xl font-bold text-white">Comunidad <span class="text-cyan-400">USDT.CLAN</span></h1>
                 <p class="text-gray-400 mt-2">Lee lo que otros piensan o comparte tu propia experiencia.</p>
             </div>
             
-            <!-- Formulario Plegable -->
             <div id="form-wrapper" class="form-wrapper">
-                 <div class="glass-effect rounded-2xl p-6 sm:p-8 neon-glow-border">
-                    <div class="text-center mb-6"> <h2 class="text-2xl font-bold text-white">Valora tu experiencia</h2> </div>
+                <div class="glass-effect rounded-2xl p-6 sm:p-8">
                     <form id="review-form" class="space-y-5">
-                        <!-- Campos del formulario... -->
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Tu Nombre o Apodo</label>
-                            <input type="text" id="name" class="w-full bg-gray-900/70 border-2 border-gray-600 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Ej: NeoTrader" required>
+                            <input type="text" id="name" name="name" class="w-full bg-gray-800 border-2 border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500" required>
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Tu Correo Electrónico</label>
-                            <input type="email" id="email" class="w-full bg-gray-900/70 border-2 border-gray-600 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="tu@correo.com" required>
+                            <input type="email" id="email" name="email" class="w-full bg-gray-800 border-2 border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500" required placeholder="tu@email.com">
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label class="block text-sm font-medium text-gray-300 mb-2">Calidad del servicio</label><div id="star-rating" class="flex items-center space-x-2" data-value="0"></div></div>
-                            <div><label class="block text-sm font-medium text-gray-300 mb-2">Nuestra comunidad</label><div id="heart-rating" class="flex items-center space-x-2" data-value="0"></div></div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Calidad del servicio</label>
+                                <div id="star-rating" class="flex items-center space-x-2" data-value="0"></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Nuestra comunidad</label>
+                                <div id="heart-rating" class="flex items-center space-x-2" data-value="0"></div>
+                            </div>
                         </div>
                         <div>
                             <label for="review" class="block text-sm font-medium text-gray-300 mb-2">Tu opinión</label>
-                            <textarea id="review" name="review" rows="4" class="w-full bg-gray-900/70 border-2 border-gray-600 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Escribe aquí lo que piensas..." required></textarea>
+                            <textarea id="review" name="review" rows="4" class="w-full bg-gray-800 border-2 border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500" required></textarea>
                         </div>
-                        <div><button type="submit" id="submit-button" class="w-full font-bold text-white py-3 px-6 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all">Enviar Reseña</button></div>
+                        <div>
+                            <button type="submit" id="submit-button" class="w-full font-bold text-white py-3 px-6 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 transition-all duration-300">
+                                Enviar Reseña
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
 
-            <!-- Lista de Reseñas -->
-            <div id="reviews-list" class="space-y-6 mt-12">
-                <!-- Las reseñas se cargarán aquí -->
+            <!-- **CAMBIO: Tarjeta de Sneyder movida aquí para estar siempre primera y con el nuevo estilo.** -->
+            <div id="sneyder-card" class="platinum-card rounded-2xl p-6 review-card mb-6">
+                <div class="flex justify-between items-start">
+                    <p class="font-bold text-gray-800 text-lg">Sneyder</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex items-center space-x-1"><span class="text-yellow-500 font-bold">5</span><svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg></div>
+                        <div class="flex items-center space-x-1"><span class="text-pink-600 font-bold">5</span><svg class="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg></div>
+                    </div>
+                </div>
+                <p class="text-gray-700 mt-3">¡Bienvenidos a todos! Este espacio es para ustedes. Compartan sus ideas y ayúdennos a crecer juntos.</p>
+            </div>
+
+            <!-- Lista de Reseñas Dinámicas -->
+            <div id="reviews-list" class="space-y-6">
+                <!-- Las reseñas de Supabase se añadirán aquí -->
             </div>
         </div>
     </main>
 
-    <!-- Modal de Agradecimiento -->
-    <div id="thank-you-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-80 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="modal-content" class="glass-effect rounded-2xl p-6 sm:p-8 max-w-lg w-full neon-glow-border transform scale-95 transition-transform duration-300">
-            <!-- Contenido del modal... -->
-            <h3 class="text-2xl font-bold text-center text-cyan-400 mb-4">¡Gracias por tu reseña!</h3>
-            <p class="text-gray-200 text-center">El equipo de <strong class="font-bold text-white">Sneyder Estudio</strong> te da las gracias por comentar.</p>
-            <div class="my-6 border-t border-cyan-400/20"></div>
-            <p class="text-gray-300 text-sm">También hacemos trabajos de diseño gráfico, programación (sitios web, apps) y contenido audiovisual. Comunícate con <strong>Eva</strong>, nuestra IA, para más información.</p>
-            <div class="mt-6 space-y-3 text-center">
-                <a href="https://wa.me/50672712037" target="_blank" class="block w-full bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">Contactar por WhatsApp</a>
-                <a href="mailto:sneyder23081994@gmail.com" class="block w-full bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors">Enviar Correo Electrónico</a>
-            </div>
-             <button id="close-modal-btn" class="mt-6 w-full text-cyan-400 font-semibold py-2">Cerrar</button>
-        </div>
-    </div>
-
-
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. CONFIGURACIÓN DE SUPABASE ---
         const SUPABASE_URL = 'https://tusvdaajhjjkattiyikg.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1c3ZkYWFqaGpqa2F0dGl5aWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3MTA0NTUsImV4cCI6MjA2NTI4NjQ1NX0.o2zYvbCAfAYQqBQgPlyZLtGMZDAeyXlOsrXui1gvQgo';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let supabaseClient;
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (error) {
+            console.error('Error inicializando Supabase:', error);
+        }
 
-        // --- 2. ELEMENTOS DEL DOM ---
-        const loader = document.getElementById('loader');
-        const loaderText = document.getElementById('loader-text');
         const mainContent = document.getElementById('main-content');
+        const loader = document.getElementById('loader');
+        const mainLogo = document.getElementById('main-logo');
+        const toggleBtn = document.getElementById('toggle-form-btn');
+        const formWrapper = document.getElementById('form-wrapper');
         const reviewForm = document.getElementById('review-form');
         const reviewsList = document.getElementById('reviews-list');
         const starRatingContainer = document.getElementById('star-rating');
         const heartRatingContainer = document.getElementById('heart-rating');
-        const submitButton = document.getElementById('submit-button');
+
+        let isFormOpen = false;
         
-        // --- 3. LÓGICA PRINCIPAL DE LA APLICACIÓN ---
-
-        // Función principal que se ejecuta al cargar la página
-        async function initializeApp() {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(frequency = 440, duration = 0.1, type = 'sine') {
+            if (audioContext.state === 'suspended') { audioContext.resume().catch(e => console.error(e)); }
             try {
-                // Carga las reseñas desde Supabase
-                const { data, error } = await supabaseClient
-                    .from('reviews')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (error) {
-                    // Si hay un error, lo muestra y lanza una excepción
-                    throw error;
-                }
-
-                // Si todo va bien, renderiza las reseñas
-                reviewsList.innerHTML = '';
-                data.forEach(review => {
-                    const reviewElement = createReviewElement(review.name, review.stars, review.hearts, review.review_text);
-                    reviewsList.appendChild(reviewElement);
-                });
-
-            } catch (error) {
-                // Captura cualquier error de la carga de datos
-                console.error('Error cargando reseñas:', error);
-                reviewsList.innerHTML = `<p class="text-center text-red-400">No se pudieron cargar las reseñas. Inténtalo de nuevo más tarde.</p>`;
-                loaderText.textContent = "Error de conexión";
-            } finally {
-                // Este bloque SIEMPRE se ejecuta, sin importar si hubo éxito o error
-                // Oculta la pantalla de carga y muestra el contenido principal
-                if (loader) {
-                    loader.classList.add('opacity-0');
-                    mainContent.classList.remove('opacity-0');
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                    }, 1000); // Coincide con la duración de la transición en CSS
-                }
-            }
+                const o = audioContext.createOscillator();
+                const g = audioContext.createGain();
+                o.connect(g); g.connect(audioContext.destination);
+                o.frequency.value = frequency; o.type = type;
+                g.gain.setValueAtTime(0.1, audioContext.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+                o.start(audioContext.currentTime); o.stop(audioContext.currentTime + duration);
+            } catch (error) { /* Silenciar error de audio */ }
         }
 
-        // Envío del formulario a Supabase
-        reviewForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            submitButton.disabled = true;
-            submitButton.textContent = 'Enviando...';
+        function showNotification(message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+            if(!notification || !notificationMessage) return;
+            notificationMessage.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => { notification.classList.remove('show'); }, duration);
+        }
 
-            const formData = {
-                name: reviewForm.name.value,
-                email: reviewForm.email.value,
-                stars: parseInt(starRatingContainer.dataset.value, 10),
-                hearts: parseInt(heartRatingContainer.dataset.value, 10),
-                review_text: reviewForm.review.value
-            };
-
-            if (formData.stars === 0 || formData.hearts === 0) {
-                alert('Por favor, selecciona una calificación en ambas categorías.');
-                submitButton.disabled = false;
-                submitButton.textContent = 'Enviar Reseña';
-                return;
-            }
-
-            const { data, error } = await supabaseClient.from('reviews').insert([formData]).select();
-
-            submitButton.disabled = false;
-            submitButton.textContent = 'Enviar Reseña';
-
-            if (error) {
-                console.error('Error al guardar la reseña:', error);
-                alert('Hubo un error al enviar tu reseña. Por favor, inténtalo de nuevo.');
+        toggleBtn.addEventListener('click', () => {
+            if (isFormOpen) {
+                closeFormAndReturnCards();
             } else {
-                // Éxito: Añadir la nueva reseña a la lista y mostrar el modal
-                if (data && data.length > 0) {
-                   const newReview = data[0];
-                   const newReviewElement = createReviewElement(newReview.name, newReview.stars, newReview.hearts, newReview.review_text);
-                   reviewsList.prepend(newReviewElement);
-                }
-                showModal();
-                document.getElementById('form-wrapper').classList.remove('expanded');
-                reviewForm.reset();
-                initializeRatings();
+                openFormAndShuffleCards();
             }
         });
 
-        // --- 4. FUNCIONES AUXILIARES Y DE UI ---
-        
-        // Crear el HTML de una reseña
-        function createReviewElement(name, stars, hearts, text) {
-            const element = document.createElement('div');
-            element.className = 'glass-effect rounded-2xl p-6 neon-glow-border';
-            element.innerHTML = `<div class="flex justify-between items-start"><p class="font-bold text-white text-lg break-words">${escapeHTML(name)}</p><div class="flex items-center flex-shrink-0 space-x-3 ml-4"><div class="flex items-center space-x-1"><span class="text-yellow-400 font-bold">${stars}</span><svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg></div><div class="flex items-center space-x-1"><span class="text-pink-500 font-bold">${hearts}</span><svg class="w-5 h-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg></div></div></div><p class="text-gray-300 mt-3 break-words">${escapeHTML(text)}</p>`;
-            return element;
-        };
-
-        // Lógica del modal
-        const thankYouModal = document.getElementById('thank-you-modal');
-        const modalContent = document.getElementById('modal-content');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        function showModal() {
-            thankYouModal.classList.remove('opacity-0', 'pointer-events-none');
-            setTimeout(() => modalContent.classList.remove('scale-95'), 10);
+        function openFormAndShuffleCards() {
+            isFormOpen = true;
+            mainLogo.classList.add('animate-strong-pulse');
+            toggleBtn.classList.add('animate-red-glow');
+            // **CAMBIO: Ahora selecciona TODAS las tarjetas, incluyendo la de Sneyder.**
+            const cards = Array.from(document.querySelectorAll('.review-card'));
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('card-flying-out');
+                    playSound(200 + index * 50, 0.2, 'sawtooth');
+                }, index * 100);
+            });
+            setTimeout(() => { formWrapper.classList.add('expanded'); }, cards.length * 100);
         }
-        function closeModal() {
-            modalContent.classList.add('scale-95');
-            thankYouModal.classList.add('opacity-0', 'pointer-events-none');
-        };
-        closeModalBtn.addEventListener('click', closeModal);
-        thankYouModal.addEventListener('click', (e) => { if (e.target === thankYouModal) closeModal(); });
 
-        // Lógica de calificación por estrellas y corazones
-        const starSVG = `<svg class="w-7 h-7 sm:w-8 sm:h-8 rating-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118L2.05 10.1c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.95-.69L11.049 2.927z"></path></svg>`;
-        const heartSVG = `<svg class="w-7 h-7 sm:w-8 sm:h-8 rating-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>`;
-        function createRatingSystem(container, svg, colorClass) { container.innerHTML = ''; for (let i = 1; i <= 5; i++) { const iconWrapper = document.createElement('div'); iconWrapper.innerHTML = svg; iconWrapper.dataset.value = i; container.appendChild(iconWrapper); } const icons = container.querySelectorAll('.rating-icon'); const updateIcons = (rating) => { icons.forEach((icon, index) => { icon.classList.remove('selected', colorClass); icon.style.fill = 'none'; if (index < rating) { icon.classList.add('selected', colorClass); icon.style.fill = 'currentColor'; } }); }; container.addEventListener('click', e => { const icon = e.target.closest('[data-value]'); if (icon) { container.dataset.value = parseInt(icon.dataset.value); updateIcons(parseInt(container.dataset.value)); } }); updateIcons(parseInt(container.dataset.value)); };
-        function initializeRatings() { createRatingSystem(starRatingContainer, starSVG, 'text-yellow-400'); createRatingSystem(heartRatingContainer, heartSVG, 'text-pink-500'); };
-        function escapeHTML(str) { const p = document.createElement('p'); p.textContent = str; return p.innerHTML; }
+        function closeFormAndReturnCards() {
+            isFormOpen = false;
+            formWrapper.classList.remove('expanded');
+            mainLogo.classList.remove('animate-strong-pulse');
+            toggleBtn.classList.remove('animate-red-glow');
+            setTimeout(() => {
+                const cards = Array.from(document.querySelectorAll('.review-card'));
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.remove('card-flying-out');
+                        card.classList.add('card-flying-in');
+                        playSound(800 - index * 50, 0.2, 'triangle');
+                    }, index * 100);
+                });
+                setTimeout(() => { cards.forEach(card => card.classList.remove('card-flying-in')); }, (cards.length * 100) + 800);
+            }, 500);
+        }
+
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(reviewForm);
+            const reviewData = {
+                name: formData.get('name'), email: formData.get('email'),
+                stars: parseInt(starRatingContainer.dataset.value, 10),
+                hearts: parseInt(heartRatingContainer.dataset.value, 10),
+                review_text: formData.get('review')
+            };
+
+            if (reviewData.stars === 0 || reviewData.hearts === 0) {
+                showNotification('Por favor, selecciona una calificación para ambos apartados.');
+                return;
+            }
+
+            formWrapper.classList.add('form-disintegrating');
+            playSound(100, 0.8, 'sawtooth');
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('reviews').insert([reviewData]);
+                    if (error) { throw error; }
+
+                    setTimeout(() => {
+                        formWrapper.classList.remove('expanded', 'form-disintegrating');
+                        mainLogo.classList.remove('animate-strong-pulse');
+                        toggleBtn.classList.remove('animate-red-glow');
+                    }, 700);
+
+                    setTimeout(() => {
+                        const newReviewElement = createReviewElement(reviewData, true);
+                        reviewsList.prepend(newReviewElement); // Se añade al contenedor de reseñas dinámicas
+                        newReviewElement.classList.add('card-stamping');
+                        playSound(440, 0.4, 'square');
+                        setTimeout(() => { animatePrinting(newReviewElement, reviewData); }, 800);
+                    }, 750);
+
+                } catch (error) {
+                    console.error('Error guardando reseña:', error);
+                    showNotification(`Error al guardar: ${error.message}`);
+                    formWrapper.classList.remove('form-disintegrating');
+                }
+            } else {
+                showNotification('Error: Cliente de base de datos no disponible.');
+                formWrapper.classList.remove('form-disintegrating');
+            }
+        });
         
-        document.getElementById('toggle-form-btn').addEventListener('click', () => { document.getElementById('form-wrapper').classList.toggle('expanded'); });
+        function animatePrinting(cardElement, data) {
+            const nameEl = cardElement.querySelector('.review-name');
+            const textEl = cardElement.querySelector('.review-text');
+            function typeWriter(element, text, speed, onComplete) {
+                let i = 0; element.textContent = '';
+                function type() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        playSound(800 + (i % 10) * 100, 0.05, 'square'); i++;
+                        setTimeout(type, speed);
+                    } else if (onComplete) onComplete();
+                }
+                type();
+            }
+            typeWriter(nameEl, data.name, 50, () => {
+                typeWriter(textEl, data.review_text, 30, () => {
+                    setTimeout(() => animateIcons(cardElement), 500);
+                });
+            });
+        }
 
-        // --- 5. INICIALIZACIÓN ---
+        function animateIcons(cardElement) {
+            const icons = cardElement.querySelectorAll('.rating-display-icon');
+            icons.forEach((icon, index) => {
+                setTimeout(() => {
+                    icon.classList.remove('hidden-initially');
+                    icon.classList.add('icon-impacting');
+                    playSound(660 + index * 110, 0.2, 'triangle');
+                }, index * 300);
+            });
+            setTimeout(() => {
+                cardElement.classList.remove('copper-plate');
+                cardElement.classList.add('glass-effect');
+                const oldCards = Array.from(document.querySelectorAll('.review-card'));
+                oldCards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.remove('card-flying-out');
+                        card.classList.add('card-flying-in');
+                        playSound(400 + index * 50, 0.2, 'sine');
+                    }, index * 100);
+                });
+                setTimeout(() => { oldCards.forEach(card => card.classList.remove('card-flying-in')); }, (oldCards.length * 100) + 800);
+                isFormOpen = false; reviewForm.reset(); initializeRatings();
+            }, (icons.length * 300) + 1000);
+        }
+
+        function createReviewElement(review, isAnimating = false) {
+            const element = document.createElement('div');
+            element.className = isAnimating 
+                ? 'copper-plate rounded-2xl p-6 relative review-card'
+                : 'glass-effect rounded-2xl p-6 review-card';
+            
+            const createIconsHTML = (count, color) => {
+                let html = '';
+                const svgPath = color === 'yellow' ? 'M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' : 'M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z';
+                const colorClass = color === 'yellow' ? 'text-yellow-400' : 'text-pink-500';
+                for(let i = 0; i < count; i++) {
+                    html += `<svg class="w-5 h-5 ${colorClass} rating-display-icon ${isAnimating ? 'hidden-initially' : ''}" fill="currentColor" viewBox="0 0 20 20"><path d="${svgPath}"></path></svg>`;
+                }
+                return html;
+            };
+            element.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <p class="font-bold text-white text-lg break-words review-name">${isAnimating ? '' : escapeHTML(review.name)}</p>
+                    <div class="flex items-center flex-shrink-0 space-x-3 ml-4">
+                        <div class="flex items-center">${createIconsHTML(review.stars, 'yellow')}</div>
+                        <div class="flex items-center">${createIconsHTML(review.hearts, 'pink')}</div>
+                    </div>
+                </div>
+                <p class="text-gray-300 mt-3 break-words review-text">${isAnimating ? '' : escapeHTML(review.review_text)}</p>`;
+            return element;
+        }
+
+        function escapeHTML(str) { 
+            const p = document.createElement("p");
+            p.textContent = str;
+            return p.innerHTML;
+        }
+
+        function createRatingSystem(container, svg) { 
+            container.innerHTML = ''; 
+            for (let i = 1; i <= 5; i++) { 
+                const iconWrapper = document.createElement('div');
+                iconWrapper.className = 'cursor-pointer p-1';
+                iconWrapper.dataset.value = i;
+                iconWrapper.innerHTML = svg; 
+                container.appendChild(iconWrapper);
+            }
+            const updateIcons = (rating) => { 
+                container.querySelectorAll('svg').forEach((icon, index) => {
+                    icon.classList.toggle('text-yellow-400', container.id === 'star-rating' && index < rating);
+                    icon.classList.toggle('text-pink-500', container.id === 'heart-rating' && index < rating);
+                    icon.classList.toggle('text-gray-600', index >= rating);
+                    icon.style.fill = index < rating ? 'currentColor' : 'none';
+                }); 
+            };
+            container.addEventListener('click', (e) => { 
+                const iconContainer = e.target.closest('[data-value]'); 
+                if (iconContainer) { 
+                    const value = parseInt(iconContainer.dataset.value); 
+                    container.dataset.value = value; 
+                    updateIcons(value);
+                    playSound(440 + value * 110, 0.1, 'sine');
+                } 
+            });
+            updateIcons(parseInt(container.dataset.value) || 0); 
+        }
+        
+        function initializeRatings() {
+            const starSVG = `<svg class="w-8 h-8 rating-icon transition-colors" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118L2.05 10.1c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.95-.69L11.049 2.927z"></path></svg>`;
+            const heartSVG = `<svg class="w-8 h-8 rating-icon transition-colors" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>`;
+            createRatingSystem(starRatingContainer, starSVG); 
+            createRatingSystem(heartRatingContainer, heartSVG); 
+            starRatingContainer.dataset.value = "0";
+            heartRatingContainer.dataset.value = "0";
+        }
+
+        async function initializeApp() {
+            try {
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient.from('reviews').select('*').order('created_at', { ascending: false });
+                    if (error) throw error;
+                    if (data) {
+                        reviewsList.innerHTML = ''; // Limpiar lista antes de añadir
+                        data.forEach(review => {
+                            const reviewElement = createReviewElement(review);
+                            reviewsList.appendChild(reviewElement);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error cargando reseñas:', error);
+            } finally {
+                setTimeout(() => {
+                    if (loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.remove(), 500);
+                    }
+                    mainContent.classList.remove('opacity-0');
+                }, 500);
+            }
+        }
+
         initializeRatings();
         initializeApp();
     });
