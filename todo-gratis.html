@@ -3,77 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo Gratis - Universo Crypto</title>
+    <title>Todo Gratis - Universo Crypto (PRO FX)</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilo personalizado para la temática Dragon Ball Z */
+        :root {
+            --glow-color: hsl(27, 100%, 50%); /* Naranja-dorado */
+            --cursor-x: 50%;
+            --cursor-y: 50%;
+        }
+
+        /* --- OPTIMIZACIÓN Y MEJORA GENERAL --- */
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #0c0a1a;
             color: #ffffff;
             overflow-x: hidden;
-            /* Fondo animado de estrellas */
+            position: relative;
+            cursor: none; /* Ocultamos el cursor por defecto */
+        }
+
+        /* --- NUEVO: Cursor de Energía "Ki Blast" --- */
+        .ki-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 223, 138, 0.8) 0%, rgba(255, 165, 0, 0.5) 60%, transparent 100%);
+            box-shadow: 0 0 15px 5px rgba(255, 165, 0, 0.7), 0 0 25px 10px rgba(255, 165, 0, 0.5);
+            pointer-events: none; /* Para que no interfiera con los clics */
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 9999;
+            transition: transform 0.1s ease-out;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(0.9); box-shadow: 0 0 15px 5px rgba(255, 165, 0, 0.7), 0 0 25px 10px rgba(255, 165, 0, 0.5); }
+            50% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 20px 8px rgba(255, 223, 138, 0.8), 0 0 35px 15px rgba(255, 165, 0, 0.6); }
+        }
+        body:hover .ki-cursor {
+            opacity: 1;
+        }
+
+        /* --- OPTIMIZACIÓN: Fondo animado con transform --- */
+        body::before, body::after {
+            content: '';
+            position: fixed; /* Usamos fixed para que no se mueva con el scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        body::before {
             background-image: 
                 radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+            background-size: 550px 550px, 350px 350px; 
+            background-position: 0 0, 40px 60px;
+            animation: move-stars-fast 30s linear infinite;
+        }
+        body::after {
+            background-image:
                 radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
                 radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-            background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
-            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-            animation: move-stars 30s linear infinite;
+            background-size: 250px 250px, 150px 150px; 
+            background-position: 130px 270px, 70px 100px;
+            animation: move-stars-slow 60s linear infinite;
+        }
+        @keyframes move-stars-fast {
+            from { transform: translate(0, 0); }
+            to { transform: translate(-550px, -550px); }
+        }
+        @keyframes move-stars-slow {
+            from { transform: translate(0, 0); }
+            to { transform: translate(-250px, -370px); }
         }
 
-        @keyframes move-stars {
-            from { background-position: 0 0, 40px 60px, 130px 270px, 70px 100px; }
-            to { background-position: -550px -550px, -350px -310px, -250px -120px, -150px -50px; }
-        }
-
-        /* Tipografía estilo Dragon Ball Z para el encabezado */
+        /* --- NUEVA ANIMACIÓN: Entrada de texto "Decode" --- */
         .dbz-font {
             font-family: 'Bangers', cursive;
             -webkit-text-stroke: 2px #000;
             text-shadow: 
                 3px 3px 0 #000,
-                -1px -1px 0 #000,  
-                1px -1px 0 #000,
-                -1px 1px 0 #000,
-                1px 1px 0 #000,
                 0px 5px 10px rgba(255, 165, 0, 0.8);
         }
+        .decode-text > span {
+            opacity: 0;
+            animation: decode-letter 1.5s ease-out forwards;
+        }
+        @keyframes decode-letter {
+            0% { opacity: 0; transform: translateY(20px) scale(0.5) rotate(15deg); filter: blur(5px); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); filter: blur(0); }
+        }
 
-        /* Animación de entrada para toda la página */
-        @keyframes page-entry {
-            0% {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .animate-entry {
-            animation: page-entry 7s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-        }
-        
-        /* Estilo y efecto 3D para las tarjetas */
-        .card-3d {
+        /* --- NUEVO: Tarjetas Magnéticas con Efecto de Brillo --- */
+        .magnetic-card {
+            position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.5s;
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform;
         }
-        .card-3d:hover {
-            transform: perspective(1000px) rotateY(10deg) scale(1.05);
+        .magnetic-card .card-content {
+            position: relative;
+            background-color: rgba(26, 32, 44, 0.7); /* bg-gray-800 con más opacidad */
+            backdrop-filter: blur(10px);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px -15px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            transition: box-shadow 0.4s, border-color 0.4s;
+        }
+        .magnetic-card:hover .card-content {
+            border-color: rgba(255, 165, 0, 0.8);
+            box-shadow: 0 0 20px 0px rgba(255, 165, 0, 0.5);
+        }
+        /* Efecto de Brillo */
+        .magnetic-card .card-content::before {
+            content: "";
+            position: absolute;
+            top: var(--cursor-y);
+            left: var(--cursor-x);
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        .magnetic-card:hover .card-content::before {
+            opacity: 1;
         }
 
-        /* Estilo para la tarjeta de neón */
+        /* Contenedor de la tarjeta de neón */
         .neon-border-card {
             position: relative;
             overflow: hidden;
             border-radius: 1rem;
-            background-color: #1a1a2e; /* Fondo oscuro para la tarjeta */
+            background-color: #1a1a2e;
+            transform: scale(1);
+            transition: transform 0.4s ease;
+        }
+        .neon-border-card:hover {
+            transform: scale(1.03);
         }
         .neon-border-card::before {
             content: '';
@@ -84,9 +165,9 @@
             height: 200%;
             background: conic-gradient(
                 transparent,
-                rgba(0, 191, 255, 1), /* Azul neón */
-                rgba(255, 255, 0, 1), /* Amarillo neón */
-                rgba(255, 20, 147, 1), /* Rosa neón */
+                rgba(0, 191, 255, 1),
+                rgba(255, 255, 0, 1),
+                rgba(255, 20, 147, 1),
                 transparent 30%
             );
             animation: rotate-neon 6s linear infinite;
@@ -94,64 +175,77 @@
         .neon-border-card .content-wrapper {
             position: relative;
             background: #1a1a2e;
-            margin: 3px; /* El grosor del borde */
+            margin: 3px;
             padding: 1.5rem;
-            border-radius: 0.875rem; /* slightly smaller than the parent */
+            border-radius: 0.875rem;
             z-index: 1;
         }
-
         @keyframes rotate-neon {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
-        /* Animación de llamas para el texto */
-        @keyframes fire-flicker {
-            0%   { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff7800, 0 0 40px #ff7800, 0 0 50px #ff7800, 0 0 60px #ff7800, 0 0 70px #ff7800; }
-            25%  { text-shadow: 0 0 12px #fff, 0 0 22px #fff, 0 0 35px #ff6600, 0 0 45px #ff6600, 0 0 55px #ff6600, 0 0 65px #ff6600, 0 0 75px #ff6600; }
-            50%  { text-shadow: 0 0 8px #fff, 0 0 18px #fff, 0 0 28px #ff8c00, 0 0 38px #ff8c00, 0 0 48px #ff8c00, 0 0 58px #ff8c00, 0 0 68px #ff8c00; }
-            75%  { text-shadow: 0 0 13px #fff, 0 0 23px #fff, 0 0 33px #ff7800, 0 0 43px #ff7800, 0 0 53px #ff7800, 0 0 63px #ff7800, 0 0 73px #ff7800; }
-            100% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff7800, 0 0 40px #ff7800, 0 0 50px #ff7800, 0 0 60px #ff7800, 0 0 70px #ff7800; }
+        /* --- NUEVO: Botón de Sonido --- */
+        #sound-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(26, 32, 44, 0.8);
+            border: 1px solid rgba(0, 191, 255, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: none;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
-        .fire-text {
-            color: #fefefe;
-            animation: fire-flicker 1.5s infinite linear;
-            font-weight: bold;
+        #sound-toggle:hover {
+            background-color: rgba(255, 165, 0, 0.8);
+            border-color: #fff;
         }
-
-        /* Animación de llamas azules para el texto */
-        @keyframes blue-fire-flicker {
-            0%   { text-shadow: 0 0 10px #fff, 0 0 20px #00bfff, 0 0 30px #00bfff, 0 0 40px #007bff, 0 0 50px #007bff, 0 0 60px #007bff, 0 0 70px #007bff; }
-            25%  { text-shadow: 0 0 12px #fff, 0 0 22px #00aeee, 0 0 35px #00aeee, 0 0 45px #006ce0, 0 0 55px #006ce0, 0 0 65px #006ce0, 0 0 75px #006ce0; }
-            50%  { text-shadow: 0 0 8px #fff, 0 0 18px #00cfff, 0 0 28px #00cfff, 0 0 38px #008bf0, 0 0 48px #008bf0, 0 0 58px #008bf0, 0 0 68px #008bf0; }
-            100% { text-shadow: 0 0 10px #fff, 0 0 20px #00bfff, 0 0 30px #00bfff, 0 0 40px #007bff, 0 0 50px #007bff, 0 0 60px #007bff, 0 0 70px #007bff; }
-        }
-        .blue-fire-text {
-            color: #e6f7ff;
-            animation: blue-fire-flicker 2s infinite linear;
-            font-weight: bold;
-            font-size: 1.25rem;
-            margin-top: 1rem;
+        #sound-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: white;
         }
     </style>
 </head>
-<body class="bg-gray-900">
+<body>
 
-    <div class="container mx-auto px-4 py-8 animate-entry">
+    <!-- El Cursor Personalizado -->
+    <div class="ki-cursor"></div>
+
+    <!-- Botón para Silenciar/Activar Sonido -->
+    <button id="sound-toggle" aria-label="Activar o desactivar sonido">
+        <!-- Icono de Sonido Activado -->
+        <svg id="icon-sound-on" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+        </svg>
+        <!-- Icono de Sonido Desactivado (Muted) -->
+        <svg id="icon-sound-off" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75 19.5 12m0 0 2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25M12.75 15v.75M10.5 15v.75M8.25 15v.75M6 15v.75M4.5 15v.75M3 15h.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+    </button>
+    
+
+    <div class="container mx-auto px-4 py-8">
         <!-- Encabezado Principal -->
-        <header class="text-center mb-12">
-            <h1 class="text-6xl md:text-8xl font-bold text-orange-400 dbz-font tracking-wider">
-                ¡Todo Gratis!
+        <header class="text-center mb-16">
+            <h1 class="decode-text text-6xl md:text-8xl font-bold text-orange-400 dbz-font tracking-wider">
+                <!-- El texto se generará con JS -->
             </h1>
         </header>
 
         <!-- Contenedor de las 3 tarjetas principales -->
-        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16" style="perspective: 1000px;">
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-16 mb-20" style="perspective: 2000px;">
             
             <!-- Tarjeta 1: Faucet -->
-            <a href="fauce.html" class="card-3d block">
-                <div class="bg-gray-800 bg-opacity-60 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden h-full border border-blue-500/30 hover:border-orange-400 transition-colors duration-300">
-                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Faucet" alt="Imagen de Faucet" class="w-full h-48 object-cover">
+            <a href="fauce.html" class="magnetic-card block">
+                <div class="card-content h-full">
+                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Faucet" alt="Imagen de Faucet" class="w-full h-48 object-cover" loading="lazy" decoding="async">
                     <div class="p-6">
                         <h2 class="text-2xl font-bold text-orange-400 mb-2">Faucet</h2>
                         <p class="text-gray-300">
@@ -162,9 +256,9 @@
             </a>
 
             <!-- Tarjeta 2: Minería Crypto -->
-            <a href="mineria-gratis.html" class="card-3d block">
-                <div class="bg-gray-800 bg-opacity-60 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden h-full border border-blue-500/30 hover:border-orange-400 transition-colors duration-300">
-                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Minería" alt="Imagen de Minería Crypto" class="w-full h-48 object-cover">
+            <a href="mineria-gratis.html" class="magnetic-card block">
+                <div class="card-content h-full">
+                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Minería" alt="Imagen de Minería Crypto" class="w-full h-48 object-cover" loading="lazy" decoding="async">
                     <div class="p-6">
                         <h2 class="text-2xl font-bold text-orange-400 mb-2">Minería Crypto</h2>
                         <p class="text-gray-300">
@@ -175,9 +269,9 @@
             </a>
 
             <!-- Tarjeta 3: Bot de Telegram -->
-            <a href="bot-telegram.html" class="card-3d block">
-                <div class="bg-gray-800 bg-opacity-60 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden h-full border border-blue-500/30 hover:border-orange-400 transition-colors duration-300">
-                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Bot+Telegram" alt="Imagen de Bot de Telegram" class="w-full h-48 object-cover">
+            <a href="bot-telegram.html" class="magnetic-card block">
+                 <div class="card-content h-full">
+                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Bot+Telegram" alt="Imagen de Bot de Telegram" class="w-full h-48 object-cover" loading="lazy" decoding="async">
                     <div class="p-6">
                         <h2 class="text-2xl font-bold text-orange-400 mb-2">Bot de Telegram</h2>
                         <p class="text-gray-300">
@@ -193,10 +287,8 @@
             <a href="https://faucetpay.io/?r=7231337" target="_blank" rel="noopener noreferrer" class="block w-full max-w-2xl">
                 <div class="neon-border-card">
                    <div class="content-wrapper flex flex-col items-center text-center">
-                        <img src="https://i.postimg.cc/wBFFY0Kn/Picsart-25-06-12-23-08-06-331.jpg" alt="Imagen de FaucetPay" 
-                             class="w-full h-auto object-contain rounded-lg shadow-2xl"
-                             onerror="this.onerror=null; this.src='https://placehold.co/800x400/1a1a2e/ffffff?text=Error+al+cargar+imagen';">
-                        <p class="blue-fire-text">toca la imagen y abre tu cuenta</p>
+                        <img src="https://i.postimg.cc/wBFFY0Kn/Picsart-25-06-12-23-08-06-331.jpg" alt="Imagen de FaucetPay" class="w-full h-auto object-contain rounded-lg shadow-2xl" onerror="this.onerror=null; this.src='https://placehold.co/800x400/1a1a2e/ffffff?text=Error+al+cargar+imagen';" loading="lazy" decoding="async">
+                        <p class="blue-fire-text text-lg mt-4">toca la imagen y abre tu cuenta</p>
                    </div>
                 </div>
             </a>
@@ -204,19 +296,130 @@
         
         <!-- Imagen Inferior Completa -->
         <section class="mb-8">
-             <img src="https://i.postimg.cc/V6wXLqnY/Picsart-25-06-07-03-40-11-387.png" alt="Imagen decorativa de Sneyder Estudio" 
-                  class="w-full h-auto object-contain max-w-4xl mx-auto"
-                  onerror="this.onerror=null; this.src='https://placehold.co/1200x400/0c0a1a/ffffff?text=Error+al+cargar+imagen';">
+             <img src="https://i.postimg.cc/V6wXLqnY/Picsart-25-06-07-03-40-11-387.png" alt="Imagen decorativa de Sneyder Estudio" class="w-full h-auto object-contain max-w-4xl mx-auto" onerror="this.onerror=null; this.src='https://placehold.co/1200x400/0c0a1a/ffffff?text=Error+al+cargar+imagen';" loading="lazy" decoding="async">
         </section>
-
     </div>
 
     <!-- Pie de Página -->
     <footer class="text-center py-6">
-        <p class="fire-text text-lg uppercase">&copy; 2025 SNEYDER ESTUDIO USDT.CLAN</p>
+        <p class="text-lg uppercase text-orange-400/80">&copy; 2025 SNEYDER ESTUDIO USDT.CLAN</p>
     </footer>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- INICIALIZACIÓN DE SONIDO ---
+        let soundEnabled = false;
+        const synth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: "fmsine" },
+            envelope: { attack: 0.01, decay: 0.1, sustain: 0.3, release: 1 },
+            volume: -15
+        }).toDestination();
+
+        const ambientSynth = new Tone.AMSynth({
+            harmonicity: 1.5,
+            detune: 0,
+            oscillator: { type: "sine" },
+            envelope: { attack: 4, decay: 0.1, sustain: 0.5, release: 4 },
+            modulation: { type: "square" },
+            modulationEnvelope: { attack: 4, decay: 0, sustain: 1, release: 4 },
+            volume: -25
+        }).toDestination();
+
+        const ambientLoop = new Tone.Loop(time => {
+            ambientSynth.triggerAttackRelease("C2", "8n", time);
+        }, "2m").start(0);
+
+        const clickSound = () => {
+            if (!soundEnabled) return;
+            synth.triggerAttackRelease("C5", "8n");
+        };
+
+        const hoverSound = () => {
+            if (!soundEnabled) return;
+            const noise = new Tone.Noise("white").start();
+            const filter = new Tone.AutoFilter("8n").toDestination().start();
+            noise.connect(filter);
+            setTimeout(() => noise.stop(), 150);
+        };
+
+        const soundToggle = document.getElementById('sound-toggle');
+        const iconOn = document.getElementById('icon-sound-on');
+        const iconOff = document.getElementById('icon-sound-off');
+
+        soundToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita que el clic se propague al body
+            if (Tone.context.state !== 'running') {
+                Tone.start();
+            }
+            soundEnabled = !soundEnabled;
+            Tone.Transport.toggled = soundEnabled;
+            
+            if (soundEnabled) {
+                Tone.Transport.start();
+                iconOn.classList.remove('hidden');
+                iconOff.classList.add('hidden');
+            } else {
+                Tone.Transport.pause();
+                iconOn.classList.add('hidden');
+                iconOff.classList.remove('hidden');
+            }
+        });
+
+        // --- EFECTO DE TEXTO DECODIFICADO ---
+        const textContainer = document.querySelector('.decode-text');
+        const originalText = "¡Todo Gratis!";
+        textContainer.innerHTML = ''; // Limpiamos el contenedor
+        originalText.split('').forEach((char, index) => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.animationDelay = `${index * 0.1}s`;
+            textContainer.appendChild(span);
+        });
+
+        // --- CURSOR DE ENERGÍA ---
+        const cursor = document.querySelector('.ki-cursor');
+        window.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // --- TARJETAS MAGNÉTICAS Y CON BRILLO ---
+        const cards = document.querySelectorAll('.magnetic-card');
+        cards.forEach(card => {
+            const cardContent = card.querySelector('.card-content');
+            
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const cardWidth = rect.width;
+                const cardHeight = rect.height;
+
+                const rotateX = (y / cardHeight - 0.5) * -20; // Rotación en X (max 10 grados)
+                const rotateY = (x / cardWidth - 0.5) * 20;  // Rotación en Y (max 10 grados)
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                
+                // Actualizar posición del brillo
+                card.style.setProperty('--cursor-x', `${x}px`);
+                card.style.setProperty('--cursor-y', `${y}px`);
+            });
+
+            card.addEventListener('mouseenter', hoverSound);
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+
+            card.addEventListener('click', clickSound);
+        });
+
+        // Click en la tarjeta de neón y otras
+        document.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', clickSound);
+        });
+    });
+    </script>
 </body>
 </html>
-
 
