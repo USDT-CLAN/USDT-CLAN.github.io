@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>USDT.clan - Portal Cryptocurrency</title>
+    <!-- TailwindCSS y Font Awesome no se han modificado -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <!-- Tone.js para generar el sonido dinámicamente -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,356 +19,160 @@
 
         body {
             font-family: 'Rajdhani', sans-serif;
-            background: linear-gradient(135deg, #000811, #001122);
+            background-color: #000811; /* Fondo base oscuro */
             overflow-x: hidden;
+            overflow-y: scroll;
         }
-
-        /* Optimized Stars Background */
-        .stars-bg {
+        
+        /* --- Sistema Solar Animado --- */
+        .solar-system {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(2px 2px at 20px 30px, #fff, transparent),
-                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
-                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
-                radial-gradient(2px 2px at 160px 30px, #fff, transparent);
-            background-repeat: repeat;
-            background-size: 200px 100px;
-            animation: twinkle 4s ease-in-out infinite alternate;
+            overflow: hidden;
+            background: #000811;
             z-index: 1;
         }
 
-        @keyframes twinkle {
-            0% { opacity: 0.8; }
-            100% { opacity: 1; }
+        .sun {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(ellipse at center, #ffcc00 0%, #ff6600 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 60px #ff9900, 0 0 100px #ff6600, 0 0 15px #fff;
+            animation: pulse-sun 5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-sun {
+            0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 60px #ff9900, 0 0 100px #ff6600, 0 0 15px #fff; }
+            50% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 70px #ffaa33, 0 0 120px #ff8833, 0 0 20px #fff; }
+            100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 60px #ff9900, 0 0 100px #ff6600, 0 0 15px #fff; }
         }
 
-        /* Loading Screen with Crypto Theme */
-        .loader {
-            position: fixed;
-            top: 0;
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+        }
+
+        .planet {
+            position: absolute;
+            top: 50%;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #000811, #001122);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease;
+            border-radius: 50%;
+            transform: translateY(-50%);
         }
 
-        .loader.hidden {
-            opacity: 0;
+        /* Definición de órbitas y planetas */
+        .orbit-1 { width: 250px; height: 250px; margin-left: -125px; margin-top: -125px; animation: orbit-rotate 25s linear infinite; }
+        .orbit-1 .planet { width: 15px; height: 15px; background-color: #a9a9a9; }
+
+        .orbit-2 { width: 400px; height: 400px; margin-left: -200px; margin-top: -200px; animation: orbit-rotate 40s linear infinite; }
+        .orbit-2 .planet { width: 30px; height: 30px; background-color: #d2b48c; top: 10%; }
+
+        .orbit-3 { width: 600px; height: 600px; margin-left: -300px; margin-top: -300px; animation: orbit-rotate 65s linear infinite; }
+        .orbit-3 .planet { width: 25px; height: 25px; background: radial-gradient(circle, #0099ff, #003366); top: 80%; }
+        
+        .orbit-4 { width: 850px; height: 850px; margin-left: -425px; margin-top: -425px; animation: orbit-rotate 120s linear infinite; }
+        .orbit-4 .planet { width: 20px; height: 20px; background-color: #ff4500; top: 30%; }
+
+
+        @keyframes orbit-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Aviones volando sin estela */
+        .aviation-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; overflow: hidden; z-index: 5; }
+        .airplane { position: absolute; display: flex; align-items: center; will-change: transform; }
+        .airplane img { width: 100%; height: auto; filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.3)); }
+        
+        .plane-1 { width: 100px; animation: fly-1 28s linear infinite 1s; z-index: 4; }
+        .plane-2 { width: 130px; animation: fly-2 22s linear infinite 7s; z-index: 4; }
+        .plane-3 { width: 80px; animation: fly-3 20s linear infinite 3s; z-index: 15; }
+        .plane-4 { width: 110px; animation: fly-4 25s linear infinite 12s; z-index: 15; }
+
+        @keyframes fly-1 { 0% { top: 15%; left: -150px; } 100% { top: 35%; left: 110vw; } }
+        @keyframes fly-2 { 0% { top: 70%; left: -150px; } 100% { top: 10%; left: 110vw; } }
+        @keyframes fly-3 { 0% { top: 95%; left: 110vw; transform: rotateY(180deg); } 100% { top: 10%; left: -150px; transform: rotateY(180deg); } }
+        @keyframes fly-4 { 0% { top: -10vh; left: 80vw; transform: rotateY(180deg); } 100% { top: 110vh; left: -10vw; transform: rotateY(180deg); } }
+
+        /* --- Animación de Tarjeta al Sol --- */
+        .card-flying-to-sun {
+            position: fixed !important;
+            z-index: 9998 !important;
+            /* DURACIÓN DE ANIMACIÓN REDUCIDA A 4s */
+            animation: fly-to-sun-animation 4s ease-in forwards;
             pointer-events: none;
         }
 
-        /* Crypto Coins Animation */
-        .crypto-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 30px;
-        }
-
-        .crypto-coin {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .coin-btc {
-            background: linear-gradient(135deg, #f7931a, #ff9500);
-            color: white;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: 0s;
-        }
-
-        .coin-eth {
-            background: linear-gradient(135deg, #627eea, #3c3c3d);
-            color: white;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            animation-delay: 0.5s;
-        }
-
-        .coin-usdt {
-            background: linear-gradient(135deg, #26a17b, #009688);
-            color: white;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            animation-delay: 1s;
-        }
-
-        .coin-bnb {
-            background: linear-gradient(135deg, #f3ba2f, #fcd535);
-            color: #000;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            animation-delay: 1.5s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) scale(1);
+        @keyframes fly-to-sun-animation {
+            0% {
+                opacity: 1;
             }
-            50% {
-                transform: translateY(-20px) scale(1.1);
+            60% {
+                opacity: 1;
+            }
+            99% {
+                transform: translate(-50%, -50%) scale(0.01) rotate(1080deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0) rotate(1080deg);
+                opacity: 0;
+                display: none;
             }
         }
 
-        .loading-text {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #00ff88;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .transport-text {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.5rem;
-            color: #0088ff;
-            letter-spacing: 2px;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.5; }
-        }
-
-        .progress-bar {
-            width: 300px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-            margin-top: 30px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ff88, #0088ff, #ffaa00);
-            border-radius: 3px;
-            animation: loadProgress 4s ease-out forwards;
-        }
-
-        @keyframes loadProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        /* Main Content - Optimized */
-        .main-content {
-            min-height: 100vh;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 80px 20px 40px;
-        }
-
-        .logo {
-            font-family: 'Orbitron', monospace;
-            font-size: 4rem;
-            font-weight: 900;
-            color: #00ff88;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            animation: logoGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes logoGlow {
-            0% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
-            100% { text-shadow: 0 0 40px rgba(0, 255, 136, 0.8); }
-        }
-
-        .subtitle {
-            font-size: 1.5rem;
-            color: #0088ff;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        /* Services Grid - Simplified */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 40px 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .service-card {
-            background: linear-gradient(145deg, rgba(0, 17, 34, 0.9), rgba(0, 8, 17, 0.9));
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            border: 2px solid rgba(0, 255, 136, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            backdrop-filter: blur(10px);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: #00ff88;
-            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
-        }
-
-        .service-card:nth-child(2):hover { border-color: #0088ff; box-shadow: 0 20px 40px rgba(0, 136, 255, 0.3); }
-        .service-card:nth-child(3):hover { border-color: #ffaa00; box-shadow: 0 20px 40px rgba(255, 170, 0, 0.3); }
-        .service-card:nth-child(4):hover { border-color: #ff00aa; box-shadow: 0 20px 40px rgba(255, 0, 170, 0.3); }
-        .service-card:nth-child(5):hover { border-color: #38bdf8; box-shadow: 0 20px 40px rgba(56, 189, 248, 0.3); }
-        .service-card:nth-child(6):hover { border-color: #fb923c; box-shadow: 0 20px 40px rgba(251, 146, 60, 0.3); }
-        .service-card:nth-child(7):hover { border-color: #10b981; box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3); }
-        .service-card:nth-child(8):hover { border-color: #f472b6; box-shadow: 0 20px 40px rgba(244, 114, 182, 0.3); }
-        .service-card:nth-child(9):hover { border-color: #a78bfa; box-shadow: 0 20px 40px rgba(167, 139, 250, 0.3); }
-        .service-card:nth-child(10):hover { border-color: #00ff88; box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3); } /* Hover for the first card */
-
-        .service-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
-        }
+        /* --- Estilos Anteriores (Ajustados) --- */
+        .loader { z-index: 9999; }
+        .main-content { min-height: 100vh; position: relative; z-index: 10; }
         
-        /* New styles for IA Eva Card */
-        .ia-icon-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 180px;
-            margin-bottom: 10px;
-            transition: transform 0.3s ease;
-        }
-        .service-card:hover .ia-icon-container {
-            transform: scale(1.05);
-        }
-        .ia-icon {
-            font-size: 6rem;
-            color: #c0c0c0; /* Silver color */
-            margin-bottom: 15px;
-        }
-        .ia-name {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #c0c0c0; /* Silver color */
-        }
-
-        .service-card:hover .service-image {
-            transform: scale(1.05);
-        }
-
-        .service-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.7rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        .service-description {
-            font-size: 1rem;
-            color: #aaa;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        .service-button {
-            background: linear-gradient(45deg, #00ff88, #0088ff);
-            color: #000;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .service-button:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4);
-        }
-        
-        .service-card:nth-child(1) .service-button { background: linear-gradient(45deg, #00ff88, #00bbff); }
-        .service-card:nth-child(2) .service-button { background: linear-gradient(45deg, #0088ff, #00ff88); }
-        .service-card:nth-child(3) .service-button { background: linear-gradient(45deg, #ffaa00, #ff6600); }
-        .service-card:nth-child(4) .service-button { background: linear-gradient(45deg, #ff00aa, #aa00ff); }
-        .service-card:nth-child(5) .service-button { background: linear-gradient(45deg, #38bdf8, #0ea5e9); }
-        .service-card:nth-child(6) .service-button { background: linear-gradient(45deg, #fb923c, #f97316); }
-        .service-card:nth-child(7) .service-button { background: linear-gradient(45deg, #10b981, #059669); }
-        .service-card:nth-child(8) .service-button { background: linear-gradient(45deg, #f472b6, #ec4899); }
-        .service-card:nth-child(9) .service-button { background: linear-gradient(45deg, #a78bfa, #8b5cf6); }
-        .service-card:nth-child(10) .service-button { background: linear-gradient(45deg, #00ff88, #0088ff); }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(0, 8, 17, 0.9);
-            color: #888;
-            border-top: 1px solid rgba(0, 255, 136, 0.2);
-        }
-        
-        .footer p {
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .logo { font-size: 2.5rem; letter-spacing: 3px; }
-            .loading-text { font-size: 2rem; }
-            .transport-text { font-size: 1.2rem; }
-            .crypto-container { width: 150px; height: 150px; }
-            .crypto-coin { width: 45px; height: 45px; font-size: 18px; }
-            .services-grid { grid-template-columns: 1fr; padding: 30px 15px; }
-            .service-card { padding: 20px; }
-            .ia-icon { font-size: 5rem; }
-            .ia-name { font-size: 1.5rem; }
-        }
+        .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #000811, #001122); display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
+        .loader.hidden { opacity: 0; pointer-events: none; }
+        .crypto-container { position: relative; width: 200px; height: 200px; margin-bottom: 30px; }
+        .crypto-coin { position: absolute; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; animation: float 3s ease-in-out infinite; }
+        .coin-btc { background: linear-gradient(135deg, #f7931a, #ff9500); color: white; top: 0; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
+        .coin-eth { background: linear-gradient(135deg, #627eea, #3c3c3d); color: white; top: 50%; right: 0; transform: translateY(-50%); animation-delay: 0.5s; }
+        .coin-usdt { background: linear-gradient(135deg, #26a17b, #009688); color: white; bottom: 0; left: 50%; transform: translateX(-50%); animation-delay: 1s; }
+        .coin-bnb { background: linear-gradient(135deg, #f3ba2f, #fcd535); color: #000; top: 50%; left: 0; transform: translateY(-50%); animation-delay: 1.5s; }
+        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.1); } }
+        .loading-text { font-family: 'Orbitron', monospace; font-size: 2.5rem; font-weight: 700; color: #00ff88; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; animation: pulse 2s infinite; }
+        .transport-text { font-family: 'Orbitron', monospace; font-size: 1.5rem; color: #0088ff; letter-spacing: 2px; animation: blink 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.5; } }
+        .progress-bar { width: 300px; height: 6px; background: rgba(255, 255, 255, 0.2); border-radius: 3px; margin-top: 30px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #00ff88, #0088ff, #ffaa00); border-radius: 3px; animation: loadProgress 4s ease-out forwards; }
+        @keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
+        .header { text-align: center; padding: 80px 20px 40px; }
+        .logo { font-family: 'Orbitron', monospace; font-size: 4rem; font-weight: 900; color: #00ff88; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 5px; animation: logoGlow 3s ease-in-out infinite alternate; }
+        @keyframes logoGlow { 0% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); } 100% { text-shadow: 0 0 40px rgba(0, 255, 136, 0.8); } }
+        .subtitle { font-size: 1.5rem; color: #0088ff; font-weight: 300; letter-spacing: 2px; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 40px 20px; max-width: 1400px; margin: 0 auto; }
+        .service-card { background: linear-gradient(145deg, rgba(0, 17, 34, 0.9), rgba(0, 8, 17, 0.9)); border-radius: 20px; padding: 25px; text-align: center; border: 2px solid rgba(0, 255, 136, 0.3); transition: all 0.3s ease; cursor: pointer; position: relative; backdrop-filter: blur(10px); }
+        .service-card:hover { transform: translateY(-10px) scale(1.02); border-color: #00ff88; box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3); }
+        .service-image { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 20px; transition: transform 0.3s ease; }
+        .ia-icon-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 180px; margin-bottom: 10px; transition: transform 0.3s ease; }
+        .service-card:hover .ia-icon-container { transform: scale(1.05); }
+        .ia-icon { font-size: 6rem; color: #c0c0c0; margin-bottom: 15px; }
+        .ia-name { font-family: 'Orbitron', monospace; font-size: 1.8rem; font-weight: 700; color: #c0c0c0; }
+        .service-card:hover .service-image { transform: scale(1.05); }
+        .service-title { font-family: 'Orbitron', monospace; font-size: 1.7rem; font-weight: 700; margin-bottom: 15px; color: #fff; }
+        .service-description { font-size: 1rem; color: #aaa; margin-bottom: 25px; line-height: 1.6; }
+        .service-button { background: linear-gradient(45deg, #00ff88, #0088ff); color: #000; padding: 12px 25px; border: none; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+        .service-button:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4); }
+        .footer { text-align: center; padding: 40px 20px; background: rgba(0, 8, 17, 0.9); color: #888; border-top: 1px solid rgba(0, 255, 136, 0.2); z-index: 10; position: relative;}
+        .footer p { font-size: 0.9rem; letter-spacing: 1px; }
+        @media (max-width: 768px) { .logo { font-size: 2.5rem; } .sun { width: 80px; height: 80px;} .services-grid { padding: 30px 15px; } }
     </style>
 </head>
 <body>
@@ -383,7 +190,20 @@
         </div>
     </div>
 
-    <div class="stars-bg"></div>
+    <div class="solar-system">
+        <div class="sun"></div>
+        <div class="orbit orbit-1"><div class="planet"></div></div>
+        <div class="orbit orbit-2"><div class="planet"></div></div>
+        <div class="orbit orbit-3"><div class="planet"></div></div>
+        <div class="orbit orbit-4"><div class="planet"></div></div>
+    </div>
+
+    <div class="aviation-container">
+        <div class="airplane plane-1"><img src="https://i.postimg.cc/nr05cq2y/Picsart-25-04-10-23-31-50-864.png" alt="Avión volando"></div>
+        <div class="airplane plane-2"><img src="https://i.postimg.cc/nVkNktx3/Picsart-25-04-10-23-33-56-134.png" alt="Avión volando"></div>
+        <div class="airplane plane-3"><img src="https://i.postimg.cc/8Pz9XnPN/Picsart-25-04-10-23-35-15-199.png" alt="Avión volando"></div>
+        <div class="airplane plane-4"><img src="https://i.postimg.cc/nr05cq2y/Picsart-25-04-10-23-31-50-864.png" alt="Avión volando"></div>
+    </div>
 
     <div class="main-content">
         <header class="header">
@@ -392,8 +212,7 @@
         </header>
 
         <section class="services-grid">
-
-            <!-- Nueva Tarjeta NC Wallet con enlace actualizado -->
+            <!-- El contenido HTML de las tarjetas permanece sin cambios -->
             <div class="service-card">
                 <img src="https://i.postimg.cc/8PpTJpCQ/unnamed.png" alt="NC Wallet" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/00ff88?text=NC+Wallet';">
                 <h3 class="service-title"><i class="fas fa-wallet"></i> NC Wallet</h3>
@@ -409,6 +228,15 @@
                 <p class="service-description">Plataforma avanzada de minería cryptocurrency con tecnología de última generación para maximizar tus ganancias en el ecosistema digital.</p>
                 <a href="mineria-crypto.html" class="service-button">
                     <i class="fas fa-rocket"></i> Iniciar Minería
+                </a>
+            </div>
+
+            <div class="service-card">
+                <img src="https://i.postimg.cc/d0rXg7tq/Bitcoin-3-D-Icon-Payment-transparent-800-emp.webp" alt="Gratis" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/ffaa00?text=Gratis';">
+                <h3 class="service-title"><i class="fas fa-gift"></i> Gratis</h3>
+                <p class="service-description">Descubre cómo obtener criptomonedas y otros beneficios sin costo alguno. Explora oportunidades gratuitas en nuestro portal.</p>
+                <a href="todo-gratis.html" class="service-button">
+                    <i class="fas fa-arrow-right"></i> Ir a Gratis
                 </a>
             </div>
 
@@ -486,7 +314,6 @@
                     <i class="fas fa-play-circle"></i> Escuchar Música
                 </a>
             </div>
-
         </section>
     </div>
 
@@ -495,62 +322,94 @@
     </footer>
 
     <script>
-        // Optimized Loading Animation
+        let isAnimating = false;
+
         document.addEventListener('DOMContentLoaded', () => {
-            // Hide loader after animation completes
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hidden');
-            }, 4500);
+            }, 1500);
 
-            // Simple parallax effect for better performance
-            let ticking = false;
-            
-            function updateParallax() {
-                const scrolled = window.pageYOffset;
-                const parallax = document.querySelector('.stars-bg');
-                // Ensure parallax exists before trying to style it
-                if (parallax) {
-                    const speed = scrolled * 0.5;
-                    parallax.style.transform = `translateY(${speed}px)`;
-                }
-                ticking = false;
-            }
+            const cards = document.querySelectorAll('.service-card');
 
-            function requestTick() {
-                if (!ticking) {
-                    requestAnimationFrame(updateParallax);
-                    ticking = true;
-                }
-            }
+            cards.forEach(card => {
+                const link = card.querySelector('a');
+                if (!link) return;
 
-            window.addEventListener('scroll', requestTick);
+                card.addEventListener('click', (event) => {
+                    event.preventDefault(); 
+                    if (isAnimating) return; 
+                    isAnimating = true;
 
-            // Enhanced hover effects for service cards
-            const serviceCards = document.querySelectorAll('.service-card');
-            
-            serviceCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-10px) scale(1.02)';
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0) scale(1)';
+                    const destinationUrl = link.href;
+                    const isExternal = link.target === '_blank';
+
+                    // 1. Audio
+                    Tone.start().then(() => {
+                        const synth = new Tone.FMSynth({
+                            harmonicity: 3, modulationIndex: 10,
+                            envelope: { attack: 0.01, decay: 0.2, sustain: 0.2, release: 0.8 },
+                            modulationEnvelope: { attack: 0.2, decay: 0.1, sustain: 0.5, release: 0.8 }
+                        }).toDestination();
+                        
+                        const noise = new Tone.Noise("white").start();
+                        const filter = new Tone.AutoFilter("4n").toDestination().start();
+                        noise.connect(filter);
+                        
+                        synth.triggerAttack("A1");
+                        synth.frequency.rampTo("C8", 2); // Ajustado para 4s
+                        synth.frequency.rampTo("A1", 2);
+
+                        // Detener sonido justo antes del final de la animación
+                        setTimeout(() => {
+                           noise.stop();
+                           synth.triggerRelease();
+                        }, 3800); 
+                    });
+
+                    // 2. Animación
+                    const rect = card.getBoundingClientRect();
+                    const flyingCard = card.cloneNode(true);
+                    flyingCard.style.position = 'fixed';
+                    flyingCard.style.top = `${rect.top}px`;
+                    flyingCard.style.left = `${rect.left}px`;
+                    flyingCard.style.width = `${rect.width}px`;
+                    flyingCard.style.height = `${rect.height}px`;
+                    flyingCard.style.margin = '0';
+                    document.body.appendChild(flyingCard);
+                    
+                    card.style.opacity = '0';
+                    flyingCard.getBoundingClientRect(); 
+
+                    flyingCard.classList.add('card-flying-to-sun');
+                    flyingCard.style.left = `50vw`;
+                    flyingCard.style.top = `50vh`;
+
+                    // 3. Redirección (4 segundos)
+                    setTimeout(() => {
+                        if (isExternal) {
+                            window.open(destinationUrl, '_blank');
+                            flyingCard.remove();
+                            card.style.opacity = '1';
+                            isAnimating = false;
+                        } else {
+                            window.location.href = destinationUrl;
+                        }
+                    }, 4000); // DURACIÓN DE REDIRECCIÓN REDUCIDA A 4000ms
                 });
             });
         });
 
-        // Smooth scroll for better UX
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                // Ensure the target element exists before scrolling
-                const targetElement = document.querySelector(this.getAttribute('href'));
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
+        // Restaurar estado al volver a la página
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                const cards = document.querySelectorAll('.service-card');
+                cards.forEach(card => {
+                    card.style.opacity = '1';
+                });
+                const flyingCards = document.querySelectorAll('.card-flying-to-sun');
+                flyingCards.forEach(fc => fc.remove());
+                isAnimating = false;
+            }
         });
     </script>
 </body>
