@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Gratis - Universo Crypto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo personalizado para la temática Dragon Ball Z */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0c0a1a;
+            color: #ffffff;
+            overflow-x: hidden;
+            /* Fondo animado de estrellas */
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+                radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+            background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+            animation: move-stars 30s linear infinite;
+        }
+
+        @keyframes move-stars {
+            from { background-position: 0 0, 40px 60px, 130px 270px, 70px 100px; }
+            to { background-position: -550px -550px, -350px -310px, -250px -120px, -150px -50px; }
+        }
+
+        /* Tipografía estilo Dragon Ball Z para el encabezado */
+        .dbz-font {
+            font-family: 'Bangers', cursive;
+            -webkit-text-stroke: 2px #000;
+            text-shadow: 
+                3px 3px 0 #000,
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000,
+                0px 5px 10px rgba(255, 165, 0, 0.8);
+        }
+
+        /* Animación de entrada para toda la página */
+        @keyframes page-entry {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-entry {
+            animation: page-entry 7s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+        
+        /* Estilo y efecto 3D para las tarjetas */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        .card-3d:hover {
+            transform: perspective(1000px) rotateY(10deg) scale(1.05);
+        }
+
+        /* Estilo para la tarjeta de neón */
+        .neon-border-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            background-color: #1a1a2e; /* Fondo oscuro para la tarjeta */
+        }
+        .neon-border-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent,
+                rgba(0, 191, 255, 1), /* Azul neón */
+                rgba(255, 255, 0, 1), /* Amarillo neón */
+                rgba(255, 20, 147, 1), /* Rosa neón */
+                transparent 30%
+            );
+            animation: rotate-neon 6s linear infinite;
+        }
+        .neon-border-card .content-wrapper {
+            position: relative;
+            background: #1a1a2e;
+            margin: 3px; /* El grosor del borde */
+            padding: 1.5rem;
+            border-radius: 0.875rem; /* slightly smaller than the parent */
+            z-index: 1;
+        }
+
+        @keyframes rotate-neon {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Animación de llamas para el texto */
+        @keyframes fire-flicker {
+            0%   { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff7800, 0 0 40px #ff7800, 0 0 50px #ff7800, 0 0 60px #ff7800, 0 0 70px #ff7800; }
+            25%  { text-shadow: 0 0 12px #fff, 0 0 22px #fff, 0 0 35px #ff6600, 0 0 45px #ff6600, 0 0 55px #ff6600, 0 0 65px #ff6600, 0 0 75px #ff6600; }
+            50%  { text-shadow: 0 0 8px #fff, 0 0 18px #fff, 0 0 28px #ff8c00, 0 0 38px #ff8c00, 0 0 48px #ff8c00, 0 0 58px #ff8c00, 0 0 68px #ff8c00; }
+            75%  { text-shadow: 0 0 13px #fff, 0 0 23px #fff, 0 0 33px #ff7800, 0 0 43px #ff7800, 0 0 53px #ff7800, 0 0 63px #ff7800, 0 0 73px #ff7800; }
+            100% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff7800, 0 0 40px #ff7800, 0 0 50px #ff7800, 0 0 60px #ff7800, 0 0 70px #ff7800; }
+        }
+        .fire-text {
+            color: #fefefe;
+            animation: fire-flicker 1.5s infinite linear;
+            font-weight: bold;
+        }
+
+        /* Animación de llamas azules para el texto */
+        @keyframes blue-fire-flicker {
+            0%   { text-shadow: 0 0 10px #fff, 0 0 20px #00bfff, 0 0 30px #00bfff, 0 0 40px #007bff, 0 0 50px #007bff, 0 0 60px #007bff, 0 0 70px #007bff; }
+            25%  { text-shadow: 0 0 12px #fff, 0 0 22px #00aeee, 0 0 35px #00aeee, 0 0 45px #006ce0, 0 0 55px #006ce0, 0 0 65px #006ce0, 0 0 75px #006ce0; }
+            50%  { text-shadow: 0 0 8px #fff, 0 0 18px #00cfff, 0 0 28px #00cfff, 0 0 38px #008bf0, 0 0 48px #008bf0, 0 0 58px #008bf0, 0 0 68px #008bf0; }
+            100% { text-shadow: 0 0 10px #fff, 0 0 20px #00bfff, 0 0 30px #00bfff, 0 0 40px #007bff, 0 0 50px #007bff, 0 0 60px #007bff, 0 0 70px #007bff; }
+        }
+        .blue-fire-text {
+            color: #e6f7ff;
+            animation: blue-fire-flicker 2s infinite linear;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+
+    <div class="container mx-auto px-4 py-8 animate-entry">
+        <!-- Encabezado Principal -->
+        <header class="text-center mb-12">
+            <h1 class="text-6xl md:text-8xl font-bold text-orange-400 dbz-font tracking-wider">
+                ¡Todo Gratis!
+            </h1>
+        </header>
+
+        <!-- Contenedor de las 3 tarjetas principales -->
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16" style="perspective: 1000px;">
+            
+            <!-- Tarjeta 1: Faucet -->
+            <a href="fauce.html" class="card-3d block">
+                <div class="bg-gray-800 bg-opacity-60 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden h-full border border-blue-500/30 hover:border-orange-400 transition-colors duration-300">
+                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Faucet" alt="Imagen de Faucet" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold text-orange-400 mb-2">Faucet</h2>
+                        <p class="text-gray-300">
+                            Reclama criptomonedas gratis a intervalos regulares. ¡Una forma fácil y segura de empezar a acumular tus activos digitales sin inversión!
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Tarjeta 2: Minería Crypto -->
+            <a href="mineria-gratis.html" class="card-3d block">
+                <div class="bg-gray-800 bg-opacity-60 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden h-full border border-blue-500/30 hover:border-orange-400 transition-colors duration-300">
+                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Minería" alt="Imagen de Minería Crypto" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold text-orange-400 mb-2">Minería Crypto</h2>
+                        <p class="text-gray-300">
+                            Utiliza el poder de la nube para minar criptomonedas. Plataformas que te permiten generar ingresos pasivos sin necesidad de hardware costoso.
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Tarjeta 3: Bot de Telegram -->
+            <a href="bot-telegram.html" class="card-3d block">
+                <div class="bg-gray-800 bg-opacity-60 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden h-full border border-blue-500/30 hover:border-orange-400 transition-colors duration-300">
+                    <img src="https://placehold.co/600x400/1a202c/FFA500?text=Bot+Telegram" alt="Imagen de Bot de Telegram" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold text-orange-400 mb-2">Bot de Telegram</h2>
+                        <p class="text-gray-300">
+                            Automatiza tareas y gana criptomonedas directamente desde Telegram. Descubre los bots más rentables y fiables del momento.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </main>
+
+        <!-- Tarjeta Adicional con Borde de Neón -->
+        <section class="mb-16 flex justify-center">
+            <a href="https://faucetpay.io/?r=7231337" target="_blank" rel="noopener noreferrer" class="block w-full max-w-2xl">
+                <div class="neon-border-card">
+                   <div class="content-wrapper flex flex-col items-center text-center">
+                        <img src="https://i.postimg.cc/wBFFY0Kn/Picsart-25-06-12-23-08-06-331.jpg" alt="Imagen de FaucetPay" 
+                             class="w-full h-auto object-contain rounded-lg shadow-2xl"
+                             onerror="this.onerror=null; this.src='https://placehold.co/800x400/1a1a2e/ffffff?text=Error+al+cargar+imagen';">
+                        <p class="blue-fire-text">toca la imagen y abre tu cuenta</p>
+                   </div>
+                </div>
+            </a>
+        </section>
+        
+        <!-- Imagen Inferior Completa -->
+        <section class="mb-8">
+             <img src="https://i.postimg.cc/V6wXLqnY/Picsart-25-06-07-03-40-11-387.png" alt="Imagen decorativa de Sneyder Estudio" 
+                  class="w-full h-auto object-contain max-w-4xl mx-auto"
+                  onerror="this.onerror=null; this.src='https://placehold.co/1200x400/0c0a1a/ffffff?text=Error+al+cargar+imagen';">
+        </section>
+
+    </div>
+
+    <!-- Pie de Página -->
+    <footer class="text-center py-6">
+        <p class="fire-text text-lg uppercase">&copy; 2025 SNEYDER ESTUDIO USDT.CLAN</p>
+    </footer>
+
+</body>
+</html>
+
+
