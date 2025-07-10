@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramientas</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the page */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            overflow-x: hidden;
+        }
+
+        /* Animated background container */
+        .crypto-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Individual animated icon style */
+        .crypto-icon {
+            position: absolute;
+            bottom: -60px;
+            font-size: 1.5rem;
+            animation: floatUp 25s linear infinite;
+            user-select: none;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Preloader styles */
+        #preloader {
+            background-color: #000000;
+            /* The fade-out transition will take 1 second */
+            transition: opacity 1s ease-out;
+        }
+
+        /* Animation with pulse and bottom glow */
+        @keyframes pulse-and-glow {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 10px 8px rgba(251, 191, 36, 0.3));
+            }
+            50% {
+                transform: scale(1.1);
+                filter: drop-shadow(0 15px 20px rgba(251, 191, 36, 0.6));
+            }
+        }
+        .animate-pulse-glow {
+            animation: pulse-and-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Preloader Screen -->
+    <div id="preloader" class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+        <img 
+            src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" 
+            alt="Logo Cargando" 
+            class="w-36 h-36 rounded-full animate-pulse-glow"
+            onerror="this.onerror=null; this.src='https://placehold.co/144x144/000000/ffffff?text=Cargando...';"
+        >
+    </div>
+
+    <!-- Animated Background Container -->
+    <div class="crypto-background" id="crypto-container"></div>
+
+    <!-- Page Header -->
+    <header class="fixed top-0 left-0 w-full p-4 sm:p-6 flex justify-between items-center z-10">
+        <img 
+            src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" 
+            alt="Logo" 
+            class="w-12 h-12 rounded-full border-2 border-amber-400/50"
+            onerror="this.onerror=null; this.src='https://placehold.co/48x48/000000/ffffff?text=Logo';"
+        >
+        <h2 class="text-2xl font-bold text-white">Herramientas</h2>
+    </header>
+
+    <!-- Main Content -->
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 pt-24 pb-20">
+        
+        <!-- Main Card -->
+        <main class="w-full max-w-md bg-gray-900 bg-opacity-60 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center border border-gray-700/50">
+            
+            <img 
+                src="https://i.postimg.cc/d0rXg7tq/Bitcoin-3-D-Icon-Payment-transparent-800-emp.webp" 
+                alt="Icono de Bitcoin 3D" 
+                class="w-32 h-32 mx-auto mb-4"
+                onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/ffffff?text=BTC';"
+            >
+
+            <h1 class="text-3xl font-bold text-amber-300 tracking-wider uppercase">
+                URL MINER
+            </h1>
+
+            <p class="mt-4 text-gray-300">
+                Busque minería o agregue su enlace de invitación para que los compañeros usen la minería que compartió.
+            </p>
+
+            <a href="enlaces.html" class="mt-8 inline-block w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 shadow-lg">
+                Ir a Enlaces
+            </a>
+        </main>
+
+        <!-- Ad Container -->
+        <div class="mt-8 w-full max-w-full overflow-x-auto flex justify-center p-2">
+            <!-- A-ADS Ad Unit -->
+            <div id="frame" style="min-width:728px; height:auto;"><iframe data-aa='2402230' src='//ad.a-ads.com/2402230?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe><a style="display: block; text-align: right; font-size: 12px; color: #9ca3af;" id="preview-link" href="https://aads.com/campaigns/new/?source_id=2402230&source_type=ad_unit&partner=2402230">Advertise here</a></div>
+        </div>
+
+        <!-- Bottom Decorative Image -->
+        <div class="mt-4">
+            <img 
+                src="https://i.postimg.cc/tJH3SFBs/endless-Y8-YQpjhf-H60-IWQDkm-T.png" 
+                alt="Decoración inferior" 
+                class="w-full max-w-xs sm:max-w-sm mx-auto opacity-60"
+                onerror="this.style.display='none'"
+            >
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="fixed bottom-0 left-0 w-full p-4 text-center text-gray-500 text-sm">
+        <p>2025 SNEYDER ESTUDIO USDT.CLAN</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Preloader Logic ---
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                // Set a 4-second timer for the preloader
+                setTimeout(() => {
+                    // Start the fade-out transition
+                    preloader.style.opacity = '0';
+                    // After the transition ends (1s), hide it completely
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 1000); // This should match the CSS transition duration
+                }, 3000); // Wait 3 seconds before starting the 1-second fade out
+            }
+
+            // --- Animated Background Logic ---
+            const container = document.getElementById('crypto-container');
+            if (!container) return;
+
+            const cryptoSymbols = ['₿', 'Ξ', '₳', '₮', 'Ł', '◆', '$'];
+            const flags = ['🇬🇹', '🇧🇿', '🇭🇳', '🇸🇻', '🇳🇮', '🇨🇷', '🇵🇦'];
+            const allIcons = [...cryptoSymbols, ...flags];
+            const iconCount = 60;
+
+            for (let i = 0; i < iconCount; i++) {
+                const iconEl = document.createElement('div');
+                iconEl.classList.add('crypto-icon');
+                
+                const iconChar = allIcons[Math.floor(Math.random() * allIcons.length)];
+                iconEl.innerText = iconChar;
+                
+                iconEl.style.left = `${Math.random() * 100}vw`;
+                const duration = Math.random() * 15 + 20;
+                const delay = Math.random() * 25;
+                iconEl.style.animationDuration = `${duration}s`;
+                iconEl.style.animationDelay = `${delay}s`;
+
+                if (flags.includes(iconChar)) {
+                    const size = Math.random() * 20 + 30;
+                    iconEl.style.fontSize = `${size}px`;
+                    iconEl.style.opacity = '0.9';
+                } else {
+                    const size = Math.random() * 18 + 14;
+                    iconEl.style.fontSize = `${size}px`;
+                    iconEl.style.color = 'rgba(255, 215, 0, 0.7)'; 
+                }
+
+                container.appendChild(iconEl);
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0D0F1A;
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 25px 25px;
+            color: #E0E0E0;
+        }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass-card {
+            background: rgba(20, 24, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 242, 255, 0.7);
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.3);
+            transform: translateY(-5px);
+        }
+        .neon-button {
+            background-color: #00F2FF;
+            color: #0D0F1A;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.5);
+            border: 1px solid #00F2FF;
+        }
+        .neon-button:hover {
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+        .neon-button:disabled {
+            background-color: #4b5563;
+            box-shadow: none;
+            cursor: not-allowed;
+            color: #a0a0a0;
+            border-color: #4b5563;
+        }
+        .neon-button-outline {
+            background-color: transparent;
+            color: #00F2FF;
+            border: 1px solid #00F2FF;
+            transition: all 0.3s ease;
+        }
+        .neon-button-outline:hover {
+            background-color: rgba(0, 242, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+        }
+        .modal {
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.is-visible { opacity: 1; visibility: visible; }
+        .modal-glass {
+            background: rgba(13, 15, 26, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 242, 255, 0.4);
+            transition: transform 0.3s ease;
+            transform: scale(0.95);
+        }
+        .modal.is-visible .modal-glass { transform: scale(1); }
+        .form-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #E0E0E0;
+            transition: all 0.3s ease;
+        }
+        .form-input::placeholder {
+            color: rgba(224, 224, 224, 0.5);
+        }
+        .form-input:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #00F2FF;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+        .long-press-active {
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.7);
+            border-color: rgba(239, 68, 68, 0.8);
+        }
+        .text-glow { text-shadow: 0 0 8px rgba(0, 242, 255, 0.7); }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <div id="app" class="flex-grow p-4 sm:p-6 lg:p-8">
+        <!-- Encabezado -->
+        <header class="text-center mb-12">
+            <div class="inline-block p-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 mb-4">
+                <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Logo de Crypto Hub" class="h-20 w-20">
+            </div>
+            <h1 class="font-orbitron text-4xl sm:text-6xl font-black text-white text-glow uppercase tracking-widest">Crypto Hub</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-cyan-200">
+                Tu portal al ecosistema de minería digital. Descubre y comparte los enlaces más potentes para plataformas web y bots de Telegram.
+            </p>
+        </header>
+        
+        <div class="text-center mb-12">
+             <button id="addLinkBtn" class="neon-button py-3 px-8 text-lg" disabled>
+                Añadir Nuevo Registro
+            </button>
+        </div>
+
+        <main id="linksContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"></main>
+        
+        <div id="loadingState" class="text-center py-20"><p class="text-cyan-400 text-lg">Iniciando conexión segura...</p></div>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer class="text-center p-6 text-gray-500 text-sm">
+        <p>© 2025 SNEYDER ESTUDIO USDT.CLAN</p>
+    </footer>
+
+    <!-- Modal para añadir nuevo enlace -->
+    <div id="addLinkModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" hidden>
+        <div class="modal-glass rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <h2 class="font-orbitron text-2xl font-bold mb-6 text-white text-center">Añadir Nuevo Sitio</h2>
+            <form id="addLinkForm">
+                <div class="mb-4"><label for="submitterName" class="block text-cyan-300 text-sm font-bold mb-2">Tu Nombre</label><input type="text" id="submitterName" class="form-input w-full rounded-lg px-3 py-2 focus:outline-none" required></div>
+                <div class="mb-4"><label for="siteName" class="block text-cyan-300 text-sm font-bold mb-2">Nombre del Sitio</label><input type="text" id="siteName" class="form-input w-full rounded-lg px-3 py-2 focus:outline-none" required></div>
+                <div class="mb-4"><label for="siteDescription" class="block text-cyan-300 text-sm font-bold mb-2">Descripción (¿Para qué sirve?)</label><textarea id="siteDescription" rows="3" class="form-input w-full rounded-lg px-3 py-2 focus:outline-none" required></textarea></div>
+                <div class="mb-4">
+                    <label class="block text-cyan-300 text-sm font-bold mb-2">Imagen del Sitio</label>
+                    <label for="siteImageFile" class="neon-button-outline w-full text-center py-2 px-4 rounded-lg cursor-pointer flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/></svg>
+                        <span>Subir Imagen</span>
+                    </label>
+                    <input type="file" id="siteImageFile" class="hidden" required>
+                    <p id="file-chosen" class="text-center text-sm text-gray-400 mt-2">Ningún archivo seleccionado</p>
+                    <img id="imagePreview" src="" alt="Previsualización" class="mt-2 rounded-lg hidden max-h-32 mx-auto"/>
+                </div>
+                <div class="mb-6"><label for="siteUrl" class="block text-cyan-300 text-sm font-bold mb-2">URL del Sitio</label><input type="url" id="siteUrl" class="form-input w-full rounded-lg px-3 py-2 focus:outline-none" required></div>
+                <div class="flex justify-end gap-4"><button type="button" id="cancelAddBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition">Cancelar</button><button type="submit" id="saveBtn" class="neon-button py-2 px-4 flex items-center"><span id="saveBtnText">Guardar</span><svg id="saveSpinner" class="animate-spin -mr-1 ml-3 h-5 w-5 text-black hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></button></div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal de borrado -->
+    <div id="deleteConfirmModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" hidden>
+        <div class="modal-glass rounded-2xl shadow-2xl p-8 w-full max-w-sm">
+            <h2 class="font-orbitron text-xl font-bold mb-4 text-white">Protocolo de Eliminación</h2>
+            <p class="text-gray-300 mb-4">Se requiere clave de administrador para purgar el registro.</p>
+            <input type="password" id="deletePassword" class="form-input w-full rounded-lg px-3 py-2 mb-6 focus:outline-none" placeholder="Clave Maestra">
+            <div class="flex justify-end gap-4">
+                <button type="button" id="cancelDeleteBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition">Cancelar</button>
+                <button type="button" id="confirmDeleteBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition">Purgar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 text-white py-3 px-6 rounded-lg shadow-lg border" style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease;"><p id="toastMessage"></p></div>
+
+    <script type="module">
+        // --- Configuración de Supabase ---
+        const SUPABASE_URL = 'https://mvxsaezwbyqcsjrfhmff.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12eHNhZXp3YnlxY3NqcmZobWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxMzYxNzgsImV4cCI6MjA2NzcxMjE3OH0.9_rKY6DS-GUIU2QOqPN457rWptQefU-59YQTXW3OD7s';
+
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // --- Elementos del DOM ---
+        const linksContainer = document.getElementById('linksContainer');
+        const loadingState = document.getElementById('loadingState');
+        const addLinkBtn = document.getElementById('addLinkBtn');
+        const addLinkModal = document.getElementById('addLinkModal');
+        const addLinkForm = document.getElementById('addLinkForm');
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        let linkToDeleteId = null;
+
+        // --- Funciones de UI ---
+        const toggleModal = (modal, show) => {
+            if (show) {
+                modal.hidden = false;
+                setTimeout(() => modal.classList.add('is-visible'), 10);
+            } else {
+                modal.classList.remove('is-visible');
+                modal.addEventListener('transitionend', () => { modal.hidden = true; }, { once: true });
+            }
+        };
+        const showToast = (message, type = 'success') => {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.className = 'fixed bottom-5 right-5 text-white py-3 px-6 rounded-lg shadow-lg border';
+            toast.classList.add(type === 'success' ? 'bg-green-500' : 'bg-red-400');
+            toast.style.visibility = 'visible';
+            toast.style.opacity = 1;
+            setTimeout(() => { toast.style.opacity = 0; toast.style.visibility = 'hidden'; }, 4000);
+        };
+        const setLoadingState = (isLoading) => {
+            const saveBtn = document.getElementById('saveBtn');
+            const saveBtnText = document.getElementById('saveBtnText');
+            const saveSpinner = document.getElementById('saveSpinner');
+            saveBtn.disabled = isLoading;
+            saveBtnText.classList.toggle('hidden', isLoading);
+            saveSpinner.classList.toggle('hidden', !isLoading);
+        };
+
+        // --- Lógica de Renderizado (CON EL BOTÓN CORREGIDO) ---
+        function createLinkCard(link) {
+            const card = document.createElement('div');
+            card.className = 'glass-card rounded-xl overflow-hidden flex flex-col';
+            card.dataset.id = link.id;
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${link.image_url}" alt="Imagen de ${link.name}" class="w-full h-44 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x440/0D0F1A/00F2FF?text=DATA';">
+                    <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black/80 to-transparent">
+                         <h3 class="font-orbitron font-bold text-lg text-white truncate">${link.name}</h3>
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col flex-grow">
+                    <p class="text-xs text-cyan-300 mb-2">Registrado por: <span class="font-semibold text-white">${link.submitter_name || 'Anónimo'}</span></p>
+                    <p class="text-sm text-gray-300 mb-4 flex-grow">${link.description || 'Sin inteligencia de datos.'}</p>
+                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="neon-button mt-auto w-full py-2 px-4 text-sm text-center">
+                        Ir al Sitio
+                    </a>
+                </div>
+            `;
+            // El listener para el botón de copiar se elimina, ya que ahora es un enlace directo.
+            let longPressTimer;
+            const startPress = (e) => { 
+                // Evitar que el long press se active si se está interactuando con el enlace
+                if (e.target.tagName.toLowerCase() === 'a') return;
+                e.preventDefault(); 
+                card.classList.add('long-press-active'); 
+                longPressTimer = setTimeout(() => { 
+                    linkToDeleteId = link.id; 
+                    toggleModal(deleteConfirmModal, true); 
+                }, 1000); 
+            };
+            const endPress = () => { clearTimeout(longPressTimer); card.classList.remove('long-press-active'); };
+            card.addEventListener('mousedown', startPress);
+            card.addEventListener('mouseup', endPress);
+            card.addEventListener('mouseleave', endPress);
+            card.addEventListener('touchstart', startPress);
+            card.addEventListener('touchend', endPress);
+            return card;
+        }
+
+        // --- Lógica de Supabase ---
+        async function fetchLinks() {
+            loadingState.textContent = "Cargando registros...";
+            loadingState.classList.remove('hidden');
+            const { data: links, error } = await supabaseClient.from('links').select('*').order('created_at', { ascending: false });
+            if (error) {
+                console.error('Error fetching links:', error);
+                showToast('Fallo en la conexión a la red de datos', 'error');
+                return;
+            }
+            linksContainer.innerHTML = '';
+            if (links.length > 0) {
+                links.forEach(link => linksContainer.appendChild(createLinkCard(link)));
+            } else {
+                loadingState.textContent = 'La bóveda está vacía. Añade el primer registro.';
+            }
+            loadingState.classList.add('hidden');
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            setLoadingState(true);
+            const file = document.getElementById('siteImageFile').files[0];
+            if (!file) {
+                showToast('Se requiere un identificador visual.', 'error');
+                setLoadingState(false);
+                return;
+            }
+            const filePath = `public/${Date.now()}-${file.name}`;
+            const { error: uploadError } = await supabaseClient.storage.from('images').upload(filePath, file);
+            if (uploadError) {
+                console.error('Error detallado al subir:', uploadError);
+                showToast(`Error de carga: ${uploadError.message}`, 'error');
+                setLoadingState(false);
+                return;
+            }
+            const { data: { publicUrl } } = supabaseClient.storage.from('images').getPublicUrl(filePath);
+            const { error: insertError } = await supabaseClient.from('links').insert({
+                submitter_name: document.getElementById('submitterName').value,
+                name: document.getElementById('siteName').value,
+                description: document.getElementById('siteDescription').value,
+                url: document.getElementById('siteUrl').value,
+                image_url: publicUrl
+            });
+            if (insertError) {
+                console.error('Error al insertar enlace:', insertError);
+                showToast(`Error al guardar: ${insertError.message}`, 'error');
+            } else {
+                showToast('Registro guardado en la bóveda');
+                toggleModal(addLinkModal, false);
+                addLinkForm.reset();
+            }
+            setLoadingState(false);
+        }
+
+        async function deleteLink(id) {
+            const passwordInput = document.getElementById('deletePassword');
+            if (passwordInput.value !== '1994') {
+                showToast('Clave Maestra incorrecta', 'error');
+                return;
+            }
+            const { error } = await supabaseClient.from('links').delete().eq('id', id);
+            if (error) {
+                console.error('Error deleting link:', error);
+                showToast('Acceso denegado. Solo el administrador puede purgar.', 'error');
+            } else {
+                showToast('Registro purgado con éxito');
+            }
+            passwordInput.value = '';
+            toggleModal(deleteConfirmModal, false);
+        }
+
+        // --- FUNCIÓN DE INICIALIZACIÓN PRINCIPAL ---
+        async function main() {
+            const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+            if (sessionError) {
+                loadingState.textContent = 'Error al obtener la sesión.'; return;
+            }
+            if (!session) {
+                const { error: signInError } = await supabaseClient.auth.signInAnonymously();
+                if (signInError) {
+                    loadingState.textContent = 'Error al iniciar sesión anónima.'; return;
+                }
+            }
+            addLinkBtn.disabled = false;
+            await fetchLinks();
+            
+            const cancelAddBtn = document.getElementById('cancelAddBtn');
+            const siteImageFileInput = document.getElementById('siteImageFile');
+            const fileChosenText = document.getElementById('file-chosen');
+            const imagePreview = document.getElementById('imagePreview');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            
+            addLinkBtn.addEventListener('click', () => {
+                addLinkForm.reset();
+                fileChosenText.textContent = 'Ningún archivo seleccionado';
+                imagePreview.classList.add('hidden');
+                imagePreview.src = '';
+                toggleModal(addLinkModal, true);
+            });
+            
+            cancelAddBtn.addEventListener('click', () => toggleModal(addLinkModal, false));
+            addLinkForm.addEventListener('submit', handleFormSubmit);
+            
+            siteImageFileInput.addEventListener('change', () => {
+                const file = siteImageFileInput.files[0];
+                if (file) {
+                    fileChosenText.textContent = file.name;
+                    if (file.type.startsWith('image/')) {
+                        imagePreview.src = URL.createObjectURL(file);
+                        imagePreview.classList.remove('hidden');
+                    } else {
+                        imagePreview.classList.add('hidden');
+                    }
+                }
+            });
+            
+            cancelDeleteBtn.addEventListener('click', () => {
+                document.getElementById('deletePassword').value = '';
+                toggleModal(deleteConfirmModal, false);
+            });
+            
+            confirmDeleteBtn.addEventListener('click', () => deleteLink(linkToDeleteId));
+            
+            [addLinkModal, deleteConfirmModal].forEach(modal => {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        toggleModal(modal, false);
+                    }
+                });
+            });
+            
+            supabaseClient.channel('public:links').on('postgres_changes', { event: '*', schema: 'public', table: 'links' }, payload => {
+                fetchLinks();
+            }).subscribe();
+        }
+        
+        document.addEventListener('DOMContentLoaded', main);
+    </script>
+</body>
+</html>
+
+
