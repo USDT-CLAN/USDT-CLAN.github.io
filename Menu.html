@@ -42,7 +42,7 @@
             font-size: 14px;
             color: #00ff41;
             animation: matrix-fall linear infinite;
-            text-shadow: 0 0 5px #00ff41;
+            text-shadow: 0 0 3px rgba(0, 255, 65, 0.5);
         }
 
         @keyframes matrix-fall {
@@ -106,16 +106,16 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(255, 0, 0, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(0, 255, 0, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 20%, rgba(255, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 255, 0, 0.05) 0%, transparent 50%);
             animation: brutal-pulse 3s ease-in-out infinite alternate;
             z-index: 1;
         }
 
         @keyframes brutal-pulse {
             0% { filter: brightness(1) contrast(1); }
-            100% { filter: brightness(1.2) contrast(1.5); }
+            100% { filter: brightness(1.1) contrast(1.2); }
         }
 
         /* Scanner Lines */
@@ -132,8 +132,8 @@
         .scanner-line {
             position: absolute;
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00ff41, transparent);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.5), transparent);
             animation: scan-vertical 4s linear infinite;
         }
 
@@ -174,7 +174,7 @@
             font-size: 8rem;
             color: #ff0040;
             animation: skull-shake 2s infinite;
-            text-shadow: 0 0 20px #ff0040, 0 0 40px #ff0040;
+            text-shadow: 0 0 15px #ff0040, 0 0 25px rgba(255, 0, 64, 0.7);
         }
 
         @keyframes skull-shake {
@@ -191,7 +191,7 @@
             text-transform: uppercase;
             margin-bottom: 20px;
             animation: blood-drip 2s infinite;
-            text-shadow: 0 0 10px #ff0040;
+            text-shadow: 0 0 8px rgba(255, 0, 64, 0.8);
         }
 
         @keyframes blood-drip {
@@ -241,7 +241,7 @@
             text-transform: uppercase;
             letter-spacing: 8px;
             animation: logo-brutal 3s ease-in-out infinite alternate;
-            text-shadow: 0 0 20px #ff0040, 0 0 40px #ff0040;
+            text-shadow: 0 0 10px rgba(255,0,64,0.7), 0 0 20px rgba(255,0,64,0.5);
         }
 
         @keyframes logo-brutal {
@@ -254,7 +254,7 @@
             color: #00ff41;
             font-weight: 600;
             letter-spacing: 3px;
-            text-shadow: 0 0 10px #00ff41;
+            text-shadow: 0 0 8px rgba(0,255,65,0.7);
         }
 
         /* Ad Integration */
@@ -270,8 +270,8 @@
         }
 
         @keyframes ad-pulse {
-            0% { box-shadow: 0 0 10px #ff0040; }
-            100% { box-shadow: 0 0 30px #ff0040; }
+            0% { box-shadow: 0 0 10px rgba(255,0,64,0.7); }
+            100% { box-shadow: 0 0 20px rgba(255,0,64,0.7); }
         }
 
         .ad-label {
@@ -330,7 +330,7 @@
         .service-card:hover {
             transform: translateY(-15px) scale(1.05);
             border-color: #00ff41;
-            box-shadow: 0 30px 60px rgba(255,0,64,0.5);
+            box-shadow: 0 20px 40px rgba(255,0,64,0.4);
         }
 
         .service-card > * {
@@ -370,13 +370,13 @@
             font-size: 6rem;
             color: #ff0040;
             margin-bottom: 15px;
-            text-shadow: 0 0 20px #ff0040;
+            text-shadow: 0 0 15px #ff0040;
             animation: robot-glow 2s ease-in-out infinite alternate;
         }
 
         @keyframes robot-glow {
-            0% { color: #ff0040; text-shadow: 0 0 20px #ff0040; }
-            100% { color: #00ff41; text-shadow: 0 0 20px #00ff41; }
+            0% { color: #ff0040; text-shadow: 0 0 15px #ff0040; }
+            100% { color: #00ff41; text-shadow: 0 0 15px #00ff41; }
         }
 
         .ia-name {
@@ -384,7 +384,7 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: #00ff41;
-            text-shadow: 0 0 10px #00ff41;
+            text-shadow: 0 0 8px #00ff41;
         }
 
         .service-title {
@@ -393,7 +393,7 @@
             font-weight: 700;
             margin-bottom: 15px;
             color: #ff0040;
-            text-shadow: 0 0 10px #ff0040;
+            text-shadow: 0 0 8px #ff0040;
         }
 
         .service-description {
@@ -418,12 +418,12 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
-            box-shadow: 0 5px 15px rgba(255,0,64,0.4);
+            box-shadow: 0 4px 10px rgba(255,0,64,0.3);
         }
 
         .service-button:hover {
             transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(255,0,64,0.6);
+            box-shadow: 0 10px 25px rgba(255,0,64,0.5);
             background: linear-gradient(45deg, #00ff41, #ff0040);
         }
 
@@ -568,6 +568,17 @@
         </div>
 
         <section class="services-grid">
+            <!-- Tarjeta de Herramientas -->
+            <div class="service-card">
+                <div class="absolute top-0 left-0 bg-green-400 text-black px-4 py-1 rounded-tl-lg rounded-br-lg font-bold text-sm z-10 shadow-md" style="text-shadow: none; color: #0a0a0a;">NUEVO</div>
+                <img src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Herramientas" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/00ff41?text=Herramientas';">
+                <h3 class="service-title"><i class="fas fa-wrench"></i> Herramienta</h3>
+                <p class="service-description">Ten algunas funcionalidades que se irán agregando con el tiempo.</p>
+                <a href="eramientas.html" class="service-button">
+                    <i class="fas fa-arrow-right"></i> Ir
+                </a>
+            </div>
+
             <div class="service-card">
                 <img src="https://i.postimg.cc/8PpTJpCQ/unnamed.png" alt="NC Wallet" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/ff0040?text=NC+Wallet';">
                 <h3 class="service-title"><i class="fas fa-wallet"></i> NC Wallet</h3>
@@ -813,3 +824,4 @@
     </script>
 </body>
 </html>
+
