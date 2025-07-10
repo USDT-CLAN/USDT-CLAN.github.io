@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USDT.clan - Portal Cryptocurrency</title>
-    <!-- TailwindCSS y Font Awesome no se han modificado -->
+    <title>USDT.clan - Portal Cryptocurrency Brutal</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Creepster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <!-- Tone.js para generar el sonido dinámicamente -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <style>
         * {
@@ -19,202 +17,559 @@
 
         body {
             font-family: 'Rajdhani', sans-serif;
-            background-color: #000811; /* Fondo base oscuro */
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 50%, #000000 100%);
             overflow-x: hidden;
             overflow-y: scroll;
+            position: relative;
         }
-        
-        /* --- Sistema Solar Animado --- */
-        .solar-system {
+
+        /* Matrix Rain Effect */
+        .matrix-rain {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            background: #000811;
+            pointer-events: none;
+            z-index: 1;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: #00ff41;
+            animation: matrix-fall linear infinite;
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        @keyframes matrix-fall {
+            0% { top: -100%; opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Glitch Effects */
+        .glitch {
+            position: relative;
+            animation: glitch-main 2s infinite;
+        }
+
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 0.5s infinite;
+            color: #ff0040;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch-2 0.5s infinite;
+            color: #00ffff;
+            z-index: -2;
+        }
+
+        @keyframes glitch-main {
+            0%, 92%, 100% { transform: translate(0); }
+            94% { transform: translate(-2px, 0); }
+            96% { transform: translate(2px, 0); }
+        }
+
+        @keyframes glitch-1 {
+            0%, 90% { transform: translate(0); }
+            92% { transform: translate(-2px, 0); }
+            94% { transform: translate(2px, 0); }
+            96% { transform: translate(-2px, 0); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 90% { transform: translate(0); }
+            92% { transform: translate(2px, 0); }
+            94% { transform: translate(-2px, 0); }
+            96% { transform: translate(2px, 0); }
+        }
+
+        /* Brutal Background Effects */
+        .brutal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 0, 0, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+            animation: brutal-pulse 3s ease-in-out infinite alternate;
             z-index: 1;
         }
 
-        .sun {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(ellipse at center, #ffcc00 0%, #ff6600 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 60px #ff9900, 0 0 100px #ff6600, 0 0 15px #fff;
-            animation: pulse-sun 5s ease-in-out infinite;
-        }
-        
-        @keyframes pulse-sun {
-            0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 60px #ff9900, 0 0 100px #ff6600, 0 0 15px #fff; }
-            50% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 70px #ffaa33, 0 0 120px #ff8833, 0 0 20px #fff; }
-            100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 60px #ff9900, 0 0 100px #ff6600, 0 0 15px #fff; }
+        @keyframes brutal-pulse {
+            0% { filter: brightness(1) contrast(1); }
+            100% { filter: brightness(1.2) contrast(1.5); }
         }
 
-        .orbit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transform-style: preserve-3d;
-        }
-
-        .planet {
-            position: absolute;
-            top: 50%;
+        /* Scanner Lines */
+        .scanner-lines {
+            position: fixed;
+            top: 0;
             left: 0;
-            border-radius: 50%;
-            transform: translateY(-50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
         }
 
-        /* Definición de órbitas y planetas */
-        .orbit-1 { width: 250px; height: 250px; margin-left: -125px; margin-top: -125px; animation: orbit-rotate 25s linear infinite; }
-        .orbit-1 .planet { width: 15px; height: 15px; background-color: #a9a9a9; }
-
-        .orbit-2 { width: 400px; height: 400px; margin-left: -200px; margin-top: -200px; animation: orbit-rotate 40s linear infinite; }
-        .orbit-2 .planet { width: 30px; height: 30px; background-color: #d2b48c; top: 10%; }
-
-        .orbit-3 { width: 600px; height: 600px; margin-left: -300px; margin-top: -300px; animation: orbit-rotate 65s linear infinite; }
-        .orbit-3 .planet { width: 25px; height: 25px; background: radial-gradient(circle, #0099ff, #003366); top: 80%; }
-        
-        .orbit-4 { width: 850px; height: 850px; margin-left: -425px; margin-top: -425px; animation: orbit-rotate 120s linear infinite; }
-        .orbit-4 .planet { width: 20px; height: 20px; background-color: #ff4500; top: 30%; }
-
-
-        @keyframes orbit-rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .scanner-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff41, transparent);
+            animation: scan-vertical 4s linear infinite;
         }
-        
-        /* Aviones volando sin estela */
-        .aviation-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; overflow: hidden; z-index: 5; }
-        .airplane { position: absolute; display: flex; align-items: center; will-change: transform; }
-        .airplane img { width: 100%; height: auto; filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.3)); }
-        
-        .plane-1 { width: 100px; animation: fly-1 28s linear infinite 1s; z-index: 4; }
-        .plane-2 { width: 130px; animation: fly-2 22s linear infinite 7s; z-index: 4; }
-        .plane-3 { width: 80px; animation: fly-3 20s linear infinite 3s; z-index: 15; }
-        .plane-4 { width: 110px; animation: fly-4 25s linear infinite 12s; z-index: 15; }
 
-        @keyframes fly-1 { 0% { top: 15%; left: -150px; } 100% { top: 35%; left: 110vw; } }
-        @keyframes fly-2 { 0% { top: 70%; left: -150px; } 100% { top: 10%; left: 110vw; } }
-        @keyframes fly-3 { 0% { top: 95%; left: 110vw; transform: rotateY(180deg); } 100% { top: 10%; left: -150px; transform: rotateY(180deg); } }
-        @keyframes fly-4 { 0% { top: -10vh; left: 80vw; transform: rotateY(180deg); } 100% { top: 110vh; left: -10vw; transform: rotateY(180deg); } }
+        @keyframes scan-vertical {
+            0% { top: -2px; opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
 
-        /* --- Animación de Tarjeta al Sol --- */
-        .card-flying-to-sun {
-            position: fixed !important;
-            z-index: 9998 !important;
-            /* DURACIÓN DE ANIMACIÓN REDUCIDA A 4s */
-            animation: fly-to-sun-animation 4s ease-in forwards;
+        /* Loader with Brutal Style */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #000000 0%, #330000 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
             pointer-events: none;
         }
 
-        @keyframes fly-to-sun-animation {
-            0% {
-                opacity: 1;
-            }
-            60% {
-                opacity: 1;
-            }
-            99% {
-                transform: translate(-50%, -50%) scale(0.01) rotate(1080deg);
+        .skull-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 30px;
+        }
+
+        .skull {
+            font-size: 8rem;
+            color: #ff0040;
+            animation: skull-shake 2s infinite;
+            text-shadow: 0 0 20px #ff0040, 0 0 40px #ff0040;
+        }
+
+        @keyframes skull-shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .loading-text {
+            font-family: 'Creepster', cursive;
+            font-size: 3rem;
+            color: #ff0040;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: blood-drip 2s infinite;
+            text-shadow: 0 0 10px #ff0040;
+        }
+
+        @keyframes blood-drip {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        .brutal-progress {
+            width: 400px;
+            height: 8px;
+            background: #330000;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 2px solid #ff0040;
+        }
+
+        .brutal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0040, #ffff00, #00ff00);
+            animation: brutal-load 4s ease-out forwards;
+        }
+
+        @keyframes brutal-load {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Main Content */
+        .main-content {
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            padding: 100px 20px 50px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(51,0,0,0.6) 100%);
+            border-bottom: 3px solid #ff0040;
+        }
+
+        .logo {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            color: #ff0040;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            animation: logo-brutal 3s ease-in-out infinite alternate;
+            text-shadow: 0 0 20px #ff0040, 0 0 40px #ff0040;
+        }
+
+        @keyframes logo-brutal {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: #00ff41;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        /* Ad Integration */
+        .ad-container {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0,0,0,0.9);
+            border: 2px solid #ff0040;
+            margin: 30px auto;
+            max-width: 500px;
+            border-radius: 10px;
+            animation: ad-pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes ad-pulse {
+            0% { box-shadow: 0 0 10px #ff0040; }
+            100% { box-shadow: 0 0 30px #ff0040; }
+        }
+
+        .ad-label {
+            color: #ff0040;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            padding: 50px 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: linear-gradient(145deg, rgba(0,0,0,0.9), rgba(51,0,0,0.7));
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 3px solid #ff0040;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,0,64,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            z-index: 1;
+        }
+
+        .service-card:hover::before {
+            animation: slash-effect 0.5s ease-in-out;
+        }
+
+        @keyframes slash-effect {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: #00ff41;
+            box-shadow: 0 30px 60px rgba(255,0,64,0.5);
+        }
+
+        .service-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            border: 2px solid #ff0040;
+            filter: sepia(1) hue-rotate(320deg) saturate(1.5);
+        }
+
+        .service-card:hover .service-image {
+            transform: scale(1.1);
+            filter: sepia(0) hue-rotate(0deg) saturate(1);
+        }
+
+        .ia-icon-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            margin-bottom: 20px;
+            border: 2px solid #ff0040;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255,0,64,0.1), rgba(0,255,65,0.1));
+        }
+
+        .ia-icon {
+            font-size: 6rem;
+            color: #ff0040;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px #ff0040;
+            animation: robot-glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes robot-glow {
+            0% { color: #ff0040; text-shadow: 0 0 20px #ff0040; }
+            100% { color: #00ff41; text-shadow: 0 0 20px #00ff41; }
+        }
+
+        .ia-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .service-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ff0040;
+            text-shadow: 0 0 10px #ff0040;
+        }
+
+        .service-description {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+
+        .service-button {
+            background: linear-gradient(45deg, #ff0040, #00ff41);
+            color: #000000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 15px rgba(255,0,64,0.4);
+        }
+
+        .service-button:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(255,0,64,0.6);
+            background: linear-gradient(45deg, #00ff41, #ff0040);
+        }
+
+        /* Card Flying Animation */
+        .card-flying-to-sun {
+            position: fixed !important;
+            z-index: 9998 !important;
+            animation: fly-to-brutal-center 4s ease-in forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fly-to-brutal-center {
+            0% { opacity: 1; }
+            60% { opacity: 1; }
+            99% { 
+                transform: translate(-50%, -50%) scale(0.01) rotate(1080deg); 
                 opacity: 0;
+                filter: hue-rotate(360deg) saturate(5);
             }
-            100% {
-                transform: translate(-50%, -50%) scale(0) rotate(1080deg);
-                opacity: 0;
-                display: none;
+            100% { 
+                transform: translate(-50%, -50%) scale(0) rotate(1080deg); 
+                opacity: 0; 
+                display: none; 
             }
         }
 
-        /* --- Estilos Anteriores (Ajustados) --- */
-        .loader { z-index: 9999; }
-        .main-content { min-height: 100vh; position: relative; z-index: 10; }
-        
-        .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #000811, #001122); display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
-        .loader.hidden { opacity: 0; pointer-events: none; }
-        .crypto-container { position: relative; width: 200px; height: 200px; margin-bottom: 30px; }
-        .crypto-coin { position: absolute; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; animation: float 3s ease-in-out infinite; }
-        .coin-btc { background: linear-gradient(135deg, #f7931a, #ff9500); color: white; top: 0; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
-        .coin-eth { background: linear-gradient(135deg, #627eea, #3c3c3d); color: white; top: 50%; right: 0; transform: translateY(-50%); animation-delay: 0.5s; }
-        .coin-usdt { background: linear-gradient(135deg, #26a17b, #009688); color: white; bottom: 0; left: 50%; transform: translateX(-50%); animation-delay: 1s; }
-        .coin-bnb { background: linear-gradient(135deg, #f3ba2f, #fcd535); color: #000; top: 50%; left: 0; transform: translateY(-50%); animation-delay: 1.5s; }
-        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.1); } }
-        .loading-text { font-family: 'Orbitron', monospace; font-size: 2.5rem; font-weight: 700; color: #00ff88; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; animation: pulse 2s infinite; }
-        .transport-text { font-family: 'Orbitron', monospace; font-size: 1.5rem; color: #0088ff; letter-spacing: 2px; animation: blink 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.5; } }
-        .progress-bar { width: 300px; height: 6px; background: rgba(255, 255, 255, 0.2); border-radius: 3px; margin-top: 30px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #00ff88, #0088ff, #ffaa00); border-radius: 3px; animation: loadProgress 4s ease-out forwards; }
-        @keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
-        .header { text-align: center; padding: 80px 20px 40px; }
-        .logo { font-family: 'Orbitron', monospace; font-size: 4rem; font-weight: 900; color: #00ff88; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 5px; animation: logoGlow 3s ease-in-out infinite alternate; }
-        @keyframes logoGlow { 0% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); } 100% { text-shadow: 0 0 40px rgba(0, 255, 136, 0.8); } }
-        .subtitle { font-size: 1.5rem; color: #0088ff; font-weight: 300; letter-spacing: 2px; }
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 40px 20px; max-width: 1400px; margin: 0 auto; }
-        .service-card { background: linear-gradient(145deg, rgba(0, 17, 34, 0.9), rgba(0, 8, 17, 0.9)); border-radius: 20px; padding: 25px; text-align: center; border: 2px solid rgba(0, 255, 136, 0.3); transition: all 0.3s ease; cursor: pointer; position: relative; backdrop-filter: blur(10px); }
-        .service-card:hover { transform: translateY(-10px) scale(1.02); border-color: #00ff88; box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3); }
-        .service-image { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 20px; transition: transform 0.3s ease; }
-        .ia-icon-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 180px; margin-bottom: 10px; transition: transform 0.3s ease; }
-        .service-card:hover .ia-icon-container { transform: scale(1.05); }
-        .ia-icon { font-size: 6rem; color: #c0c0c0; margin-bottom: 15px; }
-        .ia-name { font-family: 'Orbitron', monospace; font-size: 1.8rem; font-weight: 700; color: #c0c0c0; }
-        .service-card:hover .service-image { transform: scale(1.05); }
-        .service-title { font-family: 'Orbitron', monospace; font-size: 1.7rem; font-weight: 700; margin-bottom: 15px; color: #fff; }
-        .service-description { font-size: 1rem; color: #aaa; margin-bottom: 25px; line-height: 1.6; }
-        .service-button { background: linear-gradient(45deg, #00ff88, #0088ff); color: #000; padding: 12px 25px; border: none; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
-        .service-button:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4); }
-        .footer { text-align: center; padding: 40px 20px; background: rgba(0, 8, 17, 0.9); color: #888; border-top: 1px solid rgba(0, 255, 136, 0.2); z-index: 10; position: relative;}
-        .footer p { font-size: 0.9rem; letter-spacing: 1px; }
-        @media (max-width: 768px) { .logo { font-size: 2.5rem; } .sun { width: 80px; height: 80px;} .services-grid { padding: 30px 15px; } }
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(51,0,0,0.7));
+            color: #cccccc;
+            border-top: 3px solid #ff0040;
+            z-index: 10;
+            position: relative;
+        }
+
+        .footer p {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; }
+            .services-grid { 
+                grid-template-columns: 1fr;
+                padding: 30px 15px; 
+            }
+            .service-card { padding: 20px; }
+        }
+
+        /* Additional Brutal Effects */
+        .lightning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .lightning-strike {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #ffff00, transparent);
+            animation: lightning-flash 3s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes lightning-flash {
+            0%, 90%, 100% { opacity: 0; }
+            92%, 94%, 96% { opacity: 1; }
+        }
+
+        .screen-static {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="static"><feTurbulence baseFrequency="0.9"/></filter></defs><rect width="100%" height="100%" filter="url(%23static)" opacity="0.05"/></svg>');
+            animation: static-noise 0.1s linear infinite;
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        @keyframes static-noise {
+            0% { transform: translate(0px, 0px); }
+            10% { transform: translate(-1px, -1px); }
+            20% { transform: translate(1px, 1px); }
+            30% { transform: translate(-1px, 1px); }
+            40% { transform: translate(1px, -1px); }
+            50% { transform: translate(-1px, -1px); }
+            60% { transform: translate(1px, 1px); }
+            70% { transform: translate(-1px, 1px); }
+            80% { transform: translate(1px, -1px); }
+            90% { transform: translate(-1px, -1px); }
+            100% { transform: translate(0px, 0px); }
+        }
     </style>
 </head>
 <body>
+    <!-- Brutal Background Effects -->
+    <div class="brutal-bg"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
+    <div class="scanner-lines">
+        <div class="scanner-line" style="animation-delay: 0s;"></div>
+        <div class="scanner-line" style="animation-delay: 1s;"></div>
+        <div class="scanner-line" style="animation-delay: 2s;"></div>
+    </div>
+    <div class="lightning" id="lightning"></div>
+    <div class="screen-static"></div>
+
+    <!-- Brutal Loader -->
     <div class="loader" id="loader">
-        <div class="crypto-container">
-            <div class="crypto-coin coin-btc">₿</div>
-            <div class="crypto-coin coin-eth">Ξ</div>
-            <div class="crypto-coin coin-usdt">₮</div>
-            <div class="crypto-coin coin-bnb">⭐</div>
+        <div class="skull-container">
+            <div class="skull">☠</div>
         </div>
-        <div class="loading-text">USDT.clan</div>
-        <div class="transport-text">Transportando...</div>
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
+        <div class="loading-text glitch" data-text="USDT.clan">USDT.clan</div>
+        <div class="brutal-progress">
+            <div class="brutal-progress-fill"></div>
         </div>
     </div>
 
-    <div class="solar-system">
-        <div class="sun"></div>
-        <div class="orbit orbit-1"><div class="planet"></div></div>
-        <div class="orbit orbit-2"><div class="planet"></div></div>
-        <div class="orbit orbit-3"><div class="planet"></div></div>
-        <div class="orbit orbit-4"><div class="planet"></div></div>
-    </div>
-
-    <div class="aviation-container">
-        <div class="airplane plane-1"><img src="https://i.postimg.cc/nr05cq2y/Picsart-25-04-10-23-31-50-864.png" alt="Avión volando"></div>
-        <div class="airplane plane-2"><img src="https://i.postimg.cc/nVkNktx3/Picsart-25-04-10-23-33-56-134.png" alt="Avión volando"></div>
-        <div class="airplane plane-3"><img src="https://i.postimg.cc/8Pz9XnPN/Picsart-25-04-10-23-35-15-199.png" alt="Avión volando"></div>
-        <div class="airplane plane-4"><img src="https://i.postimg.cc/nr05cq2y/Picsart-25-04-10-23-31-50-864.png" alt="Avión volando"></div>
-    </div>
-
+    <!-- Main Content -->
     <div class="main-content">
         <header class="header">
-            <h1 class="logo">USDT.clan</h1>
-            <p class="subtitle">Portal Cryptocurrency Avanzado</p>
+            <h1 class="logo glitch" data-text="USDT.clan">USDT.clan</h1>
+            <p class="subtitle">Portal Cryptocurrency Brutal</p>
         </header>
 
+        <!-- Bitcoin Mining ATM Ad -->
+        <div class="ad-container">
+            <div class="ad-label">🔥 Minería Bitcoin Premium 🔥</div>
+            <a href="https://bitcoinminingatm.com/?ref=Sneyder">
+                <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" alt="Bitcoin Mining ATM" width="468" height="60" style="border-radius: 5px; border: 2px solid #00ff41;">
+            </a>
+        </div>
+
         <section class="services-grid">
-            <!-- El contenido HTML de las tarjetas permanece sin cambios -->
             <div class="service-card">
-                <img src="https://i.postimg.cc/8PpTJpCQ/unnamed.png" alt="NC Wallet" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/00ff88?text=NC+Wallet';">
+                <img src="https://i.postimg.cc/8PpTJpCQ/unnamed.png" alt="NC Wallet" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/ff0040?text=NC+Wallet';">
                 <h3 class="service-title"><i class="fas fa-wallet"></i> NC Wallet</h3>
                 <p class="service-description">Wallet recomendada para guardar tus activos de forma segura. Confiable, con comisiones flexibles y fácil de usar.</p>
                 <a href="NC.html" class="service-button">
@@ -223,7 +578,7 @@
             </div>
 
             <div class="service-card">
-                <img src="https://www.investopedia.com/thmb/Ab_C9f2b7gt2ceH3eVLwfic16Ss=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-929584582-9d7790de3ee44f658a9580cc598c641f.jpg" alt="Crypto Mining" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/00ff88?text=Mineria';">
+                <img src="https://www.investopedia.com/thmb/Ab_C9f2b7gt2ceH3eVLwfic16Ss=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-929584582-9d7790de3ee44f658a9580cc598c641f.jpg" alt="Crypto Mining" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/ff0040?text=Mineria';">
                 <h3 class="service-title"><i class="fas fa-coins"></i> Minería Crypto</h3>
                 <p class="service-description">Plataforma avanzada de minería cryptocurrency con tecnología de última generación para maximizar tus ganancias en el ecosistema digital.</p>
                 <a href="mineria-crypto.html" class="service-button">
@@ -232,7 +587,7 @@
             </div>
 
             <div class="service-card">
-                <img src="https://i.postimg.cc/d0rXg7tq/Bitcoin-3-D-Icon-Payment-transparent-800-emp.webp" alt="Gratis" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/ffaa00?text=Gratis';">
+                <img src="https://i.postimg.cc/d0rXg7tq/Bitcoin-3-D-Icon-Payment-transparent-800-emp.webp" alt="Gratis" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/ffaa00?text=Gratis';">
                 <h3 class="service-title"><i class="fas fa-gift"></i> Gratis</h3>
                 <p class="service-description">Descubre cómo obtener criptomonedas y otros beneficios sin costo alguno. Explora oportunidades gratuitas en nuestro portal.</p>
                 <a href="todo-gratis.html" class="service-button">
@@ -241,7 +596,7 @@
             </div>
 
             <div class="service-card">
-                <img src="https://miro.medium.com/v2/resize:fit:1400/1*IoPugZf37yFmv3Q0oBjT9w.jpeg" alt="Plataforma Bancaria" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/0088ff?text=Banca';">
+                <img src="https://miro.medium.com/v2/resize:fit:1400/1*IoPugZf37yFmv3Q0oBjT9w.jpeg" alt="Plataforma Bancaria" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/0088ff?text=Banca';">
                 <h3 class="service-title"><i class="fas fa-university"></i> Plataforma Bancaria</h3>
                 <p class="service-description">Plataformas bancarias de terceros confiables para facilitar el retiro de dinero de crypto a moneda fiat de forma segura y eficiente.</p>
                 <a href="Plataforma-Bancaria.html" class="service-button">
@@ -250,7 +605,7 @@
             </div>
 
             <div class="service-card">
-                <img src="https://i.ebayimg.com/images/g/BOAAAOSwQb5hMHUG/s-l1200.jpg" alt="Lotería USDT" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/ffaa00?text=Loteria';">
+                <img src="https://i.ebayimg.com/images/g/BOAAAOSwQb5hMHUG/s-l1200.jpg" alt="Lotería USDT" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/ffaa00?text=Loteria';">
                 <h3 class="service-title"><i class="fas fa-dice"></i> Lotería USDT</h3>
                 <p class="service-description">Participa en nuestra emocionante lotería de USDT con premios increíbles y oportunidades diarias de ganar criptomonedas.</p>
                 <a href="Lotería-USDT.html" class="service-button">
@@ -259,7 +614,7 @@
             </div>
 
             <div class="service-card">
-                <img src="https://miro.medium.com/v2/resize:fit:1200/1*MKDNdS5wsIiuE2MNo3PXeA.png" alt="Minería NFT" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/ff00aa?text=NFT';">
+                <img src="https://miro.medium.com/v2/resize:fit:1200/1*MKDNdS5wsIiuE2MNo3PXeA.png" alt="Minería NFT" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/ff00aa?text=NFT';">
                 <h3 class="service-title"><i class="fas fa-palette"></i> Minería NFT</h3>
                 <p class="service-description">Explora el mundo de los NFT y gana criptomonedas mediante la minería de tokens no fungibles con tecnología blockchain avanzada.</p>
                 <a href="mineria-nft.html" class="service-button">
@@ -268,7 +623,7 @@
             </div>
             
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Noticias Crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/38bdf8?text=Noticias';">
+                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Noticias Crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/38bdf8?text=Noticias';">
                 <h3 class="service-title"><i class="fas fa-newspaper"></i> Noticias Cryptos</h3>
                 <p class="service-description">Mantente al día con las últimas noticias, análisis y tendencias del mercado de criptomonedas de fuentes confiables y actualizadas.</p>
                 <a href="Noticias-Cryptos.html" class="service-button">
@@ -277,7 +632,7 @@
             </div>
             
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Estudio sobre crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/fb923c?text=Estudio';">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Estudio sobre crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/fb923c?text=Estudio';">
                 <h3 class="service-title"><i class="fas fa-graduation-cap"></i> Estudio</h3>
                 <p class="service-description">Accede a nuestro centro de estudio para aprender todo sobre criptomonedas, blockchain, y estrategias de inversión de forma clara y concisa.</p>
                 <a href="Estudio.html" class="service-button">
@@ -286,7 +641,7 @@
             </div>
 
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1556438064-2d7646166914?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Juegos Crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/10b981?text=Juegos';">
+                <img src="https://images.unsplash.com/photo-1556438064-2d7646166914?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Juegos Crypto" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/10b981?text=Juegos';">
                 <h3 class="service-title"><i class="fas fa-gamepad"></i> Juegos Crypto</h3>
                 <p class="service-description">¡GANA SATOSHIS DE BITCOIN GRATIS! Juega y recibe recompensas reales en Bitcoin, Ethereum, USDT y más cryptos. ¡Cada partida puede ser tu próxima ganancia!</p>
                 <a href="juegos.html" class="service-button">
@@ -307,7 +662,7 @@
             </div>
 
             <div class="service-card">
-                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Música de Apoyo" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/001122/a78bfa?text=Musica';">
+                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Música de Apoyo" class="service-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/330000/a78bfa?text=Musica';">
                 <h3 class="service-title"><i class="fas fa-music"></i> Música de Apoyo</h3>
                 <p class="service-description">Apoya nuestro canal escuchando nuestra selección de música. Cada reproducción nos ayuda a seguir creciendo y creando contenido.</p>
                 <a href="https://youtube.com/@sneyder-estudio?si=MzFmycd-SehFw4RR" class="service-button" target="_blank">
@@ -318,55 +673,92 @@
     </div>
 
     <footer class="footer">
-        <p>© 2025 Sneyder Estudio - USDT.clan | Todo es totalmente gratis | <i class="fas fa-shield-alt"></i> Tecnología Blockchain Segura</p>
+        <p>© 2025 Sneyder Estudio - USDT.clan | Todo es totalmente gratis | <i class="fas fa-shield-alt"></i> Tecnología Blockchain Brutal</p>
     </footer>
 
     <script>
         let isAnimating = false;
 
+        // Matrix Rain Effect
+        function createMatrixRain() {
+            const matrixContainer = document.getElementById('matrixRain');
+            const characters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ₿ΞUSDT';
+            const columns = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = `${i * 20}px`;
+                column.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                column.style.animationDelay = `${Math.random() * 2}s`;
+                
+                let text = '';
+                for (let j = 0; j < Math.random() * 20 + 10; j++) {
+                    text += characters[Math.floor(Math.random() * characters.length)] + '<br>';
+                }
+                column.innerHTML = text;
+                matrixContainer.appendChild(column);
+            }
+        }
+
+        // Lightning Effect
+        function createLightning() {
+            const lightningContainer = document.getElementById('lightning');
+            for (let i = 0; i < 3; i++) {
+                const strike = document.createElement('div');
+                strike.className = 'lightning-strike';
+                strike.style.left = `${Math.random() * 100}%`;
+                strike.style.animationDelay = `${Math.random() * 10}s`;
+                lightningContainer.appendChild(strike);
+            }
+        }
+
+        // Initialize Effects
         document.addEventListener('DOMContentLoaded', () => {
+            createMatrixRain();
+            createLightning();
+            
+            // Hide loader
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hidden');
-            }, 1500);
+            }, 2000);
 
+            // Card click animations
             const cards = document.querySelectorAll('.service-card');
-
             cards.forEach(card => {
                 const link = card.querySelector('a');
                 if (!link) return;
 
                 card.addEventListener('click', (event) => {
-                    event.preventDefault(); 
-                    if (isAnimating) return; 
+                    event.preventDefault();
+                    if (isAnimating) return;
                     isAnimating = true;
 
                     const destinationUrl = link.href;
                     const isExternal = link.target === '_blank';
 
-                    // 1. Audio
+                    // Brutal Audio Effect
                     Tone.start().then(() => {
                         const synth = new Tone.FMSynth({
-                            harmonicity: 3, modulationIndex: 10,
-                            envelope: { attack: 0.01, decay: 0.2, sustain: 0.2, release: 0.8 },
-                            modulationEnvelope: { attack: 0.2, decay: 0.1, sustain: 0.5, release: 0.8 }
+                            harmonicity: 5,
+                            modulationIndex: 20,
+                            envelope: { attack: 0.01, decay: 0.3, sustain: 0.3, release: 1 },
+                            modulationEnvelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 1 }
                         }).toDestination();
                         
-                        const noise = new Tone.Noise("white").start();
-                        const filter = new Tone.AutoFilter("4n").toDestination().start();
-                        noise.connect(filter);
+                        const distortion = new Tone.Distortion(0.8).toDestination();
+                        synth.connect(distortion);
                         
-                        synth.triggerAttack("A1");
-                        synth.frequency.rampTo("C8", 2); // Ajustado para 4s
-                        synth.frequency.rampTo("A1", 2);
+                        synth.triggerAttack("C2");
+                        synth.frequency.rampTo("C6", 2);
+                        synth.frequency.rampTo("C1", 2);
 
-                        // Detener sonido justo antes del final de la animación
                         setTimeout(() => {
-                           noise.stop();
-                           synth.triggerRelease();
-                        }, 3800); 
+                            synth.triggerRelease();
+                        }, 3800);
                     });
 
-                    // 2. Animación
+                    // Flying Animation
                     const rect = card.getBoundingClientRect();
                     const flyingCard = card.cloneNode(true);
                     flyingCard.style.position = 'fixed';
@@ -378,13 +770,13 @@
                     document.body.appendChild(flyingCard);
                     
                     card.style.opacity = '0';
-                    flyingCard.getBoundingClientRect(); 
-
+                    flyingCard.getBoundingClientRect();
+                    
                     flyingCard.classList.add('card-flying-to-sun');
-                    flyingCard.style.left = `50vw`;
-                    flyingCard.style.top = `50vh`;
+                    flyingCard.style.left = '50vw';
+                    flyingCard.style.top = '50vh';
 
-                    // 3. Redirección (4 segundos)
+                    // Redirect
                     setTimeout(() => {
                         if (isExternal) {
                             window.open(destinationUrl, '_blank');
@@ -394,12 +786,12 @@
                         } else {
                             window.location.href = destinationUrl;
                         }
-                    }, 4000); // DURACIÓN DE REDIRECCIÓN REDUCIDA A 4000ms
+                    }, 4000);
                 });
             });
         });
 
-        // Restaurar estado al volver a la página
+        // Restore state on page return
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {
                 const cards = document.querySelectorAll('.service-card');
@@ -411,7 +803,13 @@
                 isAnimating = false;
             }
         });
+
+        // Resize handler for matrix rain
+        window.addEventListener('resize', () => {
+            const matrixContainer = document.getElementById('matrixRain');
+            matrixContainer.innerHTML = '';
+            createMatrixRain();
+        });
     </script>
 </body>
 </html>
-
