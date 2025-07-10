@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USDT.CLAN - Revolución Crypto 2025</title>
+    <!-- PWA Meta Tags -->
+    <title>USDT.CLAN</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/6Qj5QpmY/USDT-2.png">
+    <!-- El manifest.json se generará y enlazará dinámicamente con JavaScript -->
+
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
@@ -45,8 +52,8 @@
 
         .cyber-grid {
             background-image: 
-                linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px);
+                linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,255,0.05) 1px, transparent 1px);
             background-size: 50px 50px;
             position: fixed;
             top: 0;
@@ -68,39 +75,38 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(0,255,255,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(255,0,255,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 40% 80%, rgba(0,255,0,0.1) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 50%, rgba(0,255,255,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255,0,255,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(0,255,0,0.05) 0%, transparent 50%);
             z-index: -1;
             animation: holographicShift 15s ease-in-out infinite;
         }
 
         @keyframes holographicShift {
             0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
+            50% { opacity: 0.5; transform: scale(1.05); }
         }
 
         .neon-text {
             color: var(--primary-neon);
             text-shadow: 
-                0 0 5px var(--primary-neon),
-                0 0 10px var(--primary-neon),
-                0 0 15px var(--primary-neon),
-                0 0 20px var(--primary-neon);
+                0 0 2px var(--primary-neon),
+                0 0 6px var(--primary-neon),
+                0 0 10px #00a1a1;
             font-family: 'Orbitron', monospace;
             font-weight: 900;
         }
 
         .neon-border {
-            border: 2px solid var(--primary-neon);
+            border: 1px solid var(--primary-neon);
             box-shadow: 
-                0 0 10px var(--primary-neon),
-                inset 0 0 10px rgba(0,255,255,0.1);
+                0 0 4px var(--primary-neon),
+                inset 0 0 4px rgba(0,255,255,0.1);
         }
 
         .cyber-card {
             background: linear-gradient(135deg, var(--bg-card), rgba(0,255,255,0.05));
-            border: 1px solid rgba(0,255,255,0.3);
+            border: 1px solid rgba(0,255,255,0.2);
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
@@ -114,7 +120,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0,255,255,0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(0,255,255,0.05), transparent);
             transform: rotate(45deg);
             transition: all 0.5s ease;
             opacity: 0;
@@ -133,8 +139,8 @@
         .cyber-card:hover {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 
-                0 20px 40px rgba(0,255,255,0.3),
-                0 0 20px rgba(0,255,255,0.5);
+                0 10px 20px rgba(0,255,255,0.15),
+                0 0 10px rgba(0,255,255,0.2);
         }
 
         .glitch-text {
@@ -187,18 +193,18 @@
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 3px;
+            height: 3px;
             background: var(--primary-neon);
             border-radius: 50%;
             animation: float 10s infinite linear;
-            box-shadow: 0 0 6px var(--primary-neon);
+            box-shadow: 0 0 4px var(--primary-neon);
         }
 
         @keyframes float {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
@@ -222,7 +228,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: all 0.5s ease;
         }
 
@@ -232,7 +238,7 @@
 
         .cyber-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px var(--primary-neon);
+            box-shadow: 0 0 10px var(--primary-neon);
         }
 
         .data-stream {
@@ -251,23 +257,24 @@
             width: 1px;
             height: 100px;
             animation: dataFlow 8s linear infinite;
+            opacity: 0.7;
         }
 
         @keyframes dataFlow {
             0% { transform: translateY(-100px); opacity: 0; }
-            50% { opacity: 1; }
+            50% { opacity: 0.7; }
             100% { transform: translateY(100vh); opacity: 0; }
         }
 
         .pulse-ring {
             position: absolute;
-            border: 2px solid var(--primary-neon);
+            border: 1px solid var(--primary-neon);
             border-radius: 50%;
             animation: pulseRing 3s ease-out infinite;
         }
 
         @keyframes pulseRing {
-            0% { transform: scale(0.8); opacity: 1; }
+            0% { transform: scale(0.8); opacity: 0.8; }
             100% { transform: scale(2); opacity: 0; }
         }
 
@@ -319,19 +326,19 @@
             font-family: 'Orbitron', monospace;
             font-size: 1.5rem;
             color: var(--primary-neon);
-            text-shadow: 0 0 10px var(--primary-neon);
+            text-shadow: 0 0 8px var(--primary-neon);
             margin-top: 2rem;
             animation: textGlow 2s ease-in-out infinite alternate;
         }
 
         @keyframes textGlow {
-            0% { text-shadow: 0 0 10px var(--primary-neon); }
-            100% { text-shadow: 0 0 20px var(--primary-neon), 0 0 30px var(--primary-neon); }
+            0% { text-shadow: 0 0 8px var(--primary-neon); }
+            100% { text-shadow: 0 0 12px var(--primary-neon), 0 0 15px var(--primary-neon); }
         }
 
         .ad-container {
-            background: rgba(0,255,255,0.1);
-            border: 1px solid rgba(0,255,255,0.3);
+            background: rgba(0,255,255,0.05);
+            border: 1px solid rgba(0,255,255,0.2);
             border-radius: 10px;
             padding: 15px;
             margin: 20px 0;
@@ -365,7 +372,7 @@
             font-family: 'Courier New', monospace;
             font-size: 14px;
             animation: matrixFall 15s linear infinite;
-            opacity: 0.3;
+            opacity: 0.2;
         }
 
         @keyframes matrixFall {
@@ -386,7 +393,7 @@
             width: 50px;
             height: 50px;
             background: rgba(0,255,255,0.1);
-            border: 2px solid var(--primary-neon);
+            border: 1px solid var(--primary-neon);
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -401,7 +408,7 @@
             background: var(--primary-neon);
             color: var(--bg-dark);
             transform: scale(1.1);
-            box-shadow: 0 0 20px var(--primary-neon);
+            box-shadow: 0 0 10px var(--primary-neon);
         }
 
         .section-title {
@@ -426,14 +433,14 @@
 
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin: 3rem 0;
         }
 
         .feature-card {
             background: var(--bg-card);
-            border: 1px solid rgba(0,255,255,0.3);
+            border: 1px solid rgba(0,255,255,0.2);
             border-radius: 15px;
             padding: 2rem;
             text-align: center;
@@ -444,14 +451,14 @@
 
         .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,255,255,0.3);
+            box-shadow: 0 10px 20px rgba(0,255,255,0.2);
         }
 
         .feature-icon {
             font-size: 3rem;
             color: var(--primary-neon);
             margin-bottom: 1rem;
-            text-shadow: 0 0 10px var(--primary-neon);
+            text-shadow: 0 0 6px var(--primary-neon);
         }
 
         .floating-logo {
@@ -469,18 +476,58 @@
 
         .cyber-footer {
             background: linear-gradient(135deg, var(--bg-card), rgba(255,0,255,0.1));
-            border-top: 2px solid var(--primary-neon);
+            border-top: 1px solid var(--primary-neon);
             padding: 3rem 0;
             margin-top: 5rem;
         }
+        
+        #install-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            background: linear-gradient(135deg, var(--bg-card), rgba(0,255,0,0.1));
+            border: 1px solid var(--accent-neon);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.5);
+            transform: translateX(150%);
+            transition: transform 0.5s ease-in-out;
+            display: none;
+            max-width: 300px;
+        }
+
+        #install-container.visible {
+            transform: translateX(0);
+        }
+
+        #install-button {
+            background: var(--accent-neon);
+            color: var(--bg-dark);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        #install-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 8px var(--accent-neon);
+        }
 
         @media (max-width: 768px) {
+            .main-container {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
             .section-title {
                 font-size: 2rem;
-            }
-            
-            .feature-grid {
-                grid-template-columns: 1fr;
             }
             
             .cyber-nav {
@@ -494,10 +541,25 @@
                 height: 40px;
                 font-size: 1.2rem;
             }
+
+            #install-container {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+                width: auto;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Banner de Instalación PWA -->
+    <div id="install-container">
+        <p class="font-bold text-lg">¡Instala la App!</p>
+        <p class="text-sm">Accede directamente desde tu pantalla de inicio, sin pasar por SNEYDER ESTUDIO.</p>
+        <button id="install-button">Instalar APK</button>
+    </div>
+
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-logo">
@@ -535,7 +597,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-20">
+    <div class="container mx-auto px-4 py-20 main-container">
         <!-- Hero Section -->
         <section class="text-center mb-20">
             <h1 class="glitch-text section-title neon-text" data-text="USDT.CLAN">USDT.CLAN</h1>
@@ -563,7 +625,7 @@
             <!-- Ad Container 1 -->
             <div class="ad-container max-w-md mx-auto">
                 <a href="https://bitcoinminingatm.com/?ref=Sneyder">
-                    <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" alt="Bitcoin Mining ATM" width="468" height="60" class="mx-auto">
+                    <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" alt="Bitcoin Mining ATM" width="468" height="60" class="mx-auto max-w-full h-auto">
                 </a>
             </div>
 
@@ -594,8 +656,8 @@
 
             <!-- Ad Container 2 -->
             <div class="ad-container max-w-4xl mx-auto">
-                <div id="frame" style="width:728px; height:auto; margin: 0 auto;">
-                    <iframe data-aa='2402230' src='//ad.a-ads.com/2402230?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+                <div class="w-full max-w-[728px] mx-auto">
+                    <iframe data-aa='2402230' src='//ad.a-ads.com/2402230?size=728x90' class="w-full h-[90px] border-0 p-0 overflow-hidden bg-transparent"></iframe>
                     <a style="display: block; text-align: right; font-size: 12px; color: #00ffff;" id="preview-link" href="https://aads.com/campaigns/new/?source_id=2402230&source_type=ad_unit&partner=2402230">Advertise here</a>
                 </div>
             </div>
@@ -710,6 +772,7 @@
         // Create floating particles
         function createParticles() {
             const container = document.getElementById('particles');
+            if (!container) return;
             const particleCount = 50;
             
             for (let i = 0; i < particleCount; i++) {
@@ -725,6 +788,7 @@
         // Create data stream
         function createDataStream() {
             const container = document.getElementById('dataStream');
+            if (!container) return;
             const lineCount = 20;
             
             for (let i = 0; i < lineCount; i++) {
@@ -739,6 +803,7 @@
         // Create matrix rain
         function createMatrixRain() {
             const container = document.getElementById('matrixRain');
+            if (!container) return;
             const chars = '0123456789ABCDEF₿Ξ⟐◈';
             const columnCount = Math.floor(window.innerWidth / 20);
             
@@ -795,6 +860,134 @@
             audio.volume = 0.1;
             audio.play().catch(() => {});
         });
+
+
+        // --- PWA Installation Logic ---
+        
+        // 1. Define Manifest and Service Worker content
+        const manifestContent = {
+            "name": "USDT.CLAN",
+            "short_name": "USDT.CLAN",
+            "description": "USDT.CLAN - Revolución Crypto 2025",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#0a0a0a",
+            "theme_color": "#0a0a0a",
+            "icons": [
+                {
+                    "src": "https://i.postimg.cc/6Qj5QpmY/USDT-2.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                },
+                {
+                    "src": "https://i.postimg.cc/6Qj5QpmY/USDT-2.png",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }
+            ]
+        };
+
+        const swContent = `
+            const CACHE_NAME = 'usdt-clan-cache-v1';
+            const urlsToCache = [
+                '/',
+                '/index.html',
+                'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css',
+                'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap',
+                'https://i.postimg.cc/6Qj5QpmY/USDT-2.png'
+            ];
+
+            self.addEventListener('install', event => {
+                event.waitUntil(
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
+                            console.log('Opened cache');
+                            return cache.addAll(urlsToCache);
+                        })
+                );
+            });
+
+            self.addEventListener('fetch', event => {
+                event.respondWith(
+                    caches.match(event.request)
+                        .then(response => {
+                            if (response) {
+                                return response;
+                            }
+                            return fetch(event.request);
+                        }
+                    )
+                );
+            });
+        `;
+
+        // 2. Create and link manifest dynamically
+        const manifestBlob = new Blob([JSON.stringify(manifestContent)], { type: 'application/json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestUrl;
+        document.head.appendChild(manifestLink);
+
+        // 3. Register Service Worker
+        if ('serviceWorker' in navigator) {
+            const swBlob = new Blob([swContent], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swUrl)
+                .then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(error => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
+
+        // 4. Handle custom install prompt (only if not already installed)
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        
+        if (!isStandalone) {
+            let deferredPrompt;
+            const installContainer = document.getElementById('install-container');
+            const installButton = document.getElementById('install-button');
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                if (installContainer) {
+                    installContainer.style.display = 'block';
+                    setTimeout(() => {
+                        installContainer.classList.add('visible');
+                    }, 100);
+
+                    setTimeout(() => {
+                        if (installContainer.classList.contains('visible')) {
+                           installContainer.classList.remove('visible');
+                        }
+                    }, 10000);
+                }
+            });
+            
+            if (installButton) {
+                installButton.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        if(installContainer) installContainer.classList.remove('visible');
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(`User response to the install prompt: ${outcome}`);
+                        deferredPrompt = null;
+                    }
+                });
+            }
+
+            window.addEventListener('appinstalled', () => {
+                if(installContainer) installContainer.style.display = 'none';
+                deferredPrompt = null;
+                console.log('PWA was installed');
+            });
+        } else {
+            console.log('App is running in standalone mode. Install banner will not be shown.');
+        }
+
     </script>
 </body>
 </html>
+
