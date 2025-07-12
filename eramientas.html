@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herramientas</title>
+    <title>Herramientas - USDT.CLAN</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* Custom styles for the page */
         body {
@@ -77,6 +77,33 @@
         .animate-pulse-glow {
             animation: pulse-and-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+        
+        .tool-card {
+            background: rgba(17, 24, 39, 0.6); /* bg-gray-900 with opacity */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
+            border-color: rgba(251, 191, 36, 0.5);
+        }
+        
+        .ad-container {
+            background: rgba(31, 41, 55, 0.3); /* bg-gray-800 with opacity */
+            border: 1px solid rgba(251, 191, 36, 0.1);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
     </style>
 </head>
 <body class="text-white">
@@ -95,50 +122,100 @@
     <div class="crypto-background" id="crypto-container"></div>
 
     <!-- Page Header -->
-    <header class="fixed top-0 left-0 w-full p-4 sm:p-6 flex justify-between items-center z-10">
+    <header class="fixed top-0 left-0 w-full p-4 sm:p-6 flex justify-between items-center z-10 bg-black/30 backdrop-blur-sm">
         <img 
             src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" 
             alt="Logo" 
             class="w-12 h-12 rounded-full border-2 border-amber-400/50"
             onerror="this.onerror=null; this.src='https://placehold.co/48x48/000000/ffffff?text=Logo';"
         >
-        <h2 class="text-2xl font-bold text-white">Herramientas</h2>
+        <h2 class="text-2xl font-bold text-white uppercase" style="font-family: 'Orbitron', sans-serif;">Herramientas</h2>
     </header>
 
     <!-- Main Content -->
-    <div class="min-h-screen flex flex-col items-center justify-center p-4 pt-24 pb-20">
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 pt-28 pb-20">
         
-        <!-- Main Card -->
-        <main class="w-full max-w-md bg-gray-900 bg-opacity-60 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center border border-gray-700/50">
+        <!-- Grid for Tool Cards -->
+        <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8">
             
-            <img 
-                src="https://i.postimg.cc/d0rXg7tq/Bitcoin-3-D-Icon-Payment-transparent-800-emp.webp" 
-                alt="Icono de Bitcoin 3D" 
-                class="w-32 h-32 mx-auto mb-4"
-                onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/ffffff?text=BTC';"
-            >
+            <!-- URL Miner Card -->
+            <a href="enlaces.html" class="tool-card rounded-2xl shadow-2xl p-8 text-center block">
+                <img 
+                    src="https://i.postimg.cc/d0rXg7tq/Bitcoin-3-D-Icon-Payment-transparent-800-emp.webp" 
+                    alt="Icono de Bitcoin 3D" 
+                    class="w-32 h-32 mx-auto mb-4"
+                    onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/ffffff?text=BTC';"
+                >
+                <h1 class="text-3xl font-bold text-amber-300 tracking-wider uppercase">
+                    URL MINER
+                </h1>
+                <p class="mt-4 text-gray-300">
+                    Busque minería o agregue su enlace de invitación para que los compañeros usen la minería que compartió.
+                </p>
+                <div class="mt-8 inline-block w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 px-6 rounded-lg transition-transform transform group-hover:scale-105 shadow-lg">
+                    Ir a Enlaces
+                </div>
+            </a>
 
-            <h1 class="text-3xl font-bold text-amber-300 tracking-wider uppercase">
-                URL MINER
-            </h1>
-
-            <p class="mt-4 text-gray-300">
-                Busque minería o agregue su enlace de invitación para que los compañeros usen la minería que compartió.
-            </p>
-
-            <a href="enlaces.html" class="mt-8 inline-block w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 shadow-lg">
-                Ir a Enlaces
+            <!-- Calculator Card -->
+            <a href="calculadora.html" class="tool-card rounded-2xl shadow-2xl p-8 text-center block">
+                <img 
+                    src="https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png" 
+                    alt="Icono de Calculadora" 
+                    class="w-32 h-32 mx-auto mb-4"
+                    onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/ffffff?text=Calc';"
+                >
+                <h1 class="text-3xl font-bold text-amber-300 tracking-wider uppercase">
+                    Calculadora
+                </h1>
+                <p class="mt-4 text-gray-300">
+                    La calculadora es para medir el poder de minado de la minería y estimar ganancias.
+                </p>
+                <div class="mt-8 inline-block w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 px-6 rounded-lg transition-transform transform group-hover:scale-105 shadow-lg">
+                    Ir a Calculadora
+                </div>
             </a>
         </main>
 
-        <!-- Ad Container -->
-        <div class="mt-8 w-full max-w-full overflow-x-auto flex justify-center p-2">
+        <!-- Ad Section -->
+        <div class="mt-12 w-full max-w-5xl">
             <!-- A-ADS Ad Unit -->
-            <div id="frame" style="min-width:728px; height:auto;"><iframe data-aa='2402230' src='//ad.a-ads.com/2402230?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe><a style="display: block; text-align: right; font-size: 12px; color: #9ca3af;" id="preview-link" href="https://aads.com/campaigns/new/?source_id=2402230&source_type=ad_unit&partner=2402230">Advertise here</a></div>
+            <div class="ad-container">
+                <div style="min-width:728px; height:auto;"><iframe data-aa='2402230' src='//ad.a-ads.com/2402230?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe></div>
+            </div>
+
+            <!-- Bitcoin Mining ATM Ad -->
+            <div class="ad-container">
+                <a href="https://bitcoinminingatm.com/?ref=Sneyder" target="_blank" rel="noopener noreferrer">
+                    <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" alt="Bitcoin Mining ATM" class="rounded-lg">
+                </a>
+            </div>
+
+            <!-- CoinPayU Ad -->
+            <div class="ad-container">
+                <a href="https://www.coinpayu.com/?r=Sneyder2" target="_blank" rel="noopener noreferrer">
+                    <img title="Join coinpayu to earn!" alt="coinpayu" src="https://www.coinpayu.com/static/advertiser_banner/468X60.gif" class="rounded-lg">
+                </a>
+            </div>
+            
+            <!-- Wexon Horizontal Ad -->
+            <div class="ad-container">
+                <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/horizontal-lg.gif" class="rounded-lg shadow-lg max-w-full h-auto" alt="Anuncio Wexon Horizontal"/></a>
+            </div>
+
+            <!-- Wexon Vertical Ads -->
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mt-8">
+                <div class="ad-container">
+                    <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/vertical.gif" class="rounded-lg shadow-lg" alt="Anuncio Wexon Vertical GIF"/></a>
+                </div>
+                <div class="ad-container">
+                     <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/vertical.png" class="rounded-lg shadow-lg" alt="Anuncio Wexon Vertical PNG"/></a>
+                </div>
+            </div>
         </div>
 
         <!-- Bottom Decorative Image -->
-        <div class="mt-4">
+        <div class="mt-12">
             <img 
                 src="https://i.postimg.cc/tJH3SFBs/endless-Y8-YQpjhf-H60-IWQDkm-T.png" 
                 alt="Decoración inferior" 
@@ -149,7 +226,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="fixed bottom-0 left-0 w-full p-4 text-center text-gray-500 text-sm">
+    <footer class="fixed bottom-0 left-0 w-full p-4 text-center text-gray-500 text-sm bg-black/30 backdrop-blur-sm">
         <p>2025 SNEYDER ESTUDIO USDT.CLAN</p>
     </footer>
 
@@ -158,15 +235,12 @@
             // --- Preloader Logic ---
             const preloader = document.getElementById('preloader');
             if (preloader) {
-                // Set a 4-second timer for the preloader
                 setTimeout(() => {
-                    // Start the fade-out transition
                     preloader.style.opacity = '0';
-                    // After the transition ends (1s), hide it completely
                     setTimeout(() => {
                         preloader.style.display = 'none';
-                    }, 1000); // This should match the CSS transition duration
-                }, 3000); // Wait 3 seconds before starting the 1-second fade out
+                    }, 1000); 
+                }, 3000);
             }
 
             // --- Animated Background Logic ---
@@ -208,5 +282,4 @@
 
 </body>
 </html>
-
 
