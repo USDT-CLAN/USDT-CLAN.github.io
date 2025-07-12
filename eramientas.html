@@ -6,7 +6,7 @@
     <title>Herramientas - USDT.CLAN</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Orbitron & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000000;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
 
         /* Animated background container */
@@ -59,7 +59,6 @@
         /* Preloader styles */
         #preloader {
             background-color: #000000;
-            /* The fade-out transition will take 1 second */
             transition: opacity 1s ease-out;
         }
 
@@ -84,6 +83,9 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(251, 191, 36, 0.2);
             transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .tool-card:hover {
@@ -97,12 +99,14 @@
             border: 1px solid rgba(251, 191, 36, 0.1);
             border-radius: 1rem;
             padding: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.5rem auto; /* Centered with auto margin */
             display: flex;
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
+            width: 100%;
+            max-width: 100%;
         }
     </style>
 </head>
@@ -122,55 +126,60 @@
     <div class="crypto-background" id="crypto-container"></div>
 
     <!-- Page Header -->
-    <header class="fixed top-0 left-0 w-full p-4 sm:p-6 flex justify-between items-center z-10 bg-black/30 backdrop-blur-sm">
+    <header class="fixed top-0 left-0 w-full p-4 sm:p-6 flex justify-between items-center z-20 bg-black/30 backdrop-blur-sm">
         <img 
             src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" 
             alt="Logo" 
             class="w-12 h-12 rounded-full border-2 border-amber-400/50"
             onerror="this.onerror=null; this.src='https://placehold.co/48x48/000000/ffffff?text=Logo';"
         >
-        <h2 class="text-2xl font-bold text-white uppercase" style="font-family: 'Orbitron', sans-serif;">Herramientas</h2>
+        <h2 class="text-xl sm:text-2xl font-bold text-white uppercase" style="font-family: 'Orbitron', sans-serif;">Herramientas</h2>
     </header>
 
     <!-- Main Content -->
-    <div class="min-h-screen flex flex-col items-center justify-center p-4 pt-28 pb-20">
+    <div class="relative min-h-screen flex flex-col items-center justify-center p-4 pt-28 pb-20 z-10">
         
         <!-- Grid for Tool Cards -->
-        <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8">
+        <main class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8">
             
             <!-- URL Miner Card -->
-            <a href="enlaces.html" class="tool-card rounded-2xl shadow-2xl p-8 text-center block">
-                <img 
-                    src="https://i.postimg.cc/d0rXg7tq/Bitcoin-3-D-Icon-Payment-transparent-800-emp.webp" 
-                    alt="Icono de Bitcoin 3D" 
-                    class="w-32 h-32 mx-auto mb-4"
-                    onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/ffffff?text=BTC';"
-                >
-                <h1 class="text-3xl font-bold text-amber-300 tracking-wider uppercase">
-                    URL MINER
-                </h1>
-                <p class="mt-4 text-gray-300">
-                    Busque minería o agregue su enlace de invitación para que los compañeros usen la minería que compartió.
-                </p>
+            <a href="enlaces.html" class="tool-card rounded-2xl shadow-2xl p-6 sm:p-8 text-center block">
+                <div class="flex-grow">
+                    <img 
+                        src="https://i.postimg.cc/d0rXg7tq/Bitcoin-3-D-Icon-Payment-transparent-800-emp.webp" 
+                        alt="Icono de Bitcoin 3D" 
+                        class="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4"
+                        onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/ffffff?text=BTC';"
+                    >
+                    <h1 class="text-2xl sm:text-3xl font-bold text-amber-300 tracking-wider uppercase">
+                        URL MINER
+                    </h1>
+                    <p class="mt-4 text-gray-300 text-sm sm:text-base">
+                        Busque minería o agregue su enlace de invitación para que los compañeros usen la minería que compartió.
+                    </p>
+                </div>
                 <div class="mt-8 inline-block w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 px-6 rounded-lg transition-transform transform group-hover:scale-105 shadow-lg">
                     Ir a Enlaces
                 </div>
             </a>
 
             <!-- Calculator Card -->
-            <a href="calculadora.html" class="tool-card rounded-2xl shadow-2xl p-8 text-center block">
-                <img 
-                    src="https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png" 
-                    alt="Icono de Calculadora" 
-                    class="w-32 h-32 mx-auto mb-4"
-                    onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/ffffff?text=Calc';"
-                >
-                <h1 class="text-3xl font-bold text-amber-300 tracking-wider uppercase">
-                    Calculadora
-                </h1>
-                <p class="mt-4 text-gray-300">
-                    La calculadora es para medir el poder de minado de la minería y estimar ganancias.
-                </p>
+            <!-- FIX: Changed href from "calculadora.html" to "calcu.html" as requested -->
+            <a href="calcu.html" class="tool-card rounded-2xl shadow-2xl p-6 sm:p-8 text-center block">
+                <div class="flex-grow">
+                    <img 
+                        src="https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png" 
+                        alt="Icono de Calculadora" 
+                        class="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4"
+                        onerror="this.onerror=null; this.src='https://placehold.co/128x128/111827/ffffff?text=Calc';"
+                    >
+                    <h1 class="text-2xl sm:text-3xl font-bold text-amber-300 tracking-wider uppercase">
+                        Calculadora
+                    </h1>
+                    <p class="mt-4 text-gray-300 text-sm sm:text-base">
+                        La calculadora es para medir el poder de minado de la minería y estimar ganancias.
+                    </p>
+                </div>
                 <div class="mt-8 inline-block w-full bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 px-6 rounded-lg transition-transform transform group-hover:scale-105 shadow-lg">
                     Ir a Calculadora
                 </div>
@@ -178,55 +187,53 @@
         </main>
 
         <!-- Ad Section -->
-        <div class="mt-12 w-full max-w-5xl">
+        <div class="mt-12 w-full max-w-5xl px-2">
             <!-- A-ADS Ad Unit -->
-            <div class="ad-container">
-                <div style="min-width:728px; height:auto;"><iframe data-aa='2402230' src='//ad.a-ads.com/2402230?size=728x90' style='width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe></div>
+            <div class="ad-container overflow-x-auto">
+                <div class="flex-shrink-0" style="width:728px; height:90px;">
+                    <iframe data-aa='2402230' src='//ad.a-ads.com/2402230?size=728x90' class="w-full h-full border-0 p-0 overflow-hidden bg-transparent"></iframe>
+                </div>
             </div>
 
-            <!-- Bitcoin Mining ATM Ad -->
+            <!-- Other Ads -->
             <div class="ad-container">
                 <a href="https://bitcoinminingatm.com/?ref=Sneyder" target="_blank" rel="noopener noreferrer">
-                    <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" alt="Bitcoin Mining ATM" class="rounded-lg">
+                    <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" alt="Bitcoin Mining ATM" class="max-w-full h-auto rounded-lg">
                 </a>
             </div>
-
-            <!-- CoinPayU Ad -->
             <div class="ad-container">
                 <a href="https://www.coinpayu.com/?r=Sneyder2" target="_blank" rel="noopener noreferrer">
-                    <img title="Join coinpayu to earn!" alt="coinpayu" src="https://www.coinpayu.com/static/advertiser_banner/468X60.gif" class="rounded-lg">
+                    <img title="Join coinpayu to earn!" alt="coinpayu" src="https://www.coinpayu.com/static/advertiser_banner/468X60.gif" class="max-w-full h-auto rounded-lg">
                 </a>
             </div>
-            
-            <!-- Wexon Horizontal Ad -->
             <div class="ad-container">
-                <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/horizontal-lg.gif" class="rounded-lg shadow-lg max-w-full h-auto" alt="Anuncio Wexon Horizontal"/></a>
+                <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/horizontal-lg.gif" class="max-w-full h-auto rounded-lg shadow-lg" alt="Anuncio Wexon Horizontal"/></a>
             </div>
 
-            <!-- Wexon Vertical Ads -->
-            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mt-8">
+            <!-- Vertical Ads -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8">
                 <div class="ad-container">
-                    <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/vertical.gif" class="rounded-lg shadow-lg" alt="Anuncio Wexon Vertical GIF"/></a>
+                    <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/vertical.gif" class="max-w-full h-auto rounded-lg shadow-lg" alt="Anuncio Wexon Vertical GIF"/></a>
                 </div>
                 <div class="ad-container">
-                     <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/vertical.png" class="rounded-lg shadow-lg" alt="Anuncio Wexon Vertical PNG"/></a>
+                     <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/vertical.png" class="max-w-full h-auto rounded-lg shadow-lg" alt="Anuncio Wexon Vertical PNG"/></a>
                 </div>
             </div>
         </div>
 
         <!-- Bottom Decorative Image -->
-        <div class="mt-12">
+        <div class="mt-12 w-full max-w-xs sm:max-w-sm mx-auto">
             <img 
                 src="https://i.postimg.cc/tJH3SFBs/endless-Y8-YQpjhf-H60-IWQDkm-T.png" 
                 alt="Decoración inferior" 
-                class="w-full max-w-xs sm:max-w-sm mx-auto opacity-60"
+                class="w-full h-auto opacity-60"
                 onerror="this.style.display='none'"
             >
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="fixed bottom-0 left-0 w-full p-4 text-center text-gray-500 text-sm bg-black/30 backdrop-blur-sm">
+    <footer class="relative bottom-0 left-0 w-full p-4 text-center text-gray-500 text-sm bg-black/30 backdrop-blur-sm z-10">
         <p>2025 SNEYDER ESTUDIO USDT.CLAN</p>
     </footer>
 
