@@ -13,7 +13,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-neon: #00ffff;
@@ -108,6 +108,7 @@
             background: linear-gradient(135deg, var(--bg-card), rgba(0,255,255,0.05));
             border: 1px solid rgba(0,255,255,0.2);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
@@ -344,6 +345,9 @@
             margin: 20px 0;
             position: relative;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .ad-container::before {
@@ -492,6 +496,7 @@
             padding: 1rem;
             border-radius: 10px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 0 12px rgba(0, 255, 0, 0.5);
             transform: translateX(150%);
             transition: transform 0.5s ease-in-out;
@@ -610,27 +615,30 @@
             </p>
 
             <!-- Main Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <div class="flex flex-wrap gap-4 justify-center items-center mb-12">
                 <a href="Menu.html" class="cyber-button px-8 py-3 rounded-lg">
                     <i class="fas fa-rocket mr-2"></i> Acceder al Sistema
                 </a>
                 <a href="Noticias-Cryptos.html" class="cyber-button px-8 py-3 rounded-lg">
                     <i class="fas fa-newspaper mr-2"></i> Noticias Quantum
                 </a>
+                <a href="eramientas.html" class="cyber-button px-8 py-3 rounded-lg">
+                    <i class="fas fa-tools mr-2"></i> Herramientas
+                </a>
                 <a href="https://tinyurl.com/bdex7vnv" target="_blank" class="cyber-button px-8 py-3 rounded-lg">
                     <i class="fas fa-download mr-2"></i> Descargar App
                 </a>
             </div>
 
-            <!-- Ad Container 1 -->
-            <div class="ad-container max-w-md mx-auto">
-                <a href="https://bitcoinminingatm.com/?ref=Sneyder">
-                    <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" alt="Bitcoin Mining ATM" width="468" height="60" class="mx-auto max-w-full h-auto">
+            <!-- Ad Container 1: Bitcoin Mining ATM -->
+            <div class="ad-container max-w-lg mx-auto">
+                <a href="https://bitcoinminingatm.com/?ref=Sneyder" target="_blank" rel="noopener noreferrer">
+                    <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" alt="Bitcoin Mining ATM" class="mx-auto max-w-full h-auto rounded">
                 </a>
             </div>
 
             <!-- Special Features -->
-            <div class="cyber-card p-8 rounded-2xl max-w-4xl mx-auto mb-12">
+            <div class="cyber-card p-8 rounded-2xl max-w-4xl mx-auto my-12">
                 <h3 class="text-2xl font-bold text-cyan-400 mb-4">
                     <i class="fas fa-shield-alt mr-2"></i> Tecnología Cuántica Avanzada
                 </h3>
@@ -653,17 +661,14 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Ad Container 2 -->
+            
+            <!-- Ad Container 2: Wexon Horizontal -->
             <div class="ad-container max-w-4xl mx-auto">
-                <div class="w-full max-w-[728px] mx-auto">
-                    <iframe data-aa='2402230' src='//ad.a-ads.com/2402230?size=728x90' class="w-full h-[90px] border-0 p-0 overflow-hidden bg-transparent"></iframe>
-                    <a style="display: block; text-align: right; font-size: 12px; color: #00ffff;" id="preview-link" href="https://aads.com/campaigns/new/?source_id=2402230&source_type=ad_unit&partner=2402230">Advertise here</a>
-                </div>
+                 <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/horizontal-lg.gif" class="mx-auto rounded-lg shadow-lg max-w-full h-auto" alt="Anuncio Wexon Horizontal"/></a>
             </div>
 
             <!-- New Section -->
-            <div class="cyber-card p-8 rounded-2xl max-w-4xl mx-auto mb-12">
+            <div class="cyber-card p-8 rounded-2xl max-w-4xl mx-auto my-12">
                 <h3 class="text-2xl font-bold text-purple-400 mb-4">
                     <i class="fas fa-wand-magic-sparkles mr-2"></i> Nuevas Características
                 </h3>
@@ -709,6 +714,14 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Ad Container 3: CoinPayU -->
+        <div class="ad-container max-w-lg mx-auto my-12">
+            <a href="https://www.coinpayu.com/?r=Sneyder2" target="_blank" rel="noopener noreferrer">
+                <img title="Join coinpayu to earn!" alt="coinpayu" src="https://www.coinpayu.com/static/advertiser_banner/468X60.gif" class="mx-auto max-w-full h-auto rounded">
+            </a>
+        </div>
+
 
         <!-- Community Section -->
         <section class="mb-20">
@@ -730,6 +743,16 @@
                 </a>
             </div>
         </section>
+        
+        <!-- Ad Container 4: Vertical Ads -->
+        <div class="my-12 flex flex-col md:flex-row justify-center items-center gap-8">
+            <div class="ad-container">
+                <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/vertical.gif" class="rounded-lg shadow-lg" alt="Anuncio Wexon Vertical GIF"/></a>
+            </div>
+            <div class="ad-container">
+                 <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer"><img src="https://wexon.pro/img/a/vertical.png" class="rounded-lg shadow-lg" alt="Anuncio Wexon Vertical PNG"/></a>
+            </div>
+        </div>
 
         <!-- Review Section -->
         <section class="mb-20">
@@ -754,7 +777,18 @@
                 <h3 class="text-3xl font-bold neon-text mb-2">USDT.CLAN</h3>
                 <p class="text-gray-400">Plataforma Informativa Quantum</p>
             </div>
-            <div class="text-gray-400 text-sm">
+            <!-- Ad Container 5: Footer Ads -->
+            <div class="ad-container max-w-lg mx-auto my-6">
+                <a href="https://cylindrical-wave.com/dUm.FVz/ddG/NvvQZBGVUb/geHmX9VujZfUtl/kyPQTJYO0/NqzaQv1-N/zXAMtaNnjtQo3xNqDdUu3/MSQD" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-200">
+                    <i class="fas fa-ad mr-2"></i> Oferta Especial
+                </a>
+            </div>
+             <div class="ad-container max-w-lg mx-auto my-6">
+                <a href="https://cylindrical-wave.com/dsmRF.zKdCGpNFvzZpGIUn/germF9muUZVU/l/k/PfTLYW0CNpzaQP1-NszPArtwN/jVQO3gNaDGUU3QMWS/Z/sbaCW/1np/dBDA0/xq" target="_blank" rel="noopener noreferrer" class="text-purple-400 hover:text-purple-300">
+                    <i class="fas fa-gift mr-2"></i> Promoción Limitada
+                </a>
+            </div>
+            <div class="text-gray-400 text-sm mt-6">
                 <p>© 2025 Sneyder Estudio. Todos los derechos reservados.</p>
                 <p class="mt-2">Plataforma únicamente informativa y educativa.</p>
             </div>
@@ -830,6 +864,7 @@
             trail.style.left = e.clientX + 'px';
             trail.style.top = e.clientY + 'px';
             trail.style.transform = 'translate(-50%, -50%)';
+            trail.style.zIndex = '9999';
             trail.style.animation = 'fadeOut 1s ease-out forwards';
             document.body.appendChild(trail);
             
@@ -891,9 +926,10 @@
             const CACHE_NAME = 'usdt-clan-cache-v1';
             const urlsToCache = [
                 '/',
-                '/index.html',
+                './index.html', // Make sure to cache the root HTML file
                 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css',
                 'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
                 'https://i.postimg.cc/6Qj5QpmY/USDT-2.png'
             ];
 
@@ -931,14 +967,16 @@
 
         // 3. Register Service Worker
         if ('serviceWorker' in navigator) {
-            const swBlob = new Blob([swContent], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(swBlob);
-            navigator.serviceWorker.register(swUrl)
-                .then(registration => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                }).catch(error => {
-                    console.log('Service Worker registration failed:', error);
-                });
+            window.addEventListener('load', () => {
+                const swBlob = new Blob([swContent], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(swBlob);
+                navigator.serviceWorker.register(swUrl)
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    }).catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
         }
 
         // 4. Handle custom install prompt (only if not already installed)
