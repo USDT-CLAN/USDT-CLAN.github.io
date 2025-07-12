@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Minería Crypto - SNEYDER ESTUDIO</title>
+    <meta name="description" content="Calculadora avanzada de minería de criptomonedas con datos en tiempo real y notificaciones">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQ2FsY3VsYWRvcmEgZGUgTWluZXLDrWEgQ3J5cHRvIiwic2hvcnRfbmFtZSI6Ik1pbmVyaWEgQ3J5cHRvIiwiZGVzY3JpcHRpb24iOiJDYWxjdWxhZG9yYSBhdmFuemFkYSBkZSBtaW5lcsOtYSBkZSBjcmlwdG9tb25lZGFzIiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vaS5wb3N0aW1nLmNjL0d0NDVIMXMxL1BpY3NhcnQtMjUtMDctMTEtMDMtNTUtMzktNTYzLnBuZyIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9wbmcifV0sInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsInRoZW1lX2NvbG9yIjoiIzFmMjkzNyIsImJhY2tncm91bmRfY29sb3IiOiIjZjlmYWZiIn0=">
+    <style>
+        .dark { background-color: #1f2937; color: #f9fafb; }
+        .dark .bg-white { background-color: #374151; }
+        .dark .bg-gray-50 { background-color: #4b5563; }
+        .dark .text-gray-900 { color: #f9fafb; }
+        .dark .text-gray-700 { color: #d1d5db; }
+        .dark .text-gray-600 { color: #9ca3af; }
+        .dark .border-gray-300 { border-color: #6b7280; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .crypto-icon { width: 24px; height: 24px; border-radius: 50%; }
+        .tooltip { position: relative; display: inline-block; cursor: help; }
+        .tooltip .tooltiptext { visibility: hidden; width: 220px; background-color: #555; color: white; text-align: center; border-radius: 6px; padding: 5px 10px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .mining-card { transition: transform 0.3s ease; }
+        .mining-card:hover { transform: translateY(-5px); }
+        .chart-container { position: relative; height: 400px; margin: 20px 0; }
+        .status-online { color: #10b981; }
+        .status-offline { color: #ef4444; }
+        .notification-toast { position: fixed; top: 20px; right: 20px; z-index: 1000; min-width: 300px; }
+        .notification { background: white; border-left: 4px solid #3b82f6; padding: 16px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateX(400px); transition: transform 0.3s ease; }
+        .notification.show { transform: translateX(0); }
+        .notification.success { border-left-color: #10b981; }
+        .notification.error { border-left-color: #ef4444; }
+        .notification.warning { border-left-color: #f59e0b; }
+        .notification.info { border-left-color: #3b82f6; }
+        .hardware-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .progress-bar { background: #e5e7eb; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 8px; background: linear-gradient(90deg, #10b981, #3b82f6); transition: width 0.3s ease; }
+        .crypto-logo { width: 32px; height: 32px; margin-right: 10px; }
+        .loading-spinner { border: 4px solid #f3f4f6; border-top: 4px solid #3b82f6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .currency-selector { position: relative; }
+        .currency-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #d1d5db; border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 100; }
+        .currency-option { padding: 10px; cursor: pointer; display: flex; align-items: center; }
+        .currency-option:hover { background-color: #f3f4f6; }
+        .profit-positive { color: #10b981; }
+        .profit-negative { color: #ef4444; }
+        .roi-excellent { background-color: #d1fae5; color: #065f46; padding: 4px 8px; border-radius: 12px; font-size: 12px; }
+        .roi-good { background-color: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 12px; font-size: 12px; }
+        .roi-poor { background-color: #fee2e2; color: #991b1b; padding: 4px 8px; border-radius: 12px; font-size: 12px; }
+        .api-status { display: flex; align-items: center; gap: 8px; }
+        .api-status.active { color: #10b981; }
+        .api-status.inactive { color: #ef4444; }
+        .price-change-positive { color: #10b981; }
+        .price-change-negative { color: #ef4444; }
+        .market-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .market-card { background: white; border-radius: 12px; padding: 16px; border: 1px solid #e5e7eb; }
+        .dark .market-card { background: #374151; border-color: #6b7280; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .brand-logo { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+        .notification-permission { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 24px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1001; max-width: 400px; width: 90%; }
+        .dark .notification-permission { background: #374151; color: #f9fafb; }
+        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; }
+        
+        /* Optimización para PDF */
+        @media print {
+            .notification-toast, .notification-permission, .overlay { display: none !important; }
+            body { font-size: 12px; }
+            .chart-container { height: 300px; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 transition-colors duration-300">
+    
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-toast"></div>
+    
+    <!-- Notification Permission Modal -->
+    <div id="notification-permission-modal" class="hidden">
+        <div class="overlay"></div>
+        <div class="notification-permission">
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-bell text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Activar Notificaciones</h3>
+                <p class="text-gray-600 mb-4">Recibe actualizaciones sobre precios de criptomonedas y resultados de minería</p>
+                <div class="flex gap-3">
+                    <button id="allow-notifications" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                        Permitir
+                    </button>
+                    <button id="deny-notifications" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400">
+                        Después
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png" alt="SNEYDER ESTUDIO" class="brand-logo">
+                    <div>
+                        <h1 class="text-3xl font-bold">Calculadora de Minería Crypto</h1>
+                        <p class="text-blue-200">Análisis avanzado de rentabilidad con datos en tiempo real</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="api-status active">
+                        <div class="w-3 h-3 bg-green-500 rounded-full pulse"></div>
+                        <span class="text-sm font-medium">API Activa</span>
+                    </div>
+                    <button id="notification-toggle" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
+                        <i class="fas fa-bell text-xl"></i>
+                    </button>
+                    <button id="dark-mode-toggle" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
+                        <i class="fas fa-moon text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- Market Overview -->
+        <div class="market-data">
+            <div class="market-card">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <img id="btc-icon" class="crypto-logo" src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png" alt="Bitcoin">
+                        <div>
+                            <h3 class="font-semibold">Bitcoin</h3>
+                            <p class="text-sm text-gray-600">BTC</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold" id="btc-price">$--</p>
+                        <p class="text-sm" id="btc-change">--</p>
+                    </div>
+                </div>
+            </div>
+            <div class="market-card">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <img id="eth-icon" class="crypto-logo" src="https://assets.coingecko.com/coins/images/279/large/ethereum.png" alt="Ethereum">
+                        <div>
+                            <h3 class="font-semibold">Ethereum</h3>
+                            <p class="text-sm text-gray-600">ETH</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold" id="eth-price">$--</p>
+                        <p class="text-sm" id="eth-change">--</p>
+                    </div>
+                </div>
+            </div>
+            <div class="market-card">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <img id="ltc-icon" class="crypto-logo" src="https://assets.coingecko.com/coins/images/2/large/litecoin.png" alt="Litecoin">
+                        <div>
+                            <h3 class="font-semibold">Litecoin</h3>
+                            <p class="text-sm text-gray-600">LTC</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-bold" id="ltc-price">$--</p>
+                        <p class="text-sm" id="ltc-change">--</p>
+                    </div>
+                </div>
+            </div>
+            <div class="market-card">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-chart-line text-2xl text-blue-600 mr-3"></i>
+                        <div>
+                            <h3 class="font-semibold">Última Actualización</h3>
+                            <p class="text-sm text-gray-600" id="last-update">--</p>
+                        </div>
+                    </div>
+                    <button id="refresh-data" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator and Results Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Input Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-cogs mr-3 text-blue-600"></i>
+                        Configuración de Minería
+                    </h2>
+                    
+                    <form id="mining-form" class="space-y-6">
+                        
+                        <!-- Cryptocurrency Selection -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">
+                                    Criptomoneda
+                                    <span class="tooltip">
+                                        <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                        <span class="tooltiptext">Selecciona la criptomoneda que deseas minar</span>
+                                    </span>
+                                </label>
+                                <div class="currency-selector">
+                                    <button type="button" id="crypto-selector" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <img id="selected-crypto-icon" class="crypto-logo" src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png" alt="Bitcoin">
+                                            <span id="selected-crypto-name">Bitcoin (BTC)</span>
+                                        </div>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div id="crypto-dropdown" class="currency-dropdown hidden">
+                                        <div class="currency-option" data-crypto="bitcoin" data-symbol="BTC" data-icon="https://assets.coingecko.com/coins/images/1/large/bitcoin.png">
+                                            <img class="crypto-logo" src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png" alt="Bitcoin">
+                                            <span>Bitcoin (BTC)</span>
+                                        </div>
+                                        <div class="currency-option" data-crypto="ethereum" data-symbol="ETH" data-icon="https://assets.coingecko.com/coins/images/279/large/ethereum.png">
+                                            <img class="crypto-logo" src="https://assets.coingecko.com/coins/images/279/large/ethereum.png" alt="Ethereum">
+                                            <span>Ethereum (ETH)</span>
+                                        </div>
+                                        <div class="currency-option" data-crypto="litecoin" data-symbol="LTC" data-icon="https://assets.coingecko.com/coins/images/2/large/litecoin.png">
+                                            <img class="crypto-logo" src="https://assets.coingecko.com/coins/images/2/large/litecoin.png" alt="Litecoin">
+                                            <span>Litecoin (LTC)</span>
+                                        </div>
+                                        <div class="currency-option" data-crypto="monero" data-symbol="XMR" data-icon="https://assets.coingecko.com/coins/images/69/large/monero_logo.png">
+                                            <img class="crypto-logo" src="https://assets.coingecko.com/coins/images/69/large/monero_logo.png" alt="Monero">
+                                            <span>Monero (XMR)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">
+                                    Precio Actual
+                                    <span class="tooltip">
+                                        <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                        <span class="tooltiptext">Precio actual de la criptomoneda en USD</span>
+                                    </span>
+                                </label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="number" id="crypto-price" class="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" placeholder="0.00" step="0.01" readonly>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">USD</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hardware Configuration -->
+                        <div class="border-t pt-6">
+                            <h3 class="text-lg font-semibold mb-4">Hardware de Minería</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Modelo de Hardware
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Selecciona el modelo de tu equipo de minería</span>
+                                        </span>
+                                    </label>
+                                    <select id="hardware-model" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3">
+                                        <option value="">Seleccionar modelo...</option>
+                                        <option value="antminer-s19-pro">Antminer S19 Pro (110 TH/s)</option>
+                                        <option value="antminer-s17">Antminer S17 (56 TH/s)</option>
+                                        <option value="whatsminer-m30">WhatsMiner M30S (86 TH/s)</option>
+                                        <option value="rtx-3090">RTX 3090 (120 MH/s)</option>
+                                        <option value="rtx-3080">RTX 3080 (100 MH/s)</option>
+                                        <option value="rtx-3070">RTX 3070 (60 MH/s)</option>
+                                        <option value="custom">Personalizado</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Cantidad de Equipos
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Número de equipos de minería que posees</span>
+                                        </span>
+                                    </label>
+                                    <input type="number" id="hardware-quantity" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" min="1" value="1">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Hashrate
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Velocidad de procesamiento del hardware</span>
+                                        </span>
+                                    </label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" id="hashrate" class="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" placeholder="0" step="0.01">
+                                        <select id="hashrate-unit" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-3">
+                                            <option value="TH/s">TH/s</option>
+                                            <option value="GH/s">GH/s</option>
+                                            <option value="MH/s">MH/s</option>
+                                            <option value="KH/s">KH/s</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Consumo Energético
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Potencia consumida por el hardware en vatios</span>
+                                        </span>
+                                    </label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" id="power-consumption" class="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" placeholder="0">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">W</span>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Eficiencia
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Eficiencia energética del hardware</span>
+                                        </span>
+                                    </label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" id="efficiency" class="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" placeholder="0" step="0.01" readonly>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">W/TH</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Operational Costs -->
+                        <div class="border-t pt-6">
+                            <h3 class="text-lg font-semibold mb-4">Costos Operativos</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Costo Eléctrico
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Costo de electricidad por kWh</span>
+                                        </span>
+                                    </label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" id="electricity-cost" class="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" placeholder="0.12" step="0.01" value="0.12">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">USD/kWh</span>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Pool Fee
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Comisión del pool de minería</span>
+                                        </span>
+                                    </label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" id="pool-fee" class="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" placeholder="1.0" step="0.1" value="1.0">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Costo Inicial del Hardware
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Inversión inicial en hardware</span>
+                                        </span>
+                                    </label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" id="hardware-cost" class="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" placeholder="0.00" step="0.01">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">USD</span>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">
+                                        Costos Adicionales
+                                        <span class="tooltip">
+                                            <i class="fas fa-info-circle text-gray-400 ml-1"></i>
+                                            <span class="tooltiptext">Mantenimiento, refrigeración, alquiler (mensual)</span>
+                                        </span>
+                                    </label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" id="additional-costs" class="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3" placeholder="0.00" step="0.01">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">USD/mes</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calculate Button -->
+                        <div class="border-t pt-6">
+                            <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-calculator mr-2"></i>
+                                Calcular Rentabilidad
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="lg:col-span-1">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-chart-pie mr-3 text-green-600"></i>
+                        Resultados
+                    </h2>
+                    
+                    <div id="results-loading" class="text-center py-8 hidden">
+                        <div class="loading-spinner mb-4"></div>
+                        <p class="text-gray-600">Calculando rentabilidad...</p>
+                    </div>
+                    
+                    <div id="results-content" class="space-y-4">
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-lg p-4">
+                            <h3 class="font-semibold text-green-800 dark:text-green-200 mb-2">Ingresos Diarios</h3>
+                            <div class="text-2xl font-bold text-green-600 dark:text-green-400">
+                                <span id="daily-income">$0.00</span>
+                            </div>
+                            <div class="text-sm text-green-700 dark:text-green-300">
+                                <span id="daily-crypto">0.00000000 BTC</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900 dark:to-red-800 rounded-lg p-4">
+                            <h3 class="font-semibold text-red-800 dark:text-red-200 mb-2">Costos Diarios</h3>
+                            <div class="text-2xl font-bold text-red-600 dark:text-red-400">
+                                <span id="daily-costs">$0.00</span>
+                            </div>
+                            <div class="text-sm text-red-700 dark:text-red-300">
+                                Electricidad: <span id="electricity-cost-display">$0.00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 rounded-lg p-4">
+                            <h3 class="font-semibold text-blue-800 dark:text-blue-200 mb-2">Ganancia Diaria</h3>
+                            <div class="text-2xl font-bold">
+                                <span id="daily-profit" class="text-blue-600 dark:text-blue-400">$0.00</span>
+                            </div>
+                            <div class="text-sm text-blue-700 dark:text-blue-300">
+                                Margen: <span id="profit-margin">0.0</span>%
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-lg p-4">
+                            <h3 class="font-semibold text-purple-800 dark:text-purple-200 mb-2">ROI</h3>
+                            <div class="text-lg font-bold text-purple-600 dark:text-purple-400">
+                                <span id="roi-days">-- días</span>
+                            </div>
+                            <div class="text-sm">
+                                <span id="roi-status" class="roi-good">Evaluando...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 dark:from-yellow-900 dark:to-yellow-800 rounded-lg p-4">
+                            <h3 class="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Proyección Mensual</h3>
+                            <div class="text-lg font-bold text-yellow-600 dark:text-yellow-400">
+                                <span id="monthly-profit">$0.00</span>
+                            </div>
+                            <div class="text-sm text-yellow-700 dark:text-yellow-300">
+                                30 días de operación
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-900 dark:to-indigo-800 rounded-lg p-4">
+                            <h3 class="font-semibold text-indigo-800 dark:text-indigo-200 mb-2">Eficiencia Energética</h3>
+                            <div class="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                                <span id="energy-efficiency">-- W/TH</span>
+                            </div>
+                            <div class="progress-bar mt-2">
+                                <div id="efficiency-progress" class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts Section - Solo Gráfico de Barras -->
+        <div class="mt-8">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-chart-bar mr-2 text-green-600"></i>
+                    Análisis de Rentabilidad (30 días)
+                </h3>
+                <div class="chart-container">
+                    <canvas id="profitChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hardware Database -->
+        <div class="mt-8">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-microchip mr-3 text-blue-600"></i>
+                    Hardware Recomendado
+                </h2>
+                
+                <div class="hardware-grid">
+                    <div class="mining-card bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 rounded-lg p-6 border border-blue-200 dark:border-blue-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-blue-800 dark:text-blue-200">Antminer S19 Pro</h3>
+                            <span class="bg-blue-600 text-white text-xs font-medium px-3 py-1 rounded-full">ASIC</span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-blue-700 dark:text-blue-300">Hashrate:</span>
+                                <span class="font-medium text-blue-800 dark:text-blue-200">110 TH/s</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-blue-700 dark:text-blue-300">Consumo:</span>
+                                <span class="font-medium text-blue-800 dark:text-blue-200">3,250 W</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-blue-700 dark:text-blue-300">Eficiencia:</span>
+                                <span class="font-medium text-blue-800 dark:text-blue-200">29.5 W/TH</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-blue-700 dark:text-blue-300">Precio:</span>
+                                <span class="font-medium text-green-600">$12,000</span>
+                            </div>
+                        </div>
+                        <button onclick="selectHardware('antminer-s19-pro')" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Seleccionar
+                        </button>
+                    </div>
+
+                    <div class="mining-card bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-lg p-6 border border-green-200 dark:border-green-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-green-800 dark:text-green-200">RTX 3090</h3>
+                            <span class="bg-green-600 text-white text-xs font-medium px-3 py-1 rounded-full">GPU</span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-green-700 dark:text-green-300">Hashrate:</span>
+                                <span class="font-medium text-green-800 dark:text-green-200">120 MH/s</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-green-700 dark:text-green-300">Consumo:</span>
+                                <span class="font-medium text-green-800 dark:text-green-200">320 W</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-green-700 dark:text-green-300">Eficiencia:</span>
+                                <span class="font-medium text-green-800 dark:text-green-200">2.67 W/MH</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-green-700 dark:text-green-300">Precio:</span>
+                                <span class="font-medium text-green-600">$1,500</span>
+                            </div>
+                        </div>
+                        <button onclick="selectHardware('rtx-3090')" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                            Seleccionar
+                        </button>
+                    </div>
+
+                    <div class="mining-card bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-lg p-6 border border-purple-200 dark:border-purple-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-purple-800 dark:text-purple-200">WhatsMiner M30S</h3>
+                            <span class="bg-purple-600 text-white text-xs font-medium px-3 py-1 rounded-full">ASIC</span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-purple-700 dark:text-purple-300">Hashrate:</span>
+                                <span class="font-medium text-purple-800 dark:text-purple-200">86 TH/s</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-purple-700 dark:text-purple-300">Consumo:</span>
+                                <span class="font-medium text-purple-800 dark:text-purple-200">3,344 W</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-purple-700 dark:text-purple-300">Eficiencia:</span>
+                                <span class="font-medium text-purple-800 dark:text-purple-200">38.9 W/TH</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-purple-700 dark:text-purple-300">Precio:</span>
+                                <span class="font-medium text-green-600">$10,000</span>
+                            </div>
+                        </div>
+                        <button onclick="selectHardware('whatsminer-m30')" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                            Seleccionar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <div class="flex justify-center items-center mb-4">
+                    <img src="https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png" alt="SNEYDER ESTUDIO" class="brand-logo mr-3">
+                    <h3 class="text-2xl font-bold">SNEYDER ESTUDIO</h3>
+                </div>
+                <p class="text-gray-400 mb-4">Calculadora avanzada de minería de criptomonedas con datos en tiempo real</p>
+                <div class="flex justify-center space-x-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-green-400 mr-2"></i>
+                        <span class="text-sm">Datos Seguros</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock text-blue-400 mr-2"></i>
+                        <span class="text-sm">Tiempo Real</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-chart-line text-purple-400 mr-2"></i>
+                        <span class="text-sm">Análisis Profesional</span>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-6 pt-4 text-gray-400">
+                    <p>&copy; 2025 SNEYDER ESTUDIO. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register(
+                'data:text/javascript,' + encodeURIComponent(`
+                    const CACHE_NAME = 'crypto-mining-calc-v1';
+                    const urlsToCache = ['/'];
+                    
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => cache.addAll(urlsToCache))
+                        );
+                    });
+                    
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(response => response || fetch(event.request))
+                        );
+                    });
+                    
+                    self.addEventListener('message', event => {
+                        if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
+                            self.registration.showNotification(event.data.title, event.data.options);
+                        }
+                    });
+                `)
+            );
+        }
+
+        // Application State
+        const appState = {
+            selectedCrypto: 'bitcoin',
+            cryptoPrices: {},
+            lastUpdate: null,
+            darkMode: false,
+            notificationsEnabled: false,
+            chart: null,
+            hardwareSpecs: {
+                'antminer-s19-pro': { hashrate: 110, unit: 'TH/s', power: 3250, cost: 12000, efficiency: 29.5 },
+                'antminer-s17': { hashrate: 56, unit: 'TH/s', power: 2520, cost: 8000, efficiency: 45 },
+                'whatsminer-m30': { hashrate: 86, unit: 'TH/s', power: 3344, cost: 10000, efficiency: 38.9 },
+                'rtx-3090': { hashrate: 120, unit: 'MH/s', power: 320, cost: 1500, efficiency: 2.67 },
+                'rtx-3080': { hashrate: 100, unit: 'MH/s', power: 220, cost: 700, efficiency: 2.2 },
+                'rtx-3070': { hashrate: 60, unit: 'MH/s', power: 120, cost: 500, efficiency: 2.0 }
+            }
+        };
+
+        // Notification System
+        class NotificationManager {
+            constructor() {
+                this.container = document.getElementById('notification-container');
+                this.notifications = [];
+                this.checkPermission();
+            }
+
+            async checkPermission() {
+                if ('Notification' in window) {
+                    if (Notification.permission === 'default') {
+                        // Show permission modal after 3 seconds
+                        setTimeout(() => this.showPermissionModal(), 3000);
+                    } else if (Notification.permission === 'granted') {
+                        appState.notificationsEnabled = true;
+                        this.show('Notificaciones activadas correctamente', 'success');
+                    }
+                }
+            }
+
+            showPermissionModal() {
+                const modal = document.getElementById('notification-permission-modal');
+                modal.classList.remove('hidden');
+                
+                document.getElementById('allow-notifications').onclick = () => {
+                    this.requestPermission();
+                    modal.classList.add('hidden');
+                };
+                
+                document.getElementById('deny-notifications').onclick = () => {
+                    modal.classList.add('hidden');
+                };
+            }
+
+            async requestPermission() {
+                if ('Notification' in window) {
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        appState.notificationsEnabled = true;
+                        this.show('Notificaciones activadas correctamente', 'success');
+                        this.sendNotification('¡Bienvenido!', 'Las notificaciones están activadas para tu calculadora de minería crypto');
+                    }
+                }
+            }
+
+            sendNotification(title, body, options = {}) {
+                if (appState.notificationsEnabled && 'Notification' in window) {
+                    const notification = new Notification(title, {
+                        body: body,
+                        icon: 'https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png',
+                        badge: 'https://i.postimg.cc/Gt45H1s1/Picsart-25-07-11-03-55-39-563.png',
+                        ...options
+                    });
+                    
+                    notification.onclick = () => {
+                        window.focus();
+                        notification.close();
+                    };
+                    
+                    setTimeout(() => notification.close(), 5000);
+                }
+            }
+
+            show(message, type = 'info', duration = 5000) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas ${this.getIcon(type)} mr-3"></i>
+                            <div>
+                                <p class="font-medium">${message}</p>
+                                <p class="text-sm text-gray-500">${new Date().toLocaleTimeString()}</p>
+                            </div>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+
+                this.container.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => notification.classList.add('show'), 100);
+                
+                // Auto remove
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, duration);
+
+                this.notifications.push(notification);
+            }
+
+            getIcon(type) {
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-exclamation-circle',
+                    warning: 'fa-exclamation-triangle',
+                    info: 'fa-info-circle'
+                };
+                return icons[type] || icons.info;
+            }
+        }
+
+        // Initialize notification manager
+        const notifications = new NotificationManager();
+
+        // API Service
+        class CryptoAPIService {
+            constructor() {
+                this.baseURL = 'https://api.coingecko.com/api/v3';
+                this.cache = new Map();
+                this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+            }
+
+            async fetchCryptoPrices() {
+                const cryptos = ['bitcoin', 'ethereum', 'litecoin', 'monero'];
+                const cacheKey = 'crypto_prices';
+                
+                // Check cache
+                const cached = this.cache.get(cacheKey);
+                if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+                    return cached.data;
+                }
+
+                try {
+                    const response = await axios.get(`${this.baseURL}/simple/price?ids=${cryptos.join(',')}&vs_currencies=usd&include_24hr_change=true`);
+                    
+                    // Cache the response
+                    this.cache.set(cacheKey, {
+                        data: response.data,
+                        timestamp: Date.now()
+                    });
+                    
+                    return response.data;
+                } catch (error) {
+                    console.error('API Error:', error);
+                    notifications.show('Error al obtener datos de precios', 'error');
+                    return null;
+                }
+            }
+        }
+
+        // Initialize API service
+        const cryptoAPI = new CryptoAPIService();
+
+        // Mining Calculator
+        class MiningCalculator {
+            constructor() {
+                this.networkHashrates = {
+                    bitcoin: 400000000, // TH/s
+                    ethereum: 900000000, // MH/s
+                    litecoin: 500000, // TH/s
+                    monero: 2500000 // MH/s
+                };
+                
+                this.blockRewards = {
+                    bitcoin: 6.25,
+                    ethereum: 2.0,
+                    litecoin: 12.5,
+                    monero: 0.6
+                };
+                
+                this.blockTimes = {
+                    bitcoin: 10, // minutes
+                    ethereum: 0.25, // minutes
+                    litecoin: 2.5, // minutes
+                    monero: 2 // minutes
+                };
+            }
+
+            convertHashrate(hashrate, fromUnit, toUnit) {
+                const units = {
+                    'H/s': 1,
+                    'KH/s': 1000,
+                    'MH/s': 1000000,
+                    'GH/s': 1000000000,
+                    'TH/s': 1000000000000
+                };
+                
+                const fromMultiplier = units[fromUnit] || 1;
+                const toMultiplier = units[toUnit] || 1;
+                
+                return (hashrate * fromMultiplier) / toMultiplier;
+            }
+
+            calculateDailyEarnings(cryptoId, hashrate, hashrateUnit, cryptoPrice, poolFee = 1) {
+                const networkHashrate = this.networkHashrates[cryptoId];
+                const blockReward = this.blockRewards[cryptoId];
+                const blockTime = this.blockTimes[cryptoId];
+                
+                if (!networkHashrate || !blockReward || !blockTime) {
+                    return 0;
+                }
+
+                // Convert hashrate to the network's unit
+                const networkUnit = cryptoId === 'bitcoin' || cryptoId === 'litecoin' ? 'TH/s' : 'MH/s';
+                const normalizedHashrate = this.convertHashrate(hashrate, hashrateUnit, networkUnit);
+                
+                // Calculate share of network
+                const shareOfNetwork = normalizedHashrate / networkHashrate;
+                
+                // Calculate blocks per day
+                const blocksPerDay = (24 * 60) / blockTime;
+                
+                // Calculate daily crypto earnings
+                const dailyCryptoEarnings = shareOfNetwork * blocksPerDay * blockReward;
+                
+                // Apply pool fee
+                const afterPoolFee = dailyCryptoEarnings * (1 - poolFee / 100);
+                
+                // Convert to USD
+                const dailyUSDEarnings = afterPoolFee * cryptoPrice;
+                
+                return {
+                    crypto: afterPoolFee,
+                    usd: dailyUSDEarnings
+                };
+            }
+
+            calculateDailyCosts(power, quantity, electricityCost, additionalCosts = 0) {
+                const dailyPowerConsumption = (power * quantity * 24) / 1000; // kWh
+                const dailyElectricityCost = dailyPowerConsumption * electricityCost;
+                const dailyAdditionalCosts = additionalCosts / 30; // monthly to daily
+                
+                return {
+                    electricity: dailyElectricityCost,
+                    additional: dailyAdditionalCosts,
+                    total: dailyElectricityCost + dailyAdditionalCosts
+                };
+            }
+
+            calculateProfitability(params) {
+                const {
+                    cryptoId,
+                    hashrate,
+                    hashrateUnit,
+                    power,
+                    quantity,
+                    electricityCost,
+                    poolFee,
+                    cryptoPrice,
+                    hardwareCost,
+                    additionalCosts
+                } = params;
+
+                const earnings = this.calculateDailyEarnings(cryptoId, hashrate, hashrateUnit, cryptoPrice, poolFee);
+                const costs = this.calculateDailyCosts(power, quantity, electricityCost, additionalCosts);
+                
+                const dailyProfit = earnings.usd - costs.total;
+                const profitMargin = earnings.usd > 0 ? (dailyProfit / earnings.usd) * 100 : 0;
+                
+                // ROI calculation
+                const totalInvestment = hardwareCost * quantity;
+                const roiDays = dailyProfit > 0 ? totalInvestment / dailyProfit : Infinity;
+                
+                return {
+                    dailyEarnings: earnings,
+                    dailyCosts: costs,
+                    dailyProfit: dailyProfit,
+                    profitMargin: profitMargin,
+                    roiDays: roiDays,
+                    monthlyProfit: dailyProfit * 30,
+                    efficiency: power / hashrate
+                };
+            }
+        }
+
+        // Initialize calculator
+        const calculator = new MiningCalculator();
+
+        // Chart Manager
+        class ChartManager {
+            constructor() {
+                this.chart = null;
+            }
+
+            createBarChart(canvasId, data) {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                
+                if (this.chart) {
+                    this.chart.destroy();
+                }
+
+                this.chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Ingresos Diarios ($)',
+                            data: data.income,
+                            backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                            borderColor: '#10b981',
+                            borderWidth: 1
+                        }, {
+                            label: 'Costos Diarios ($)',
+                            data: data.costs,
+                            backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                            borderColor: '#ef4444',
+                            borderWidth: 1
+                        }, {
+                            label: 'Ganancia Diaria ($)',
+                            data: data.profit,
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                            borderColor: '#3b82f6',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Análisis de Rentabilidad Diaria'
+                            },
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toFixed(2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize chart manager
+        const chartManager = new ChartManager();
+
+        // UI Controller
+        class UIController {
+            constructor() {
+                this.initializeEventListeners();
+                this.loadInitialData();
+            }
+
+            initializeEventListeners() {
+                // Dark mode toggle
+                document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+                    this.toggleDarkMode();
+                });
+
+                // Notification toggle
+                document.getElementById('notification-toggle').addEventListener('click', () => {
+                    this.toggleNotifications();
+                });
+
+                // Crypto selector
+                document.getElementById('crypto-selector').addEventListener('click', () => {
+                    this.toggleCryptoDropdown();
+                });
+
+                document.querySelectorAll('.currency-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        this.selectCrypto(e.currentTarget.dataset.crypto);
+                    });
+                });
+
+                // Hardware selector
+                document.getElementById('hardware-model').addEventListener('change', (e) => {
+                    this.loadHardwareSpecs(e.target.value);
+                });
+
+                // Form submission
+                document.getElementById('mining-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.calculateMining();
+                });
+
+                // Refresh data
+                document.getElementById('refresh-data').addEventListener('click', () => {
+                    this.refreshData();
+                });
+
+                // Efficiency calculation
+                document.getElementById('hashrate').addEventListener('input', () => {
+                    this.calculateEfficiency();
+                });
+
+                document.getElementById('power-consumption').addEventListener('input', () => {
+                    this.calculateEfficiency();
+                });
+
+                // Click outside to close dropdowns
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.currency-selector')) {
+                        document.getElementById('crypto-dropdown').classList.add('hidden');
+                    }
+                });
+            }
+
+            async loadInitialData() {
+                try {
+                    await this.updateMarketData();
+                    this.initializeCharts();
+                    notifications.show('Datos cargados correctamente', 'success');
+                } catch (error) {
+                    notifications.show('Error al cargar datos iniciales', 'error');
+                }
+            }
+
+            async updateMarketData() {
+                try {
+                    const prices = await cryptoAPI.fetchCryptoPrices();
+                    if (prices) {
+                        appState.cryptoPrices = prices;
+                        this.updateMarketDisplay(prices);
+                        this.updateLastUpdateTime();
+                        
+                        // Send notification for significant price changes
+                        if (appState.notificationsEnabled) {
+                            this.checkPriceAlerts(prices);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error updating market data:', error);
+                }
+            }
+
+            checkPriceAlerts(prices) {
+                Object.keys(prices).forEach(crypto => {
+                    const change = prices[crypto].usd_24h_change;
+                    if (Math.abs(change) > 10) { // Alert for changes > 10%
+                        const direction = change > 0 ? 'subió' : 'bajó';
+                        const cryptoName = crypto.charAt(0).toUpperCase() + crypto.slice(1);
+                        notifications.sendNotification(
+                            `${cryptoName} ${direction} ${Math.abs(change).toFixed(2)}%`,
+                            `Precio actual: $${prices[crypto].usd.toLocaleString()}`
+                        );
+                    }
+                });
+            }
+
+            updateMarketDisplay(prices) {
+                // Bitcoin
+                if (prices.bitcoin) {
+                    document.getElementById('btc-price').textContent = `$${prices.bitcoin.usd.toLocaleString()}`;
+                    const btcChangeElement = document.getElementById('btc-change');
+                    const btcChange = prices.bitcoin.usd_24h_change || 0;
+                    btcChangeElement.textContent = `${btcChange > 0 ? '+' : ''}${btcChange.toFixed(2)}%`;
+                    btcChangeElement.className = btcChange >= 0 ? 'text-sm price-change-positive' : 'text-sm price-change-negative';
+                }
+
+                // Ethereum
+                if (prices.ethereum) {
+                    document.getElementById('eth-price').textContent = `$${prices.ethereum.usd.toLocaleString()}`;
+                    const ethChangeElement = document.getElementById('eth-change');
+                    const ethChange = prices.ethereum.usd_24h_change || 0;
+                    ethChangeElement.textContent = `${ethChange > 0 ? '+' : ''}${ethChange.toFixed(2)}%`;
+                    ethChangeElement.className = ethChange >= 0 ? 'text-sm price-change-positive' : 'text-sm price-change-negative';
+                }
+
+                // Litecoin
+                if (prices.litecoin) {
+                    document.getElementById('ltc-price').textContent = `$${prices.litecoin.usd.toLocaleString()}`;
+                    const ltcChangeElement = document.getElementById('ltc-change');
+                    const ltcChange = prices.litecoin.usd_24h_change || 0;
+                    ltcChangeElement.textContent = `${ltcChange > 0 ? '+' : ''}${ltcChange.toFixed(2)}%`;
+                    ltcChangeElement.className = ltcChange >= 0 ? 'text-sm price-change-positive' : 'text-sm price-change-negative';
+                }
+
+                // Update selected crypto price
+                const selectedCrypto = appState.selectedCrypto;
+                if (prices[selectedCrypto]) {
+                    document.getElementById('crypto-price').value = prices[selectedCrypto].usd;
+                }
+            }
+
+            updateLastUpdateTime() {
+                const now = new Date();
+                document.getElementById('last-update').textContent = now.toLocaleString();
+                appState.lastUpdate = now;
+            }
+
+            toggleDarkMode() {
+                document.body.classList.toggle('dark');
+                appState.darkMode = !appState.darkMode;
+                
+                const icon = document.querySelector('#dark-mode-toggle i');
+                icon.className = appState.darkMode ? 'fas fa-sun text-xl' : 'fas fa-moon text-xl';
+                
+                notifications.show(`Modo ${appState.darkMode ? 'oscuro' : 'claro'} activado`, 'info');
+            }
+
+            toggleNotifications() {
+                if (appState.notificationsEnabled) {
+                    notifications.show('Notificaciones ya están activadas', 'info');
+                } else {
+                    notifications.requestPermission();
+                }
+            }
+
+            toggleCryptoDropdown() {
+                document.getElementById('crypto-dropdown').classList.toggle('hidden');
+            }
+
+            selectCrypto(cryptoId) {
+                const option = document.querySelector(`[data-crypto="${cryptoId}"]`);
+                const icon = option.dataset.icon;
+                const name = option.textContent;
+                
+                document.getElementById('selected-crypto-icon').src = icon;
+                document.getElementById('selected-crypto-name').textContent = name;
+                
+                appState.selectedCrypto = cryptoId;
+                document.getElementById('crypto-dropdown').classList.add('hidden');
+                
+                // Update price if available
+                if (appState.cryptoPrices[cryptoId]) {
+                    document.getElementById('crypto-price').value = appState.cryptoPrices[cryptoId].usd;
+                }
+                
+                notifications.show(`${name} seleccionado`, 'success');
+            }
+
+            loadHardwareSpecs(hardwareId) {
+                if (!hardwareId || hardwareId === 'custom') return;
+                
+                const specs = appState.hardwareSpecs[hardwareId];
+                if (specs) {
+                    document.getElementById('hashrate').value = specs.hashrate;
+                    document.getElementById('hashrate-unit').value = specs.unit;
+                    document.getElementById('power-consumption').value = specs.power;
+                    document.getElementById('hardware-cost').value = specs.cost;
+                    
+                    this.calculateEfficiency();
+                    notifications.show('Especificaciones del hardware cargadas', 'success');
+                }
+            }
+
+            calculateEfficiency() {
+                const hashrate = parseFloat(document.getElementById('hashrate').value) || 0;
+                const power = parseFloat(document.getElementById('power-consumption').value) || 0;
+                
+                if (hashrate > 0 && power > 0) {
+                    const efficiency = power / hashrate;
+                    document.getElementById('efficiency').value = efficiency.toFixed(2);
+                }
+            }
+
+            calculateMining() {
+                const formData = this.getFormData();
+                
+                if (!this.validateFormData(formData)) {
+                    return;
+                }
+
+                this.showLoadingState();
+                
+                setTimeout(() => {
+                    const results = calculator.calculateProfitability(formData);
+                    this.displayResults(results);
+                    this.updateChart(results);
+                    notifications.show('Cálculo completado exitosamente', 'success');
+                    
+                    // Send notification with results
+                    if (appState.notificationsEnabled) {
+                        notifications.sendNotification(
+                            'Cálculo de rentabilidad completado',
+                            `Ganancia diaria: $${results.dailyProfit.toFixed(2)} | ROI: ${results.roiDays === Infinity ? 'Nunca' : Math.ceil(results.roiDays) + ' días'}`
+                        );
+                    }
+                }, 1000);
+            }
+
+            getFormData() {
+                return {
+                    cryptoId: appState.selectedCrypto,
+                    hashrate: parseFloat(document.getElementById('hashrate').value) || 0,
+                    hashrateUnit: document.getElementById('hashrate-unit').value,
+                    power: parseFloat(document.getElementById('power-consumption').value) || 0,
+                    quantity: parseInt(document.getElementById('hardware-quantity').value) || 1,
+                    electricityCost: parseFloat(document.getElementById('electricity-cost').value) || 0.12,
+                    poolFee: parseFloat(document.getElementById('pool-fee').value) || 1,
+                    cryptoPrice: parseFloat(document.getElementById('crypto-price').value) || 0,
+                    hardwareCost: parseFloat(document.getElementById('hardware-cost').value) || 0,
+                    additionalCosts: parseFloat(document.getElementById('additional-costs').value) || 0
+                };
+            }
+
+            validateFormData(data) {
+                const errors = [];
+                
+                if (data.hashrate <= 0) errors.push('El hashrate debe ser mayor que 0');
+                if (data.power <= 0) errors.push('El consumo energético debe ser mayor que 0');
+                if (data.cryptoPrice <= 0) errors.push('El precio de la criptomoneda debe ser mayor que 0');
+                if (data.electricityCost < 0) errors.push('El costo eléctrico no puede ser negativo');
+                
+                if (errors.length > 0) {
+                    notifications.show(`Errores en el formulario: ${errors.join(', ')}`, 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+
+            showLoadingState() {
+                document.getElementById('results-loading').classList.remove('hidden');
+                document.getElementById('results-content').classList.add('hidden');
+            }
+
+            displayResults(results) {
+                // Hide loading
+                document.getElementById('results-loading').classList.add('hidden');
+                document.getElementById('results-content').classList.remove('hidden');
+                
+                // Update results
+                document.getElementById('daily-income').textContent = `$${results.dailyEarnings.usd.toFixed(2)}`;
+                document.getElementById('daily-crypto').textContent = `${results.dailyEarnings.crypto.toFixed(8)} ${appState.selectedCrypto.toUpperCase()}`;
+                
+                document.getElementById('daily-costs').textContent = `$${results.dailyCosts.total.toFixed(2)}`;
+                document.getElementById('electricity-cost-display').textContent = `$${results.dailyCosts.electricity.toFixed(2)}`;
+                
+                const profitElement = document.getElementById('daily-profit');
+                profitElement.textContent = `$${results.dailyProfit.toFixed(2)}`;
+                profitElement.className = results.dailyProfit >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400';
+                
+                document.getElementById('profit-margin').textContent = results.profitMargin.toFixed(1);
+                
+                // ROI
+                const roiElement = document.getElementById('roi-days');
+                const roiStatusElement = document.getElementById('roi-status');
+                
+                if (results.roiDays === Infinity) {
+                    roiElement.textContent = 'Nunca';
+                    roiStatusElement.textContent = 'No rentable';
+                    roiStatusElement.className = 'roi-poor';
+                } else {
+                    roiElement.textContent = `${Math.ceil(results.roiDays)} días`;
+                    if (results.roiDays <= 365) {
+                        roiStatusElement.textContent = 'Excelente';
+                        roiStatusElement.className = 'roi-excellent';
+                    } else if (results.roiDays <= 730) {
+                        roiStatusElement.textContent = 'Bueno';
+                        roiStatusElement.className = 'roi-good';
+                    } else {
+                        roiStatusElement.textContent = 'Malo';
+                        roiStatusElement.className = 'roi-poor';
+                    }
+                }
+                
+                document.getElementById('monthly-profit').textContent = `$${results.monthlyProfit.toFixed(2)}`;
+                document.getElementById('energy-efficiency').textContent = `${results.efficiency.toFixed(2)} W/TH`;
+                
+                // Update efficiency progress
+                const efficiencyProgress = Math.min(100, (50 / results.efficiency) * 100); // 50 W/TH as baseline
+                document.getElementById('efficiency-progress').style.width = `${efficiencyProgress}%`;
+            }
+
+            updateChart(results) {
+                // Generate data for 7 days
+                const labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+                const incomeData = labels.map(() => results.dailyEarnings.usd);
+                const costsData = labels.map(() => results.dailyCosts.total);
+                const profitData = labels.map(() => results.dailyProfit);
+                
+                chartManager.createBarChart('profitChart', {
+                    labels: labels,
+                    income: incomeData,
+                    costs: costsData,
+                    profit: profitData
+                });
+            }
+
+            initializeCharts() {
+                // Initialize with sample data
+                const labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+                const sampleIncome = [45, 48, 52, 47, 50, 55, 49];
+                const sampleCosts = [30, 30, 30, 30, 30, 30, 30];
+                const sampleProfit = sampleIncome.map((income, i) => income - sampleCosts[i]);
+                
+                chartManager.createBarChart('profitChart', {
+                    labels: labels,
+                    income: sampleIncome,
+                    costs: sampleCosts,
+                    profit: sampleProfit
+                });
+            }
+
+            async refreshData() {
+                const refreshBtn = document.getElementById('refresh-data');
+                const originalContent = refreshBtn.innerHTML;
+                
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                refreshBtn.disabled = true;
+                
+                try {
+                    await this.updateMarketData();
+                    notifications.show('Datos actualizados correctamente', 'success');
+                } catch (error) {
+                    notifications.show('Error al actualizar datos', 'error');
+                } finally {
+                    refreshBtn.innerHTML = originalContent;
+                    refreshBtn.disabled = false;
+                }
+            }
+        }
+
+        // Global functions for hardware selection
+        function selectHardware(hardwareId) {
+            document.getElementById('hardware-model').value = hardwareId;
+            const ui = window.uiController;
+            if (ui) {
+                ui.loadHardwareSpecs(hardwareId);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', () => {
+            window.uiController = new UIController();
+            
+            // Auto-refresh data every 5 minutes
+            setInterval(() => {
+                window.uiController.updateMarketData();
+            }, 5 * 60 * 1000);
+            
+            console.log('Calculadora de Minería Crypto initialized');
+        });
+
+        // Error handling
+        window.addEventListener('error', (e) => {
+            console.error('Application error:', e.error);
+            notifications.show('Se produjo un error en la aplicación', 'error');
+        });
+
+        // Unhandled promise rejections
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
+            notifications.show('Error en la comunicación con APIs', 'error');
+        });
+    </script>
+</body>
+</html>
