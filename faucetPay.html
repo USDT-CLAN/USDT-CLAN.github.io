@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Billetera FaucetPay</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0f3460">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FaucetPay">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTWkgQmlsbGV0ZXJhIEZhdWNldFBheSIsInNob3J0X25hbWUiOiJGYXVjZXRQYXkiLCJkZXNjcmlwdGlvbiI6IkFjY2VzbyByYXBpZG8gYSB0dSBiaWxsZXRlcmEgRmF1Y2V0UGF5IHkgcmVjdXJzb3MgY3JpcHRvIiwic3RhcnRfdXJsIjoiLi8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMWExYTJlIiwidGhlbWVfY29sb3IiOiIjMGYzNDYwIiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vaS5wb3N0aW1nLmNjL3hkM0hTNUNXL1BpY3NhcnQtMjUtMDctMTItMTktMDctNDUtNTQ0LnBuZyIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9wbmcifSx7InNyYyI6Imh0dHBzOi8vaS5wb3N0aW1nLmNjL3hkM0hTNUNXL1BpY3NhcnQtMjUtMDctMTItMTktMDctNDUtNTQ0LnBuZyIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9wbmcifV19">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        /* Animaciones optimizadas */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .animate-spin {
+            animation: spin 2s linear infinite;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Pantalla de carga simplificada */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 40px rgba(135, 206, 235, 0.5);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(135, 206, 235, 0.3);
+            border-top: 3px solid #87ceeb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        .loading-text {
+            color: #87ceeb;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-progress {
+            width: 250px;
+            height: 6px;
+            background: rgba(135, 206, 235, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #87ceeb, #4682b4);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Prompt de instalación mejorado */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #2c2c4d 0%, #4682b4 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s ease-out;
+        }
+
+        .install-prompt.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .install-prompt.hide {
+            transform: translateY(100px);
+            opacity: 0;
+        }
+
+        /* Efectos hover */
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Gradientes */
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+        }
+
+        .gradient-card {
+            background: linear-gradient(135deg, #2c2c4d 0%, #1a1a2e 100%);
+        }
+
+        /* Botones */
+        .btn-primary {
+            background: linear-gradient(135deg, #4682b4 0%, #87ceeb 100%);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(70, 130, 180, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        /* Notificaciones */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .loading-logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .loading-progress {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Pantalla de carga -->
+    <div id="loadingScreen" class="loading-screen">
+        <img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="FaucetPay Logo" class="loading-logo animate-pulse">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Cargando FaucetPay</div>
+        <div class="loading-text text-sm opacity-75">Preparando tu billetera...</div>
+        <div class="loading-progress">
+            <div id="loadingProgressBar" class="loading-progress-bar" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Prompt de instalación -->
+    <div id="installPrompt" class="install-prompt">
+        <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center">
+                <i class="fas fa-download text-blue-300 text-xl mr-3"></i>
+                <span class="text-white font-semibold">Instalar aplicación</span>
+            </div>
+            <button id="installDismiss" class="text-gray-300 hover:text-white transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <p class="text-gray-200 text-sm mb-4">Instala la aplicación para un acceso más rápido y una mejor experiencia</p>
+        <div class="flex gap-3">
+            <button id="installButton" class="btn-primary px-4 py-2 rounded-lg text-white font-medium flex-1">
+                <i class="fas fa-mobile-alt mr-2"></i>Instalar
+            </button>
+            <button id="installLater" class="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded-lg text-white font-medium transition-colors">
+                Después
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div id="mainContent" class="opacity-0 transition-opacity duration-500">
+        <!-- Header -->
+        <header class="gradient-bg shadow-2xl">
+            <div class="max-w-6xl mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <!-- Logo Sneyder Estudio -->
+                    <div class="flex items-center space-x-2">
+                        <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Sneyder Estudio" class="w-8 h-8 rounded">
+                        <a href="https://sneyder-estudio.github.io/" target="_blank" class="text-blue-300 hover:text-blue-200 transition-colors text-sm font-medium hidden sm:block">
+                            Sneyder Estudio
+                        </a>
+                    </div>
+                    
+                    <!-- Logo principal -->
+                    <div class="flex-1 flex justify-center">
+                        <img src="https://i.postimg.cc/DzTsDH2r/Picsart-25-07-12-19-06-59-338.png" alt="FaucetPay" class="h-16 w-auto hover-lift">
+                    </div>
+                    
+                    <!-- Estado -->
+                    <div id="installStatus" class="flex items-center space-x-2 text-sm">
+                        <div id="onlineStatus" class="flex items-center text-green-400">
+                            <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                            <span class="hidden sm:inline">Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="max-w-4xl mx-auto px-4 py-8 space-y-8">
+            <!-- Mensaje principal -->
+            <div class="gradient-card rounded-2xl p-8 shadow-2xl hover-lift animate-fade-in border border-blue-500/20">
+                <div class="text-center">
+                    <div class="mb-6">
+                        <i class="fas fa-shield-alt text-blue-400 text-4xl mb-4"></i>
+                        <h2 class="text-3xl font-bold text-blue-300 mb-4">¡Importante!</h2>
+                    </div>
+                    
+                    <div class="space-y-4 mb-8">
+                        <p class="text-gray-300 leading-relaxed">
+                            Debido a las políticas de seguridad de FaucetPay, no es posible mostrar tu billetera directamente dentro de esta aplicación.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed">
+                            Para acceder a tu billetera y sus funciones, haz clic en el botón de abajo. Se abrirá la página de FaucetPay en una nueva pestaña donde podrás iniciar sesión de forma segura.
+                        </p>
+                    </div>
+                    
+                    <button id="openFaucetPay" class="btn-primary px-8 py-4 rounded-xl text-white font-semibold text-lg hover-lift inline-flex items-center space-x-3 shadow-lg">
+                        <i class="fas fa-wallet"></i>
+                        <span>Abrir FaucetPay</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sección de Lulubit -->
+            <div class="gradient-card rounded-2xl p-8 shadow-2xl hover-lift animate-fade-in border border-green-500/20">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-green-400 mb-4">Descubre Lulubit</h2>
+                    <p class="text-xl text-gray-300">Tu Puente entre Fiat y Crypto</p>
+                </div>
+                
+                <div class="flex justify-center mb-8">
+                    <img src="https://i.postimg.cc/FRq7yN4m/Picsart-25-07-13-21-33-21-165.jpg" alt="Lulubit Logo" class="w-32 h-32 rounded-2xl shadow-lg hover-lift">
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold text-green-400 mb-3 flex items-center">
+                                <i class="fas fa-exchange-alt mr-2"></i>
+                                ¿Para qué sirve Lulubit?
+                            </h3>
+                            <ul class="space-y-3 text-gray-300">
+                                <li class="flex items-start">
+                                    <i class="fas fa-coins text-green-400 mt-1 mr-3"></i>
+                                    <div>
+                                        <strong class="text-green-400">Facilidad de Cambio:</strong> Convierte fiat a crypto fácilmente
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-credit-card text-green-400 mt-1 mr-3"></i>
+                                    <div>
+                                        <strong class="text-green-400">Tarjeta Lulucar:</strong> Usa crypto en cualquier comercio
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-xl font-semibold text-green-400 mb-3 flex items-center">
+                                <i class="fas fa-thumbs-up mr-2"></i>
+                                Ventajas
+                            </h3>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center">
+                                    <i class="fas fa-bolt text-yellow-400 mr-2"></i>
+                                    <span>Transacciones instantáneas</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-shield-alt text-blue-400 mr-2"></i>
+                                    <span>Seguridad avanzada</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-map-marked-alt text-red-400 mr-2"></i>
+                                    <span>Disponible en Latinoamérica</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col items-center space-y-4">
+                        <img src="https://i.postimg.cc/JtC0Fx02/Picsart-25-07-13-21-32-51-112.png" alt="Lulubit Referencia" class="w-40 h-auto rounded-lg shadow-lg hover-lift">
+                        <img src="https://i.postimg.cc/NFHLbSsX/Picsart-25-07-13-21-31-49-167.png" alt="Tarjeta Lulucar" class="w-40 h-auto rounded-lg shadow-lg hover-lift">
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-gray-300 mb-4">Usa este código de invitación:</p>
+                    <div class="bg-blue-900 text-blue-300 px-6 py-3 rounded-lg font-bold text-lg inline-block mb-6 shadow-lg">
+                        $LULUAXEL64
+                    </div>
+                    <br>
+                    <button id="downloadLulubit" class="btn-secondary px-8 py-4 rounded-xl text-white font-semibold text-lg hover-lift inline-flex items-center space-x-3 shadow-lg">
+                        <i class="fab fa-google-play"></i>
+                        <span>Descargar Lulubit</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="gradient-bg mt-16 py-8">
+            <div class="max-w-6xl mx-auto px-4 text-center">
+                <div class="flex items-center justify-center space-x-4 mb-4">
+                    <i class="fas fa-code text-blue-400"></i>
+                    <span class="text-gray-300">2025 SNEYDER ESTUDIO</span>
+                    <i class="fas fa-heart text-red-400"></i>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    Aplicación web progresiva profesional para FaucetPay
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Notificaciones -->
+    <div id="notifications" class="fixed top-4 right-4 space-y-2 z-50"></div>
+
+    <script>
+        // Variables globales
+        let deferredPrompt;
+        let loadingProgress = 0;
+
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'info') {
+            const notificationContainer = document.getElementById('notifications');
+            if (!notificationContainer) {
+                console.error('Notification container not found!');
+                return;
+            }
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info-circle'} mr-2"></i>
+                ${message}
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Función de animación de carga
+        function startLoadingAnimation() {
+            const progressBar = document.getElementById('loadingProgressBar');
+            if (!progressBar) {
+                console.error('Loading progress bar not found!');
+                return;
+            }
+            const interval = setInterval(() => {
+                loadingProgress += 1;
+                progressBar.style.width = loadingProgress + '%';
+                
+                if (loadingProgress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        const loadingScreen = document.getElementById('loadingScreen');
+                        const mainContent = document.getElementById('mainContent');
+                        if (loadingScreen) loadingScreen.classList.add('hidden');
+                        if (mainContent) {
+                            mainContent.classList.remove('opacity-0');
+                            mainContent.classList.add('opacity-100');
+                        }
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // Verificar si la app está instalada
+        function checkInstallStatus() {
+            const installStatusElement = document.getElementById('installStatus');
+            const installPromptElement = document.getElementById('installPrompt');
+
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                if (installStatusElement) {
+                    installStatusElement.innerHTML = `
+                        <div class="flex items-center text-green-400">
+                            <i class="fas fa-mobile-alt mr-2"></i>
+                            <span class="hidden sm:inline">Instalada</span>
+                        </div>
+                    `;
+                }
+                if (installPromptElement) installPromptElement.classList.add('hide'); // Hide prompt if already installed
+            } else {
+                // Mostrar prompt de instalación
+                if (!localStorage.getItem('pwa-install-dismissed') && installPromptElement) {
+                    setTimeout(() => {
+                        installPromptElement.classList.add('show');
+                    }, 3000);
+                }
+            }
+        }
+
+        // Manejo del prompt de instalación
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('beforeinstallprompt fired'); // Debugging
+            // Ensure install prompt is shown if it was dismissed before but now available
+            if (document.getElementById('installPrompt') && !localStorage.getItem('pwa-install-dismissed')) {
+                document.getElementById('installPrompt').classList.add('show');
+            }
+        });
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded. Attaching event listeners...');
+
+            // Iniciar animación de carga
+            startLoadingAnimation();
+            
+            // Verificar estado de instalación
+            checkInstallStatus();
+            
+            // Estado de conexión
+            function updateOnlineStatus() {
+                const onlineStatus = document.getElementById('onlineStatus');
+                if (onlineStatus) { // Added check
+                    if (navigator.onLine) {
+                        onlineStatus.innerHTML = `
+                            <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                            <span class="hidden sm:inline">Online</span>
+                        `;
+                        onlineStatus.className = 'flex items-center text-green-400';
+                    } else {
+                        onlineStatus.innerHTML = `
+                            <div class="w-2 h-2 bg-red-400 rounded-full mr-2"></div>
+                            <span class="hidden sm:inline">Offline</span>
+                        `;
+                        onlineStatus.className = 'flex items-center text-red-400';
+                    }
+                } else {
+                    console.warn('Element with ID "onlineStatus" not found.');
+                }
+            }
+            
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+            
+            // Botón de abrir FaucetPay
+            const openFaucetPayBtn = document.getElementById('openFaucetPay');
+            if (openFaucetPayBtn) {
+                openFaucetPayBtn.addEventListener('click', () => {
+                    console.log('Open FaucetPay button clicked!');
+                    window.open('https://faucetpay.io/', '_blank');
+                    showNotification('Abriendo FaucetPay...', 'info');
+                });
+            } else {
+                console.error('Error: Botón "openFaucetPay" no encontrado en el DOM.');
+            }
+            
+            // Botón de descargar Lulubit
+            const downloadLulubitBtn = document.getElementById('downloadLulubit');
+            if (downloadLulubitBtn) {
+                downloadLulubitBtn.addEventListener('click', () => {
+                    console.log('Download Lulubit button clicked!');
+                    // Detectar si es móvil para mostrar Play Store o sitio web
+                    // CORRECCIÓN: Usar la URL exacta proporcionada por el usuario
+                    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                        window.open('https://play.google.com/store/apps/details?id=com.lulubit', '_blank');
+                    } else {
+                        // Fallback para escritorio si no es un dispositivo móvil
+                        window.open('https://lulubit.com/', '_blank'); 
+                    }
+                    showNotification('Abriendo Lulubit...', 'info');
+                });
+            } else {
+                console.error('Error: Botón "downloadLulubit" no encontrado en el DOM.');
+            }
+            
+            // Botón de instalar (PWA prompt)
+            const installButton = document.getElementById('installButton');
+            if (installButton) {
+                installButton.addEventListener('click', async () => {
+                    console.log('Install PWA button clicked!');
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        
+                        if (outcome === 'accepted') {
+                            showNotification('¡Aplicación instalada exitosamente!', 'success');
+                            const installPromptEl = document.getElementById('installPrompt');
+                            if (installPromptEl) installPromptEl.classList.add('hide');
+                            setTimeout(() => {
+                                checkInstallStatus();
+                            }, 1000);
+                        } else {
+                            showNotification('Instalación cancelada', 'info');
+                        }
+                        
+                        deferredPrompt = null;
+                    } else {
+                        showNotification('Para instalar, abre este sitio en Chrome o Safari', 'info');
+                    }
+                });
+            } else {
+                console.error('Error: Botón "installButton" no encontrado en el DOM.');
+            }
+            
+            // Botón de descartar instalación
+            const installDismissBtn = document.getElementById('installDismiss');
+            if (installDismissBtn) {
+                installDismissBtn.addEventListener('click', () => {
+                    console.log('Dismiss install prompt button clicked!');
+                    const installPromptEl = document.getElementById('installPrompt');
+                    if (installPromptEl) {
+                        installPromptEl.classList.add('hide');
+                        localStorage.setItem('pwa-install-dismissed', 'true');
+                    }
+                });
+            } else {
+                console.error('Error: Botón "installDismiss" no encontrado en el DOM.');
+            }
+            
+            // Botón de instalar después
+            const installLaterBtn = document.getElementById('installLater');
+            if (installLaterBtn) {
+                installLaterBtn.addEventListener('click', () => {
+                    console.log('Install later button clicked!');
+                    const installPromptEl = document.getElementById('installPrompt');
+                    if (installPromptEl) {
+                        installPromptEl.classList.add('hide');
+                    }
+                });
+            } else {
+                console.error('Error: Botón "installLater" no encontrado en el DOM.');
+            }
+            
+            // Detectar cuando la app se instala
+            window.addEventListener('appinstalled', () => {
+                console.log('App installed event fired!');
+                showNotification('¡Aplicación instalada exitosamente!', 'success');
+                const installPromptEl = document.getElementById('installPrompt');
+                if (installPromptEl) installPromptEl.classList.add('hide');
+                checkInstallStatus();
+            });
+
+            // --- Funcionalidad de Expandir/Contraer FaucetPay Info ---
+            // Los elementos HTML para esta sección (faucetpayExpandToggle, faucetpayInfoContent)
+            // NO estaban presentes en el HTML proporcionado por el usuario en esta solicitud.
+            // Por lo tanto, esta funcionalidad no puede ser activada.
+            // Se añade una advertencia en consola para informar al usuario.
+            const faucetpayExpandToggle = document.getElementById('faucetpayExpandToggle');
+            const faucetpayInfoContent = document.getElementById('faucetpayInfoContent');
+            
+            if (faucetpayExpandToggle && faucetpayInfoContent) {
+                console.log('FaucetPay toggle and content elements found. Attaching expand/collapse listener.');
+                const expandArrow = faucetpayExpandToggle.querySelector('.expand-arrow');
+
+                faucetpayExpandToggle.addEventListener('click', () => {
+                    console.log('FaucetPay toggle clicked!');
+                    const isExpanded = faucetpayInfoContent.classList.contains('show');
+                    if (isExpanded) {
+                        faucetpayInfoContent.classList.remove('show');
+                        if (expandArrow) expandArrow.classList.remove('expanded');
+                    } else {
+                        faucetpayInfoContent.classList.add('show');
+                        if (expandArrow) expandArrow.classList.add('expanded');
+                    }
+                });
+            } else {
+                console.warn('Advertencia: Los elementos HTML para la sección "Más sobre FaucetPay" (expandir/contraer) no se encontraron en el DOM. Esta funcionalidad no puede ser activada sin ellos.');
+            }
+        });
+
+        // Manejar errores de imagen
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.style.display = 'none';
+            });
+        });
+
+        // Optimización de rendimiento
+        document.addEventListener('DOMContentLoaded', () => {
+            // Precargar recursos importantes
+            const importantResources = [
+                'https://faucetpay.io/',
+                'https://lulubit.com/',
+                'https://play.google.com/store/apps/details?id=com.lulubit'
+            ];
+            
+            importantResources.forEach(url => {
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = url;
+                document.head.appendChild(link);
+            });
+        });
+    </script>
+</body>
+</html>
+
