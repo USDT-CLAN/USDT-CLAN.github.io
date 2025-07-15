@@ -3,98 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Hub - Plataforma Optimizada</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Crypto Hub Premium - Plataforma Mejorada</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-cyan: #00F2FF;
+            --secondary-blue: #0099CC;
+            --accent-purple: #6366F1;
+            --accent-pink: #EC4899;
+            --dark-bg: #0D0F1A;
+            --card-bg: rgba(20, 24, 40, 0.95);
+            --glass-border: rgba(0, 242, 255, 0.3);
+            --text-primary: #E0E0E0;
+            --text-secondary: #9CA3AF;
+            --success-green: #10B981;
+            --warning-yellow: #F59E0B;
+            --error-red: #EF4444;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-cyan) transparent;
+        }
+
+        *::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--primary-cyan), var(--secondary-blue));
+            border-radius: 10px;
+        }
+
         body {
-            font-family: 'Exo 2', sans-serif;
-            background: linear-gradient(135deg, #0D0F1A 0%, #1A1B2E 50%, #16213E 100%);
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #0D0F1A 0%, #1A1B2E 25%, #16213E 50%, #1A1B2E 75%, #0D0F1A 100%);
             background-attachment: fixed;
-            color: #E0E0E0;
+            color: var(--text-primary);
             overflow-x: hidden;
+            min-height: 100vh;
         }
         
         .font-orbitron { font-family: 'Orbitron', monospace; }
+        .font-exo { font-family: 'Exo 2', sans-serif; }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
         
-        .glass-card {
-            background: rgba(20, 24, 40, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
+        .premium-glass {
+            background: linear-gradient(135deg, rgba(20, 24, 40, 0.95) 0%, rgba(30, 34, 50, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 242, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .premium-glass:hover::before {
+            left: 100%;
+        }
+        
+        .premium-glass:hover {
+            border-color: rgba(0, 242, 255, 0.6);
+            box-shadow: 0 12px 40px rgba(0, 242, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .neon-button {
+            background: linear-gradient(45deg, var(--primary-cyan), var(--secondary-blue));
+            color: var(--dark-bg);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 242, 255, 0.4);
+            border: 2px solid var(--primary-cyan);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .neon-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .neon-button:hover {
+            box-shadow: 0 6px 25px rgba(0, 242, 255, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        .neon-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .neon-button-outline {
+            background: transparent;
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
         
-        .glass-card:hover {
-            border-color: rgba(0, 242, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
-            transform: translateY(-2px);
+        .neon-button-outline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.1), transparent);
+            transition: left 0.5s ease;
         }
         
-        .neon-button {
-            background: linear-gradient(45deg, #00F2FF, #0099CC);
-            color: #0D0F1A;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
-            border: 2px solid #00F2FF;
-        }
-        
-        .neon-button:hover {
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.8);
-            transform: translateY(-1px);
-        }
-        
-        .neon-button-outline {
-            background: transparent;
-            color: #00F2FF;
-            border: 2px solid #00F2FF;
-            transition: all 0.3s ease;
+        .neon-button-outline:hover::before {
+            left: 100%;
         }
         
         .neon-button-outline:hover {
             background: rgba(0, 242, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 242, 255, 0.3);
+            transform: translateY(-1px);
         }
         
-        .search-container {
-            background: rgba(20, 24, 40, 0.9);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 2px solid rgba(0, 242, 255, 0.3);
-            border-radius: 15px;
-            transition: all 0.3s ease;
+        .premium-search {
+            background: linear-gradient(135deg, rgba(20, 24, 40, 0.95) 0%, rgba(30, 34, 50, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(0, 242, 255, 0.1);
         }
         
-        .search-container:focus-within {
+        .premium-search:focus-within {
             border-color: rgba(0, 242, 255, 0.8);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 242, 255, 0.2);
+            transform: translateY(-2px);
         }
         
-        .search-input {
+        .premium-input {
             background: transparent;
             border: none;
-            color: #E0E0E0;
+            color: var(--text-primary);
             font-size: 1.1rem;
             outline: none;
+            font-weight: 500;
         }
         
-        .search-input::placeholder {
-            color: rgba(224, 224, 224, 0.5);
+        .premium-input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 400;
         }
         
         .modal {
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
         
         .modal.is-visible {
@@ -103,12 +206,13 @@
         }
         
         .modal-glass {
-            background: rgba(13, 15, 26, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(13, 15, 26, 0.98) 0%, rgba(20, 24, 40, 0.95) 100%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border: 2px solid rgba(0, 242, 255, 0.4);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform: scale(0.9);
+            box-shadow: 0 20px 60px rgba(0, 242, 255, 0.2);
         }
         
         .modal.is-visible .modal-glass {
@@ -116,93 +220,108 @@
         }
         
         .form-input {
-            background: rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.12) 100%);
             border: 2px solid rgba(255, 255, 255, 0.1);
-            color: #E0E0E0;
+            color: var(--text-primary);
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
         
         .form-input:focus {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: #00F2FF;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.16) 100%);
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
             outline: none;
         }
         
-        .long-press-active {
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.8) !important;
-            border-color: rgba(239, 68, 68, 0.9) !important;
-            transform: scale(0.98) !important;
-        }
-        
-        .text-glow {
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.8);
-        }
-        
-        .compact-card {
-            height: 180px;
+        .premium-card {
+            height: 240px;
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
         }
         
-        .compact-image {
-            height: 100px;
+        .premium-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .premium-card.deleting {
+            border-color: var(--error-red) !important;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6) !important;
+            transform: scale(0.95) !important;
+        }
+        
+        .premium-image {
+            height: 130px;
             object-fit: cover;
             width: 100%;
+            transition: transform 0.3s ease;
         }
         
-        .compact-content {
+        .premium-card:hover .premium-image {
+            transform: scale(1.05);
+        }
+        
+        .premium-content {
             flex: 1;
-            padding: 0.75rem;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         
-        .compact-info {
+        .premium-info {
             flex: 1;
         }
         
-        .compact-actions {
+        .premium-actions {
             display: flex;
             gap: 0.5rem;
-            margin-top: 0.5rem;
+            margin-top: 0.75rem;
         }
         
-        .compact-button {
+        .premium-action-btn {
             flex: 1;
-            padding: 0.4rem;
-            font-size: 0.75rem;
-            border-radius: 6px;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            border-radius: 8px;
             text-align: center;
             font-weight: 600;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
         }
         
-        .detail-button {
-            background: rgba(0, 242, 255, 0.2);
-            color: #00F2FF;
+        .detail-btn {
+            background: rgba(0, 242, 255, 0.15);
+            color: var(--primary-cyan);
             border: 1px solid rgba(0, 242, 255, 0.3);
         }
         
-        .detail-button:hover {
-            background: rgba(0, 242, 255, 0.3);
+        .detail-btn:hover {
+            background: rgba(0, 242, 255, 0.25);
             border-color: rgba(0, 242, 255, 0.5);
+            transform: translateY(-1px);
         }
         
-        .go-button {
-            background: linear-gradient(45deg, #00F2FF, #0099CC);
-            color: #0D0F1A;
-            border: 1px solid #00F2FF;
+        .go-btn {
+            background: linear-gradient(45deg, var(--primary-cyan), var(--secondary-blue));
+            color: var(--dark-bg);
+            border: 1px solid var(--primary-cyan);
         }
         
-        .go-button:hover {
-            box-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
+        .go-btn:hover {
+            box-shadow: 0 4px 15px rgba(0, 242, 255, 0.4);
+            transform: translateY(-1px);
         }
         
-        .floating-particles {
+        .floating-orbs {
             position: fixed;
             top: 0;
             left: 0;
@@ -212,25 +331,24 @@
             z-index: -1;
         }
         
-        .particle {
+        .orb {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(0, 242, 255, 0.5);
             border-radius: 50%;
-            animation: float 6s infinite ease-in-out;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.3) 0%, rgba(0, 242, 255, 0.1) 50%, transparent 100%);
+            filter: blur(1px);
+            animation: float 8s infinite ease-in-out;
         }
         
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
-            50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-120px) rotate(180deg); opacity: 0.7; }
         }
         
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
+        .premium-spinner {
+            width: 50px;
+            height: 50px;
             border: 4px solid rgba(0, 242, 255, 0.3);
-            border-top: 4px solid #00F2FF;
+            border-top: 4px solid var(--primary-cyan);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -241,303 +359,593 @@
         }
         
         .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.6s ease-in-out;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .scroll-container, .form-scroll-container {
-            overflow-y: auto;
-            padding-right: 10px; /* space for scrollbar */
+        .filter-btn {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--primary-cyan);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 500;
         }
         
-        .scroll-container::-webkit-scrollbar, .form-scroll-container::-webkit-scrollbar {
-            width: 6px;
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+            box-shadow: 0 4px 15px rgba(0, 242, 255, 0.4);
         }
         
-        .scroll-container::-webkit-scrollbar-track, .form-scroll-container::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-        }
-        
-        .scroll-container::-webkit-scrollbar-thumb, .form-scroll-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #00F2FF, #0099CC);
-            border-radius: 10px;
-        }
-        
-        .no-results {
+        .stats-card {
+            background: linear-gradient(135deg, rgba(20, 24, 40, 0.95) 0%, rgba(30, 34, 50, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
             text-align: center;
-            padding: 2rem;
-            color: #6B7280;
+            transition: all 0.3s ease;
         }
         
-        .hidden {
-            display: none !important;
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 242, 255, 0.2);
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            color: white;
+            font-weight: 500;
+            max-width: 350px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.9) 100%);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+        
+        .toast-error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.9) 0%, rgba(220, 38, 38, 0.9) 100%);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+        
+        .toast-warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.9) 0%, rgba(217, 119, 6, 0.9) 100%);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+        
+        .chart-container {
+            background: linear-gradient(135deg, rgba(20, 24, 40, 0.95) 0%, rgba(30, 34, 50, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, var(--primary-cyan), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 242, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0); }
+        }
+        
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success-green);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: pulse-dot 2s infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .premium-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .category-tag {
+            display: inline-block;
+            background: rgba(0, 242, 255, 0.2);
+            color: var(--primary-cyan);
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-right: 0.25rem;
+        }
+        
+        .enhanced-card {
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        
+        .enhanced-card:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 15px 50px rgba(0, 242, 255, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .premium-card {
+                height: 220px;
+            }
+            
+            .premium-image {
+                height: 110px;
+            }
+            
+            .premium-content {
+                padding: 0.75rem;
+            }
+            
+            .stats-number {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media print {
+            .floating-orbs,
+            .toast,
+            .modal {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .premium-glass {
+                background: white !important;
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+            }
         }
     </style>
 </head>
 <body class="antialiased">
-    <!-- Partículas flotantes -->
-    <div class="floating-particles">
-        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
-        <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
-        <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
-        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
-        <div class="particle" style="left: 70%; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 80%; animation-delay: 3s;"></div>
-        <div class="particle" style="left: 90%; animation-delay: 1s;"></div>
+    <!-- Orbes flotantes mejorados -->
+    <div class="floating-orbs">
+        <div class="orb" style="left: 5%; top: 20%; width: 100px; height: 100px; animation-delay: 0s;"></div>
+        <div class="orb" style="left: 15%; top: 60%; width: 60px; height: 60px; animation-delay: 2s;"></div>
+        <div class="orb" style="left: 30%; top: 40%; width: 80px; height: 80px; animation-delay: 4s;"></div>
+        <div class="orb" style="left: 50%; top: 70%; width: 120px; height: 120px; animation-delay: 6s;"></div>
+        <div class="orb" style="left: 70%; top: 30%; width: 90px; height: 90px; animation-delay: 8s;"></div>
+        <div class="orb" style="left: 85%; top: 50%; width: 70px; height: 70px; animation-delay: 10s;"></div>
+        <div class="orb" style="left: 90%; top: 80%; width: 110px; height: 110px; animation-delay: 12s;"></div>
     </div>
 
-    <div id="app" class="min-h-screen p-4">
-        <!-- Encabezado -->
-        <header class="text-center mb-8">
-            <div class="mb-4">
-                <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Logo" class="h-16 w-16 rounded-full border-2 border-cyan-500 mx-auto">
+    <div id="app" class="min-h-screen">
+        <!-- Encabezado Premium -->
+        <header class="text-center py-8 px-4">
+            <div class="mb-6">
+                <div class="relative inline-block">
+                    <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" 
+                         alt="Logo" 
+                         class="h-20 w-20 rounded-full border-3 border-cyan-500 mx-auto pulse-animation">
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 opacity-20 animate-pulse"></div>
+                </div>
             </div>
-            <h1 class="font-orbitron text-3xl font-bold text-white text-glow mb-2">CRYPTO HUB</h1>
-            <p class="text-cyan-300 text-sm">Portal de minería digital</p>
+            <h1 class="font-orbitron text-4xl font-bold text-white text-glow mb-3 gradient-text">
+                CRYPTO HUB PREMIUM
+            </h1>
+            <p class="text-cyan-300 text-lg font-medium mb-4">Portal Avanzado de Minería Digital</p>
+            <div class="w-32 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto"></div>
         </header>
 
-        <!-- Buscador -->
-        <div class="search-container p-4 mb-6 mx-auto max-w-2xl">
-            <div class="flex items-center gap-3">
-                <i class="fas fa-search text-cyan-400 text-xl"></i>
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    class="search-input flex-1 p-2" 
-                    placeholder="Buscar sitios web, nombres o publicadores..."
-                    autocomplete="off"
-                >
-                <button id="clearSearch" class="text-cyan-400 hover:text-cyan-300 transition-colors hidden">
-                    <i class="fas fa-times"></i>
+        <!-- Estadísticas -->
+        <section class="px-4 mb-8">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+                <div class="stats-card">
+                    <div class="stats-number" id="totalSites">0</div>
+                    <p class="text-gray-400 text-sm font-medium">Sitios Total</p>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number" id="activeSites">0</div>
+                    <p class="text-gray-400 text-sm font-medium">Sitios Activos</p>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number" id="totalContributors">0</div>
+                    <p class="text-gray-400 text-sm font-medium">Colaboradores</p>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number" id="newToday">0</div>
+                    <p class="text-gray-400 text-sm font-medium">Nuevos Hoy</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buscador Premium -->
+        <div class="px-4 mb-8">
+            <div class="premium-search p-4 mx-auto max-w-3xl">
+                <div class="flex items-center gap-4">
+                    <i class="fas fa-search text-cyan-400 text-xl"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="premium-input flex-1 p-3 font-space" 
+                        placeholder="Buscar sitios, nombres, descripciones o colaboradores..."
+                        autocomplete="off"
+                    >
+                    <button id="clearSearch" class="text-cyan-400 hover:text-cyan-300 transition-colors p-2 hidden">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="px-4 mb-8">
+            <div class="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-globe mr-2"></i>Todos
+                </button>
+                <button class="filter-btn" data-filter="recent">
+                    <i class="fas fa-clock mr-2"></i>Recientes
+                </button>
+                <button class="filter-btn" data-filter="popular">
+                    <i class="fas fa-fire mr-2"></i>Populares
+                </button>
+                <button class="filter-btn" data-filter="mining">
+                    <i class="fas fa-pickaxe mr-2"></i>Minería
+                </button>
+                <button class="filter-btn" data-filter="faucet">
+                    <i class="fas fa-faucet mr-2"></i>Faucets
                 </button>
             </div>
         </div>
 
         <!-- Botón añadir -->
-        <div class="text-center mb-6">
-            <button id="addLinkBtn" class="neon-button py-3 px-6 rounded-lg font-semibold" disabled>
-                <i class="fas fa-plus mr-2"></i>Añadir Sitio
+        <div class="text-center mb-8 px-4">
+            <button id="addLinkBtn" class="neon-button py-4 px-8 rounded-xl font-semibold text-lg" disabled>
+                <i class="fas fa-plus mr-3"></i>Añadir Sitio Premium
             </button>
         </div>
 
-        <!-- Ad Insertion 1 (Horizontal) -->
-        <div class="my-8 text-center">
-            <a href="https://wexon.pro/partner/sneyder"><img src="https://wexon.pro/img/a/horizontal-lg.gif" class="mx-auto rounded-lg shadow-lg max-w-full h-auto" alt="Anuncio Wexon Horizontal"/></a>
+        <!-- Publicidad 1 -->
+        <div class="px-4 mb-8 text-center">
+            <div class="premium-glass p-6 rounded-2xl max-w-4xl mx-auto">
+                <h3 class="font-orbitron text-lg font-bold text-white mb-4">Partner Premium</h3>
+                <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer">
+                    <img src="https://wexon.pro/img/a/horizontal-lg.gif" 
+                         class="mx-auto rounded-lg max-w-full h-auto hover:scale-105 transition-transform duration-300" 
+                         alt="Wexon Partner Premium"/>
+                </a>
+            </div>
+        </div>
+
+        <!-- Gráfico de Actividad -->
+        <div class="px-4 mb-8">
+            <div class="chart-container max-w-6xl mx-auto">
+                <h3 class="font-orbitron text-xl font-bold text-white mb-6 text-center">
+                    <i class="fas fa-chart-line mr-2"></i>Actividad del Portal
+                </h3>
+                <div style="height: 300px;">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
         </div>
 
         <!-- Contenedor de resultados -->
-        <div class="scroll-container min-h-[40vh]">
-            <div id="searchResults" class="text-center text-gray-400 mb-4 hidden"></div>
-            <main id="linksContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 pb-8">
+        <div class="px-4 mb-8">
+            <div id="searchResults" class="text-center text-gray-400 mb-6 hidden">
+                <i class="fas fa-search mr-2"></i>
+                <span id="resultsCount">0</span> resultado(s) encontrado(s)
+            </div>
+            
+            <main id="linksContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 max-w-7xl mx-auto">
             </main>
         </div>
         
         <!-- Estado de carga -->
         <div id="loadingState" class="text-center py-12">
-            <div class="loading-spinner mx-auto mb-4"></div>
-            <p class="text-cyan-400">Cargando datos...</p>
+            <div class="premium-spinner mx-auto mb-6"></div>
+            <p class="text-cyan-400 text-lg font-medium">Cargando datos premium...</p>
         </div>
 
-        <!-- Sección de Patrocinadores -->
-        <section id="patrocinadores" class="py-12">
-            <div class="text-center mb-8">
-                <h3 class="font-orbitron text-2xl font-bold text-white text-glow">Nuestros Colaboradores</h3>
+        <!-- Sección de Colaboradores Premium -->
+        <section id="collaborators" class="px-4 py-12">
+            <div class="text-center mb-12">
+                <h3 class="font-orbitron text-3xl font-bold text-white text-glow mb-4">
+                    Colaboradores Premium
+                </h3>
+                <div class="w-32 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto"></div>
             </div>
 
-            <div class="space-y-6 max-w-4xl mx-auto">
+            <div class="max-w-6xl mx-auto space-y-8">
                 <!-- Banners Principales -->
-                <div class="glass-card p-6 rounded-xl text-center">
-                    <h4 class="font-orbitron text-lg font-bold text-white mb-3">Bitcoin Mining ATM</h4>
-                    <a href="https://bitcoinminingatm.com/?ref=Sneyder" target="_blank" rel="noopener noreferrer" class="inline-block">
-                        <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" 
-                             alt="Bitcoin Mining ATM" 
-                             class="rounded-lg hover:opacity-80 transition-opacity duration-300 max-w-full h-auto"
-                             onerror="this.style.display='none'">
-                    </a>
-                </div>
-                
-                <div class="glass-card p-6 rounded-xl text-center">
-                    <h4 class="font-orbitron text-lg font-bold text-white mb-3">CoinPayU</h4>
-                    <a href="https://www.coinpayu.com/?r=Sneyder2" target="_blank" rel="noopener noreferrer">
-                        <img title="Join coinpayu to earn!" 
-                             alt="coinpayu" 
-                             src="https://www.coinpayu.com/static/advertiser_banner/468X60.gif" 
-                             class="rounded-lg hover:opacity-80 transition-opacity duration-300 mx-auto max-w-full h-auto"
-                             onerror="this.style.display='none'">
-                    </a>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="premium-glass p-6 rounded-2xl text-center">
+                        <h4 class="font-orbitron text-lg font-bold text-white mb-4">
+                            <i class="fas fa-bitcoin mr-2"></i>Bitcoin Mining ATM
+                        </h4>
+                        <a href="https://bitcoinminingatm.com/?ref=Sneyder" target="_blank" rel="noopener noreferrer">
+                            <img src="https://bitcoinminingatm.com/styles/images/468x60.gif" 
+                                 alt="Bitcoin Mining ATM" 
+                                 class="rounded-lg hover:scale-105 transition-all duration-300 max-w-full h-auto mx-auto"
+                                 onerror="this.style.display='none'">
+                        </a>
+                    </div>
+                    
+                    <div class="premium-glass p-6 rounded-2xl text-center">
+                        <h4 class="font-orbitron text-lg font-bold text-white mb-4">
+                            <i class="fas fa-coins mr-2"></i>CoinPayU
+                        </h4>
+                        <a href="https://www.coinpayu.com/?r=Sneyder2" target="_blank" rel="noopener noreferrer">
+                            <img src="https://www.coinpayu.com/static/advertiser_banner/468X60.gif" 
+                                 alt="CoinPayU" 
+                                 class="rounded-lg hover:scale-105 transition-all duration-300 max-w-full h-auto mx-auto"
+                                 onerror="this.style.display='none'">
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Banners Verticales -->
-                <div class="flex flex-col md:flex-row justify-center items-center gap-6">
-                    <a href="https://wexon.pro/partner/sneyder"><img src="https://wexon.pro/img/a/vertical.gif" class="rounded-lg shadow-lg" alt="Anuncio Wexon Vertical GIF"/></a>
-                    <a href="https://wexon.pro/partner/sneyder"><img src="https://wexon.pro/img/a/vertical.png" class="rounded-lg shadow-lg" alt="Anuncio Wexon Vertical PNG"/></a>
+                <div class="premium-glass p-6 rounded-2xl">
+                    <h4 class="font-orbitron text-lg font-bold text-white mb-6 text-center">
+                        <i class="fas fa-star mr-2"></i>Ofertas Especiales
+                    </h4>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                        <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer">
+                            <img src="https://wexon.pro/img/a/vertical.gif" 
+                                 class="rounded-lg hover:scale-105 transition-all duration-300" 
+                                 alt="Wexon Vertical GIF"/>
+                        </a>
+                        <a href="https://wexon.pro/partner/sneyder" target="_blank" rel="noopener noreferrer">
+                            <img src="https://wexon.pro/img/a/vertical.png" 
+                                 class="rounded-lg hover:scale-105 transition-all duration-300" 
+                                 alt="Wexon Vertical PNG"/>
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Ofertas Especiales -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <!-- Ofertas Premium -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <a href="https://cylindrical-wave.com/dUm.FVz/ddG/NvvQZBGVUb/geHmX9VujZfUtl/kyPQTJYO0/NqzaQv1-N/zXAMtaNnjtQo3xNqDdUu3/MSQD" 
                        target="_blank" rel="noopener noreferrer" 
-                       class="glass-card p-4 rounded-xl flex flex-col items-center justify-center h-32">
-                        <i class="fas fa-ad text-cyan-400 text-2xl mb-2"></i>
-                        <p class="font-semibold text-white">Oferta Especial</p>
+                       class="premium-glass p-6 rounded-2xl flex flex-col items-center justify-center h-40 hover:scale-105 transition-all duration-300">
+                        <i class="fas fa-gift text-cyan-400 text-3xl mb-3"></i>
+                        <p class="font-semibold text-white text-lg">Oferta Especial</p>
+                        <p class="text-cyan-300 text-sm">Promoción limitada</p>
                     </a>
+                    
                     <a href="https://cylindrical-wave.com/dsmRF.zKdCGpNFvzZpGIUn/germF9muUZVU/l/k/PfTLYW0CNpzaQP1-NszPArtwN/jVQO3gNaDGUU3QMWS/Z/sbaCW/1np/dBDA0/xq" 
                        target="_blank" rel="noopener noreferrer" 
-                       class="glass-card p-4 rounded-xl flex flex-col items-center justify-center h-32">
-                        <i class="fas fa-gift text-purple-400 text-2xl mb-2"></i>
-                        <p class="font-semibold text-white">Promoción Limitada</p>
+                       class="premium-glass p-6 rounded-2xl flex flex-col items-center justify-center h-40 hover:scale-105 transition-all duration-300">
+                        <i class="fas fa-medal text-purple-400 text-3xl mb-3"></i>
+                        <p class="font-semibold text-white text-lg">Premium Plus</p>
+                        <p class="text-purple-300 text-sm">Acceso exclusivo</p>
                     </a>
+                    
                     <a href="https://cylindrical-wave.com/dUm.FVz/ddG/NvvQZBGVUb/geHmX9VujZfUtl/kyPQTJYO0/NqzaQv1-N/zXAMtaNnjtQo3xNqDdUu3/MSQD" 
                        target="_blank" rel="noopener noreferrer" 
-                       class="glass-card p-4 rounded-xl flex flex-col items-center justify-center h-32">
-                        <i class="fas fa-star text-yellow-400 text-2xl mb-2"></i>
-                        <p class="font-semibold text-white">Oferta Premium</p>
+                       class="premium-glass p-6 rounded-2xl flex flex-col items-center justify-center h-40 hover:scale-105 transition-all duration-300">
+                        <i class="fas fa-crown text-yellow-400 text-3xl mb-3"></i>
+                        <p class="font-semibold text-white text-lg">VIP Access</p>
+                        <p class="text-yellow-300 text-sm">Beneficios premium</p>
                     </a>
                 </div>
             </div>
         </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 px-4 border-t border-gray-800">
+            <div class="max-w-4xl mx-auto">
+                <p class="text-gray-400 mb-4">
+                    © 2024 Crypto Hub Premium. Plataforma de minería digital avanzada.
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                        <i class="fab fa-discord text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <!-- Modal de detalles -->
-    <div id="detailModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="modal-glass rounded-2xl shadow-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div class="text-center mb-6">
-                <img id="detailImage" src="" alt="" class="w-24 h-24 rounded-lg mx-auto mb-4 object-cover border-2 border-cyan-500/30">
-                <h2 id="detailTitle" class="font-orbitron text-xl font-bold text-white mb-2"></h2>
-                <p id="detailSubmitter" class="text-cyan-300 text-sm mb-4"></p>
-                <div class="w-16 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mb-4"></div>
+    <div id="detailModal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+        <div class="modal-glass rounded-3xl shadow-2xl p-8 w-full max-w-lg">
+            <div class="text-center mb-8">
+                <img id="detailImage" src="" alt="" class="w-28 h-28 rounded-2xl mx-auto mb-6 object-cover border-2 border-cyan-500/50">
+                <h2 id="detailTitle" class="font-orbitron text-2xl font-bold text-white mb-3"></h2>
+                <p id="detailSubmitter" class="text-cyan-300 text-base mb-4"></p>
+                <div class="w-20 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mb-6"></div>
             </div>
             
-            <div class="mb-6">
-                <h3 class="text-cyan-300 font-semibold mb-2">Descripción:</h3>
-                <p id="detailDescription" class="text-gray-300 text-sm leading-relaxed"></p>
+            <div class="mb-8">
+                <h3 class="text-cyan-300 font-semibold mb-3 text-lg">
+                    <i class="fas fa-info-circle mr-2"></i>Descripción:
+                </h3>
+                <p id="detailDescription" class="text-gray-300 leading-relaxed"></p>
             </div>
             
-            <div class="flex gap-3">
-                <button id="closeDetailBtn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-all">
+            <div class="flex gap-4">
+                <button id="closeDetailBtn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all">
                     <i class="fas fa-times mr-2"></i>Cerrar
                 </button>
-                <button id="goToSiteBtn" class="flex-1 neon-button py-3 px-4 rounded-lg font-semibold">
-                    <i class="fas fa-external-link-alt mr-2"></i>Ir al Sitio
+                <button id="goToSiteBtn" class="flex-1 neon-button py-3 px-6 rounded-xl font-semibold">
+                    <i class="fas fa-external-link-alt mr-2"></i>Visitar Sitio
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal añadir sitio (Pantalla Completa) -->
-    <div id="addLinkModal" class="modal fixed inset-0 bg-black bg-opacity-80 flex flex-col z-50">
-        <div class="modal-glass rounded-none shadow-none w-full h-full p-4 sm:p-6 flex flex-col border-0" style="background: rgba(13, 15, 26, 0.98);">
-            <!-- Encabezado del Modal -->
-            <div class="flex-shrink-0 text-center mb-6">
-                <i class="fas fa-plus-circle text-cyan-500 text-3xl mb-4"></i>
-                <h2 class="font-orbitron text-xl font-bold text-white">Añadir Nuevo Sitio</h2>
-                <div class="w-16 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mt-2"></div>
+    <!-- Modal añadir sitio -->
+    <div id="addLinkModal" class="modal fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50">
+        <div class="modal-glass rounded-3xl shadow-2xl p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="text-center mb-8">
+                <i class="fas fa-plus-circle text-cyan-500 text-4xl mb-4"></i>
+                <h2 class="font-orbitron text-2xl font-bold text-white mb-2">Añadir Sitio Premium</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto"></div>
             </div>
             
-            <!-- Contenedor del Formulario con Scroll -->
-            <div class="flex-grow overflow-y-auto form-scroll-container">
-                <form id="addLinkForm" class="space-y-4 max-w-2xl mx-auto w-full">
-                    <div>
-                        <label class="block text-cyan-300 text-sm font-bold mb-2">
-                            <i class="fas fa-user mr-2"></i>Tu Nombre
-                        </label>
-                        <input type="text" id="submitterName" class="form-input w-full rounded-lg px-3 py-2" placeholder="Ingresa tu nombre" required>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-cyan-300 text-sm font-bold mb-2">
-                            <i class="fas fa-tag mr-2"></i>Nombre del Sitio
-                        </label>
-                        <input type="text" id="siteName" class="form-input w-full rounded-lg px-3 py-2" placeholder="Nombre del sitio" required>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-cyan-300 text-sm font-bold mb-2">
-                            <i class="fas fa-info-circle mr-2"></i>Descripción
-                        </label>
-                        <textarea id="siteDescription" rows="3" class="form-input w-full rounded-lg px-3 py-2" placeholder="Describe el sitio..." required></textarea>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-cyan-300 text-sm font-bold mb-2">
-                            <i class="fas fa-image mr-2"></i>Imagen (Opcional)
-                        </label>
-                        <label for="siteImageFile" class="neon-button-outline w-full text-center py-2 px-4 rounded-lg cursor-pointer flex items-center justify-center gap-2">
-                            <i class="fas fa-upload"></i>
-                            <span>Seleccionar Archivo</span>
-                        </label>
-                        <input type="file" id="siteImageFile" class="hidden" accept="image/*">
-                        <p id="file-chosen" class="text-center text-sm text-gray-400 mt-2">Sin archivo seleccionado</p>
-                        <img id="imagePreview" class="mt-3 rounded-lg hidden max-h-32 mx-auto border-2 border-cyan-500/30"/>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-cyan-300 text-sm font-bold mb-2">
-                            <i class="fas fa-link mr-2"></i>URL
-                        </label>
-                        <input type="url" id="siteUrl" class="form-input w-full rounded-lg px-3 py-2" placeholder="https://ejemplo.com" required>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Botones de Acción Fijos -->
-            <div class="flex-shrink-0 pt-4 max-w-2xl mx-auto w-full">
-                <div class="flex gap-3">
-                    <button type="button" id="cancelAddBtn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-all">
+            <form id="addLinkForm" class="space-y-6">
+                <div>
+                    <label class="block text-cyan-300 text-sm font-bold mb-3">
+                        <i class="fas fa-user mr-2"></i>Tu Nombre
+                    </label>
+                    <input type="text" id="submitterName" class="form-input w-full rounded-xl px-4 py-3" placeholder="Ingresa tu nombre" required>
+                </div>
+                
+                <div>
+                    <label class="block text-cyan-300 text-sm font-bold mb-3">
+                        <i class="fas fa-tag mr-2"></i>Nombre del Sitio
+                    </label>
+                    <input type="text" id="siteName" class="form-input w-full rounded-xl px-4 py-3" placeholder="Nombre del sitio" required>
+                </div>
+                
+                <div>
+                    <label class="block text-cyan-300 text-sm font-bold mb-3">
+                        <i class="fas fa-info-circle mr-2"></i>Descripción
+                    </label>
+                    <textarea id="siteDescription" rows="4" class="form-input w-full rounded-xl px-4 py-3" placeholder="Describe el sitio..." required></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-cyan-300 text-sm font-bold mb-3">
+                        <i class="fas fa-image mr-2"></i>Imagen (Opcional)
+                    </label>
+                    <label for="siteImageFile" class="neon-button-outline w-full text-center py-3 px-6 rounded-xl cursor-pointer flex items-center justify-center gap-3">
+                        <i class="fas fa-upload text-lg"></i>
+                        <span>Seleccionar Imagen</span>
+                    </label>
+                    <input type="file" id="siteImageFile" class="hidden" accept="image/*">
+                    <p id="file-chosen" class="text-center text-sm text-gray-400 mt-3">Sin archivo seleccionado</p>
+                    <img id="imagePreview" class="mt-4 rounded-xl hidden max-h-40 mx-auto border-2 border-cyan-500/50"/>
+                </div>
+                
+                <div>
+                    <label class="block text-cyan-300 text-sm font-bold mb-3">
+                        <i class="fas fa-link mr-2"></i>URL del Sitio
+                    </label>
+                    <input type="url" id="siteUrl" class="form-input w-full rounded-xl px-4 py-3" placeholder="https://ejemplo.com" required>
+                </div>
+                
+                <div class="flex gap-4 pt-4">
+                    <button type="button" id="cancelAddBtn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all">
                         <i class="fas fa-times mr-2"></i>Cancelar
                     </button>
-                    <button type="submit" form="addLinkForm" id="saveBtn" class="flex-1 neon-button py-3 px-4 rounded-lg font-semibold">
+                    <button type="submit" id="saveBtn" class="flex-1 neon-button py-3 px-6 rounded-xl font-semibold">
                         <span id="saveBtnText">
                             <i class="fas fa-save mr-2"></i>Guardar
                         </span>
                         <div id="saveSpinner" class="hidden">
-                            <div class="loading-spinner w-5 h-5 mx-auto"></div>
+                            <div class="premium-spinner w-5 h-5 mx-auto"></div>
                         </div>
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
-
     <!-- Modal confirmación eliminar -->
-    <div id="deleteConfirmModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="modal-glass rounded-2xl shadow-2xl p-6 w-full max-w-sm">
-            <div class="text-center mb-6">
-                <i class="fas fa-exclamation-triangle text-red-500 text-3xl mb-4"></i>
-                <h2 class="font-orbitron text-lg font-bold text-white">Eliminar Registro</h2>
-                <div class="w-16 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent mx-auto mt-2"></div>
+    <div id="deleteConfirmModal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+        <div class="modal-glass rounded-3xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                <h2 class="font-orbitron text-xl font-bold text-white mb-2">Eliminar Registro</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent mx-auto"></div>
             </div>
             
-            <p class="text-gray-300 mb-4 text-center text-sm">Ingresa la clave maestra:</p>
+            <p class="text-gray-300 mb-6 text-center">Ingresa la clave maestra para confirmar:</p>
             
-            <div class="mb-6">
-                <input type="password" id="deletePassword" class="form-input w-full rounded-lg px-3 py-2" placeholder="Clave maestra">
+            <div class="mb-8">
+                <input type="password" id="deletePassword" class="form-input w-full rounded-xl px-4 py-3" placeholder="Clave maestra">
             </div>
             
-            <div class="flex gap-3">
-                <button id="cancelDeleteBtn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-all">
+            <div class="flex gap-4">
+                <button id="cancelDeleteBtn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all">
                     <i class="fas fa-times mr-2"></i>Cancelar
                 </button>
-                <button id="confirmDeleteBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-all">
+                <button id="confirmDeleteBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-all">
                     <i class="fas fa-trash mr-2"></i>Eliminar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-5 right-5 text-white py-3 px-4 rounded-lg shadow-lg border-2 max-w-sm" style="visibility: hidden; opacity: 0; transition: all 0.3s ease; transform: translateY(20px);">
+    <!-- Toast Premium -->
+    <div id="toast" class="toast">
         <div class="flex items-center">
-            <i id="toastIcon" class="fas fa-check-circle mr-2"></i>
-            <p id="toastMessage" class="text-sm"></p>
+            <i id="toastIcon" class="fas fa-check-circle mr-3 text-lg"></i>
+            <p id="toastMessage" class="font-medium"></p>
         </div>
     </div>
 
@@ -555,6 +963,9 @@
         let filteredLinks = [];
         let linkToDeleteId = null;
         let currentDetailLink = null;
+        let currentFilter = 'all';
+        let activityChart = null;
+        let deleteTimer = null;
 
         // Elementos DOM
         const elements = {
@@ -563,21 +974,28 @@
             searchInput: document.getElementById('searchInput'),
             clearSearch: document.getElementById('clearSearch'),
             searchResults: document.getElementById('searchResults'),
+            resultsCount: document.getElementById('resultsCount'),
             addLinkBtn: document.getElementById('addLinkBtn'),
             addLinkModal: document.getElementById('addLinkModal'),
             addLinkForm: document.getElementById('addLinkForm'),
             detailModal: document.getElementById('detailModal'),
             deleteConfirmModal: document.getElementById('deleteConfirmModal'),
-            toast: document.getElementById('toast')
+            toast: document.getElementById('toast'),
+            totalSites: document.getElementById('totalSites'),
+            activeSites: document.getElementById('activeSites'),
+            totalContributors: document.getElementById('totalContributors'),
+            newToday: document.getElementById('newToday')
         };
 
         // Utilidades
         const toggleModal = (modal, show) => {
             if (show) {
                 modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
                 setTimeout(() => modal.classList.add('is-visible'), 10);
             } else {
                 modal.classList.remove('is-visible');
+                document.body.style.overflow = 'auto';
                 setTimeout(() => {
                     modal.style.display = 'none';
                     if (modal.id === 'addLinkModal') {
@@ -595,92 +1013,307 @@
             const toastMessage = document.getElementById('toastMessage');
             
             toastMessage.textContent = message;
-            elements.toast.className = 'fixed bottom-5 right-5 text-white py-3 px-4 rounded-lg shadow-lg border-2 max-w-sm';
+            elements.toast.className = 'toast';
             
-            if (type === 'success') {
-                elements.toast.classList.add('bg-green-500', 'border-green-400');
-                toastIcon.className = 'fas fa-check-circle mr-2';
-            } else {
-                elements.toast.classList.add('bg-red-500', 'border-red-400');
-                toastIcon.className = 'fas fa-exclamation-circle mr-2';
+            switch (type) {
+                case 'success':
+                    elements.toast.classList.add('toast-success');
+                    toastIcon.className = 'fas fa-check-circle mr-3 text-lg';
+                    break;
+                case 'error':
+                    elements.toast.classList.add('toast-error');
+                    toastIcon.className = 'fas fa-exclamation-circle mr-3 text-lg';
+                    break;
+                case 'warning':
+                    elements.toast.classList.add('toast-warning');
+                    toastIcon.className = 'fas fa-exclamation-triangle mr-3 text-lg';
+                    break;
             }
             
-            elements.toast.style.visibility = 'visible';
-            elements.toast.style.opacity = '1';
-            elements.toast.style.transform = 'translateY(0)';
+            elements.toast.classList.add('show');
             
             setTimeout(() => {
-                elements.toast.style.opacity = '0';
-                elements.toast.style.transform = 'translateY(20px)';
-                setTimeout(() => elements.toast.style.visibility = 'hidden', 300);
-            }, 3000);
+                elements.toast.classList.remove('show');
+            }, 4000);
         };
 
-        // Crear tarjeta compacta
-        function createCompactCard(link) {
+        // Actualizar estadísticas
+        const updateStats = () => {
+            const totalSites = allLinks.length;
+            const activeSites = allLinks.filter(link => link.url && link.url.trim() !== '').length;
+            const contributors = new Set(allLinks.map(link => link.submitter_name || 'Anónimo')).size;
+            const today = new Date().toISOString().split('T')[0];
+            const newToday = allLinks.filter(link => link.created_at && link.created_at.startsWith(today)).length;
+
+            // Animación de contador
+            const animateCounter = (element, targetValue, duration = 1000) => {
+                const startValue = parseInt(element.textContent) || 0;
+                const increment = (targetValue - startValue) / (duration / 16);
+                let currentValue = startValue;
+                
+                const counter = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= targetValue) {
+                        element.textContent = targetValue;
+                        clearInterval(counter);
+                    } else {
+                        element.textContent = Math.floor(currentValue);
+                    }
+                }, 16);
+            };
+
+            animateCounter(elements.totalSites, totalSites);
+            animateCounter(elements.activeSites, activeSites);
+            animateCounter(elements.totalContributors, contributors);
+            animateCounter(elements.newToday, newToday);
+        };
+
+        // Crear gráfico de actividad
+        const createActivityChart = () => {
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            
+            // Datos simulados de actividad de los últimos 7 días
+            const labels = [];
+            const data = [];
+            const today = new Date();
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' }));
+                
+                // Contar sitios añadidos en cada día
+                const dayStr = date.toISOString().split('T')[0];
+                const count = allLinks.filter(link => link.created_at && link.created_at.startsWith(dayStr)).length;
+                data.push(count);
+            }
+            
+            if (activityChart) {
+                activityChart.destroy();
+            }
+            
+            activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Sitios Añadidos',
+                        data: data,
+                        borderColor: '#00F2FF',
+                        backgroundColor: 'rgba(0, 242, 255, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00F2FF',
+                        pointBorderColor: '#FFFFFF',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#E0E0E0',
+                                font: {
+                                    family: 'Space Grotesk',
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#9CA3AF',
+                                font: {
+                                    family: 'Space Grotesk'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 242, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#9CA3AF',
+                                font: {
+                                    family: 'Space Grotesk'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 242, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // Función para determinar categoría
+        const getCategory = (link) => {
+            const name = link.name.toLowerCase();
+            const description = (link.description || '').toLowerCase();
+            
+            if (name.includes('mining') || name.includes('miner') || description.includes('mining')) {
+                return 'mining';
+            } else if (name.includes('faucet') || description.includes('faucet')) {
+                return 'faucet';
+            } else if (name.includes('trading') || description.includes('trading')) {
+                return 'trading';
+            } else if (name.includes('staking') || description.includes('staking')) {
+                return 'staking';
+            }
+            return 'other';
+        };
+
+        // Crear tarjeta premium mejorada
+        function createPremiumCard(link) {
             const card = document.createElement('div');
-            card.className = 'glass-card rounded-lg overflow-hidden compact-card fade-in';
+            card.className = 'premium-glass rounded-2xl overflow-hidden premium-card enhanced-card fade-in';
             card.dataset.id = link.id;
             
+            const category = getCategory(link);
+            const categoryColors = {
+                mining: 'bg-yellow-500',
+                faucet: 'bg-blue-500',
+                trading: 'bg-green-500',
+                staking: 'bg-purple-500',
+                other: 'bg-gray-500'
+            };
+            
+            const categoryLabels = {
+                mining: 'Minería',
+                faucet: 'Faucet',
+                trading: 'Trading',
+                staking: 'Staking',
+                other: 'Otros'
+            };
+            
             card.innerHTML = `
-                <img src="${link.image_url || DEFAULT_IMAGE_URL}" alt="${link.name}" class="compact-image" 
-                     onerror="this.src='${DEFAULT_IMAGE_URL}';">
-                <div class="compact-content">
-                    <div class="compact-info">
-                        <h3 class="font-semibold text-white text-xs mb-1 truncate">${link.name}</h3>
-                        <p class="text-cyan-300 text-xs truncate">
+                <div class="relative">
+                    <img src="${link.image_url || DEFAULT_IMAGE_URL}" 
+                         alt="${link.name}" 
+                         class="premium-image" 
+                         onerror="this.src='${DEFAULT_IMAGE_URL}';">
+                    
+                    <div class="premium-badge">
+                        <span class="category-tag ${categoryColors[category]} text-white">
+                            ${categoryLabels[category]}
+                        </span>
+                    </div>
+                    
+                    <div class="status-indicator"></div>
+                </div>
+                
+                <div class="premium-content">
+                    <div class="premium-info">
+                        <h3 class="font-semibold text-white text-sm mb-2 truncate">${link.name}</h3>
+                        <p class="text-cyan-300 text-xs truncate mb-1">
                             <i class="fas fa-user mr-1"></i>${link.submitter_name || 'Anónimo'}
                         </p>
+                        <p class="text-gray-400 text-xs truncate">
+                            <i class="fas fa-clock mr-1"></i>${new Date(link.created_at).toLocaleDateString('es-ES')}
+                        </p>
                     </div>
-                    <div class="compact-actions">
-                        <button class="compact-button detail-button" data-action="detail">
-                            <i class="fas fa-info-circle mr-1"></i>Detalle
+                    <div class="premium-actions">
+                        <button class="premium-action-btn detail-btn" data-action="detail">
+                            <i class="fas fa-info-circle mr-1"></i>Info
                         </button>
-                        <button class="compact-button go-button" data-action="go">
-                            <i class="fas fa-external-link-alt mr-1"></i>IR
+                        <button class="premium-action-btn go-btn" data-action="go">
+                            <i class="fas fa-external-link-alt mr-1"></i>Visitar
                         </button>
                     </div>
                 </div>
             `;
 
-            // Event listeners for buttons
-            card.querySelector('[data-action="detail"]').addEventListener('click', (e) => {
+            // Event listeners mejorados
+            const detailBtn = card.querySelector('[data-action="detail"]');
+            const goBtn = card.querySelector('[data-action="go"]');
+            
+            detailBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 showDetailModal(link);
             });
-            card.querySelector('[data-action="go"]').addEventListener('click', (e) => {
+            
+            goBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 window.open(link.url, '_blank');
             });
 
-            // --- Robust Long Press Logic ---
+            // Mejorado sistema de long press para eliminar
+            let isLongPress = false;
             let longPressTimer = null;
 
-            const startPress = (e) => {
-                if (e.target.closest('button')) return;
-                e.preventDefault();
+            const startLongPress = (e) => {
+                // Solo iniciar si no se está tocando un botón
+                if (e.target.closest('.premium-action-btn') || e.target.closest('button')) {
+                    return;
+                }
                 
-                if (longPressTimer) clearTimeout(longPressTimer);
+                e.preventDefault();
+                isLongPress = false;
+                
+                if (longPressTimer) {
+                    clearTimeout(longPressTimer);
+                }
 
                 longPressTimer = setTimeout(() => {
-                    card.classList.add('long-press-active');
-                    if (navigator.vibrate) navigator.vibrate(50);
+                    isLongPress = true;
+                    card.classList.add('deleting');
+                    
+                    // Haptic feedback
+                    if (navigator.vibrate) {
+                        navigator.vibrate(200);
+                    }
+                    
                     linkToDeleteId = link.id;
                     toggleModal(elements.deleteConfirmModal, true);
-                }, 1000);
+                }, 800); // Reducido a 800ms para mejor UX
             };
 
-            const cancelPress = (e) => {
-                clearTimeout(longPressTimer);
-                card.classList.remove('long-press-active');
+            const cancelLongPress = () => {
+                if (longPressTimer) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                }
+                card.classList.remove('deleting');
+                
+                // Pequeño delay para permitir que el click se procese
+                setTimeout(() => {
+                    isLongPress = false;
+                }, 100);
             };
 
-            card.addEventListener('mousedown', startPress);
-            card.addEventListener('mouseup', cancelPress);
-            card.addEventListener('mouseleave', cancelPress);
-            card.addEventListener('touchstart', startPress, { passive: false });
-            card.addEventListener('touchend', cancelPress);
-            card.addEventListener('touchcancel', cancelPress);
+            const handleCardClick = (e) => {
+                if (isLongPress) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+                
+                // Si no es long press y no es botón, mostrar detalles
+                if (!e.target.closest('.premium-action-btn') && !e.target.closest('button')) {
+                    showDetailModal(link);
+                }
+            };
+
+            // Event listeners para long press
+            card.addEventListener('mousedown', startLongPress);
+            card.addEventListener('mouseup', cancelLongPress);
+            card.addEventListener('mouseleave', cancelLongPress);
+            card.addEventListener('touchstart', startLongPress, { passive: false });
+            card.addEventListener('touchend', cancelLongPress);
+            card.addEventListener('touchmove', cancelLongPress);
+            card.addEventListener('touchcancel', cancelLongPress);
+            
+            // Click handler
+            card.addEventListener('click', handleCardClick);
 
             return card;
         }
@@ -695,39 +1328,90 @@
             toggleModal(elements.detailModal, true);
         }
 
+        // Filtrar enlaces
+        const filterLinks = (filterType) => {
+            let filtered = [...allLinks];
+            
+            switch (filterType) {
+                case 'recent':
+                    filtered = filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 30);
+                    break;
+                case 'popular':
+                    // Simular popularidad por nombre o descripción
+                    filtered = filtered.filter(link => 
+                        link.name.toLowerCase().includes('bitcoin') || 
+                        link.name.toLowerCase().includes('mining') ||
+                        link.name.toLowerCase().includes('faucet') ||
+                        link.name.toLowerCase().includes('crypto')
+                    );
+                    break;
+                case 'mining':
+                    filtered = filtered.filter(link => 
+                        link.name.toLowerCase().includes('mining') ||
+                        link.name.toLowerCase().includes('miner') ||
+                        (link.description && link.description.toLowerCase().includes('mining'))
+                    );
+                    break;
+                case 'faucet':
+                    filtered = filtered.filter(link => 
+                        link.name.toLowerCase().includes('faucet') ||
+                        (link.description && link.description.toLowerCase().includes('faucet'))
+                    );
+                    break;
+                default:
+                    break;
+            }
+            
+            return filtered;
+        };
+
         // Renderizar enlaces
         function renderLinks(links) {
             elements.linksContainer.innerHTML = '';
             
             if (links.length === 0 && elements.searchInput.value) {
-                elements.linksContainer.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-search text-cyan-500 text-4xl mb-4"></i><p class="text-gray-400">No se encontraron resultados.</p></div>`;
+                elements.linksContainer.innerHTML = `
+                    <div class="col-span-full text-center py-16">
+                        <i class="fas fa-search text-cyan-500 text-5xl mb-6"></i>
+                        <p class="text-gray-400 text-lg">No se encontraron resultados para tu búsqueda.</p>
+                        <p class="text-gray-500 text-sm mt-2">Intenta con otros términos de búsqueda</p>
+                    </div>
+                `;
             } else if (links.length === 0) {
-                 elements.linksContainer.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-database text-cyan-500 text-4xl mb-4"></i><p class="text-gray-400">Aún no hay sitios. ¡Sé el primero!</p></div>`;
+                elements.linksContainer.innerHTML = `
+                    <div class="col-span-full text-center py-16">
+                        <i class="fas fa-database text-cyan-500 text-5xl mb-6"></i>
+                        <p class="text-gray-400 text-lg">Aún no hay sitios en esta categoría.</p>
+                        <p class="text-gray-500 text-sm mt-2">¡Sé el primero en añadir uno!</p>
+                    </div>
+                `;
             } else {
-                 links.forEach((link, index) => {
+                links.forEach((link, index) => {
                     setTimeout(() => {
-                        elements.linksContainer.appendChild(createCompactCard(link));
-                    }, index * 50);
+                        elements.linksContainer.appendChild(createPremiumCard(link));
+                    }, index * 50); // Animación escalonada
                 });
             }
         }
 
-        // Búsqueda
+        // Búsqueda mejorada
         function performSearch(query) {
             const searchTerm = query.toLowerCase().trim();
             
             if (!searchTerm) {
-                filteredLinks = [...allLinks];
+                filteredLinks = filterLinks(currentFilter);
                 elements.searchResults.classList.add('hidden');
                 elements.clearSearch.classList.add('hidden');
             } else {
-                filteredLinks = allLinks.filter(link => 
+                const baseFiltered = filterLinks(currentFilter);
+                filteredLinks = baseFiltered.filter(link => 
                     link.name.toLowerCase().includes(searchTerm) ||
                     (link.description && link.description.toLowerCase().includes(searchTerm)) ||
-                    (link.submitter_name && link.submitter_name.toLowerCase().includes(searchTerm))
+                    (link.submitter_name && link.submitter_name.toLowerCase().includes(searchTerm)) ||
+                    (link.url && link.url.toLowerCase().includes(searchTerm))
                 );
                 
-                elements.searchResults.textContent = `${filteredLinks.length} resultado(s) encontrado(s)`;
+                elements.resultsCount.textContent = filteredLinks.length;
                 elements.searchResults.classList.remove('hidden');
                 elements.clearSearch.classList.remove('hidden');
             }
@@ -749,7 +1433,11 @@
                 if (error) throw error;
 
                 allLinks = links;
+                updateStats();
+                createActivityChart();
                 performSearch(elements.searchInput.value);
+                
+                showToast(`Cargados ${links.length} sitios exitosamente`, 'success');
                 
             } catch (error) {
                 console.error('Error fetching links:', error);
@@ -803,22 +1491,23 @@
                 if (insertError) throw insertError;
 
                 toggleModal(elements.addLinkModal, false);
-                showToast('Actualizado con éxito');
-
+                showToast('Sitio añadido exitosamente', 'success');
+                
                 setTimeout(() => {
-                    location.reload();
-                }, 1500);
+                    fetchLinks();
+                }, 1000);
                 
             } catch (error) {
                 console.error('Error saving link:', error);
                 showToast(`Error al guardar: ${error.message}`, 'error');
+            } finally {
                 saveBtn.disabled = false;
                 saveBtnText.classList.remove('hidden');
                 saveSpinner.classList.add('hidden');
             }
         }
 
-        // --- Robust Delete Function ---
+        // Eliminar enlace
         async function deleteLink() {
             const password = document.getElementById('deletePassword').value;
             const confirmBtn = document.getElementById('confirmDeleteBtn');
@@ -834,8 +1523,9 @@
                 return;
             }
 
+            const originalContent = confirmBtn.innerHTML;
             confirmBtn.disabled = true;
-            confirmBtn.innerHTML = `<div class="loading-spinner w-5 h-5 mx-auto border-white/30 border-t-white"></div>`;
+            confirmBtn.innerHTML = `<div class="premium-spinner w-5 h-5 mx-auto"></div>`;
 
             try {
                 const { data: linkData, error: fetchError } = await supabaseClient
@@ -856,22 +1546,33 @@
                 if (linkData && linkData.image_url && linkData.image_url !== DEFAULT_IMAGE_URL) {
                     const imagePath = linkData.image_url.split('/images/')[1];
                     if (imagePath) {
-                        const { error: storageError } = await supabaseClient.storage.from('images').remove([imagePath]);
+                        const { error: storageError } = await supabaseClient.storage
+                            .from('images')
+                            .remove([imagePath]);
                         if (storageError) console.error('Failed to delete image from storage:', storageError);
                     }
                 }
 
-                showToast('Sitio eliminado exitosamente');
+                showToast('Sitio eliminado exitosamente', 'success');
                 toggleModal(elements.deleteConfirmModal, false);
                 document.getElementById('deletePassword').value = '';
+                
+                setTimeout(() => {
+                    fetchLinks();
+                }, 1000);
                 
             } catch (error) {
                 console.error('Error deleting link:', error);
                 showToast(`Error al eliminar: ${error.message}`, 'error');
             } finally {
                 confirmBtn.disabled = false;
-                confirmBtn.innerHTML = `<i class="fas fa-trash mr-2"></i>Eliminar`;
-                linkToDeleteId = null; 
+                confirmBtn.innerHTML = originalContent;
+                linkToDeleteId = null;
+                
+                // Limpiar estado de eliminación
+                document.querySelectorAll('.deleting').forEach(el => {
+                    el.classList.remove('deleting');
+                });
             }
         }
 
@@ -880,16 +1581,22 @@
             try {
                 const { data: { session }, error } = await supabaseClient.auth.getSession();
                 if (error) throw error;
+                
                 if (!session) {
                     const { error: signInError } = await supabaseClient.auth.signInAnonymously();
                     if (signInError) throw signInError;
                 }
+                
                 elements.addLinkBtn.disabled = false;
-                elements.addLinkBtn.innerHTML = '<i class="fas fa-plus mr-2"></i>Añadir Sitio';
+                elements.addLinkBtn.innerHTML = '<i class="fas fa-plus mr-3"></i>Añadir Sitio Premium';
+                
                 await fetchLinks();
+                
+                showToast('Plataforma cargada exitosamente', 'success');
+                
             } catch (error) {
                 console.error('Initialization Error:', error);
-                elements.addLinkBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Error de Conexión';
+                elements.addLinkBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-3"></i>Error de Conexión';
                 showToast('Error de conexión con la base de datos.', 'error');
             }
         }
@@ -898,12 +1605,31 @@
         document.addEventListener('DOMContentLoaded', () => {
             init();
 
-            elements.searchInput.addEventListener('input', (e) => performSearch(e.target.value));
+            // Búsqueda con debounce
+            let searchTimeout;
+            elements.searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    performSearch(e.target.value);
+                }, 300);
+            });
+            
             elements.clearSearch.addEventListener('click', () => {
                 elements.searchInput.value = '';
                 performSearch('');
             });
 
+            // Filtros
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentFilter = e.target.dataset.filter;
+                    performSearch(elements.searchInput.value);
+                });
+            });
+
+            // Modales
             elements.addLinkBtn.addEventListener('click', () => toggleModal(elements.addLinkModal, true));
             document.getElementById('cancelAddBtn').addEventListener('click', () => toggleModal(elements.addLinkModal, false));
             document.getElementById('closeDetailBtn').addEventListener('click', () => toggleModal(elements.detailModal, false));
@@ -913,17 +1639,30 @@
             document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
                 toggleModal(elements.deleteConfirmModal, false);
                 document.getElementById('deletePassword').value = '';
+                
+                // Limpiar estado de eliminación
+                document.querySelectorAll('.deleting').forEach(el => {
+                    el.classList.remove('deleting');
+                });
             });
             document.getElementById('confirmDeleteBtn').addEventListener('click', deleteLink);
 
+            // Formularios
             elements.addLinkForm.addEventListener('submit', saveLink);
 
+            // Subida de imagen
             document.getElementById('siteImageFile').addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 const fileChosen = document.getElementById('file-chosen');
                 const imagePreview = document.getElementById('imagePreview');
                 
                 if (file) {
+                    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                        showToast('La imagen es demasiado grande. Máximo 5MB.', 'warning');
+                        e.target.value = '';
+                        return;
+                    }
+                    
                     fileChosen.textContent = file.name;
                     const reader = new FileReader();
                     reader.onload = (event) => {
@@ -937,12 +1676,38 @@
                 }
             });
 
+            // Cerrar modales al hacer clic fuera
             [elements.detailModal, elements.deleteConfirmModal].forEach(modal => {
                 modal.addEventListener('click', (e) => {
-                    if (e.target === modal) toggleModal(modal, false);
+                    if (e.target === modal) {
+                        toggleModal(modal, false);
+                        
+                        // Limpiar estado de eliminación si es el modal de eliminar
+                        if (modal.id === 'deleteConfirmModal') {
+                            document.querySelectorAll('.deleting').forEach(el => {
+                                el.classList.remove('deleting');
+                            });
+                        }
+                    }
                 });
             });
 
+            // Escape key para cerrar modales
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const visibleModal = document.querySelector('.modal.is-visible');
+                    if (visibleModal) {
+                        toggleModal(visibleModal, false);
+                        
+                        // Limpiar estado de eliminación
+                        document.querySelectorAll('.deleting').forEach(el => {
+                            el.classList.remove('deleting');
+                        });
+                    }
+                }
+            });
+
+            // Suscripción en tiempo real
             supabaseClient
                 .channel('public:links')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'links' }, 
@@ -957,4 +1722,3 @@
     </script>
 </body>
 </html>
-
