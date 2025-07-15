@@ -580,7 +580,6 @@
                 modal.classList.remove('is-visible');
                 setTimeout(() => {
                     modal.style.display = 'none';
-                    // Reset form when closing addLinkModal
                     if (modal.id === 'addLinkModal') {
                         elements.addLinkForm.reset();
                         document.getElementById('file-chosen').textContent = 'Sin archivo seleccionado';
@@ -644,49 +643,44 @@
                 </div>
             `;
 
-            // Event listeners
-            const detailBtn = card.querySelector('[data-action="detail"]');
-            const goBtn = card.querySelector('[data-action="go"]');
-
-            detailBtn.addEventListener('click', (e) => {
+            // Event listeners for buttons
+            card.querySelector('[data-action="detail"]').addEventListener('click', (e) => {
                 e.stopPropagation();
                 showDetailModal(link);
             });
-
-            goBtn.addEventListener('click', (e) => {
+            card.querySelector('[data-action="go"]').addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.open(link.url, '_blank');
             });
 
-            // Long press para eliminar
-            let longPressTimer;
-            card.addEventListener('touchstart', (e) => {
+            // --- Robust Long Press Logic ---
+            let longPressTimer = null;
+
+            const startPress = (e) => {
                 if (e.target.closest('button')) return;
+                e.preventDefault();
+                
+                if (longPressTimer) clearTimeout(longPressTimer);
+
                 longPressTimer = setTimeout(() => {
                     card.classList.add('long-press-active');
                     if (navigator.vibrate) navigator.vibrate(50);
                     linkToDeleteId = link.id;
                     toggleModal(elements.deleteConfirmModal, true);
                 }, 1000);
-            }, { passive: true });
+            };
 
-            const endLongPress = () => {
+            const cancelPress = (e) => {
                 clearTimeout(longPressTimer);
                 card.classList.remove('long-press-active');
             };
 
-            card.addEventListener('touchend', endLongPress, { passive: true });
-            card.addEventListener('touchcancel', endLongPress, { passive: true });
-            card.addEventListener('mousedown', (e) => {
-                 if (e.target.closest('button')) return;
-                 longPressTimer = setTimeout(() => {
-                    card.classList.add('long-press-active');
-                    linkToDeleteId = link.id;
-                    toggleModal(elements.deleteConfirmModal, true);
-                }, 1000);
-            });
-            card.addEventListener('mouseup', endLongPress);
-            card.addEventListener('mouseleave', endLongPress);
+            card.addEventListener('mousedown', startPress);
+            card.addEventListener('mouseup', cancelPress);
+            card.addEventListener('mouseleave', cancelPress);
+            card.addEventListener('touchstart', startPress, { passive: false });
+            card.addEventListener('touchend', cancelPress);
+            card.addEventListener('touchcancel', cancelPress);
 
             return card;
         }
@@ -824,21 +818,48 @@
             }
         }
 
-        // Eliminar enlace
+        // --- Robust Delete Function ---
         async function deleteLink() {
             const password = document.getElementById('deletePassword').value;
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            
             if (password !== '1994') {
                 showToast('Clave maestra incorrecta', 'error');
                 return;
             }
+            
+            if (!linkToDeleteId) {
+                showToast('Error: No se ha seleccionado un sitio.', 'error');
+                toggleModal(elements.deleteConfirmModal, false);
+                return;
+            }
+
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = `<div class="loading-spinner w-5 h-5 mx-auto border-white/30 border-t-white"></div>`;
 
             try {
-                const { error } = await supabaseClient
+                const { data: linkData, error: fetchError } = await supabaseClient
+                    .from('links')
+                    .select('image_url')
+                    .eq('id', linkToDeleteId)
+                    .single();
+
+                if (fetchError) console.warn('Could not fetch link before deleting.', fetchError);
+
+                const { error: deleteDbError } = await supabaseClient
                     .from('links')
                     .delete()
                     .eq('id', linkToDeleteId);
 
-                if (error) throw error;
+                if (deleteDbError) throw deleteDbError;
+
+                if (linkData && linkData.image_url && linkData.image_url !== DEFAULT_IMAGE_URL) {
+                    const imagePath = linkData.image_url.split('/images/')[1];
+                    if (imagePath) {
+                        const { error: storageError } = await supabaseClient.storage.from('images').remove([imagePath]);
+                        if (storageError) console.error('Failed to delete image from storage:', storageError);
+                    }
+                }
 
                 showToast('Sitio eliminado exitosamente');
                 toggleModal(elements.deleteConfirmModal, false);
@@ -846,7 +867,11 @@
                 
             } catch (error) {
                 console.error('Error deleting link:', error);
-                showToast('Error al eliminar el sitio', 'error');
+                showToast(`Error al eliminar: ${error.message}`, 'error');
+            } finally {
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = `<i class="fas fa-trash mr-2"></i>Eliminar`;
+                linkToDeleteId = null; 
             }
         }
 
