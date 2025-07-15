@@ -203,29 +203,6 @@
             min-width: 500px;
         }
 
-        .fullscreen-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: var(--primary-bg);
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .fullscreen-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
         .form-input {
             width: 100%;
             padding: 0.875rem 1rem;
@@ -301,12 +278,6 @@
             background: rgba(239, 68, 68, 0.2);
             color: var(--danger);
             border: 1px solid var(--danger);
-        }
-
-        .category-shorlin {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            border: 1px solid #10b981;
         }
 
         .category-other {
@@ -436,10 +407,6 @@
             background: var(--warning);
         }
 
-        .notification.info {
-            background: var(--accent);
-        }
-
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -553,134 +520,6 @@
             transition: width 0.3s ease;
         }
 
-        .update-notification {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--card-bg);
-            border: 2px solid var(--accent);
-            border-radius: 20px;
-            padding: 2rem;
-            z-index: 3000;
-            max-width: 600px;
-            width: 90vw;
-            text-align: center;
-            box-shadow: 0 20px 60px var(--shadow);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .update-notification.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .update-notification h3 {
-            color: var(--accent);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .update-notification p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .storage-permission-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .storage-permission-modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .storage-permission-content {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 600px;
-            width: 90vw;
-            text-align: center;
-            border: 2px solid var(--accent);
-        }
-
-        .menu-button {
-            width: 200px;
-            height: 200px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .menu-button:hover {
-            transform: scale(1.05);
-        }
-
-        .menu-button.faucet-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .menu-button.add-button {
-            background: var(--accent);
-            color: white;
-        }
-
-        .menu-button.export-button {
-            background: var(--success);
-            color: white;
-        }
-
-        .faucet-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .close-menu-btn {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background: var(--danger);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .close-menu-btn:hover {
-            transform: scale(1.1);
-        }
-
         @media (max-width: 768px) {
             .container {
                 padding: 0 0.5rem;
@@ -712,29 +551,6 @@
                 right: 1rem;
                 width: 40px;
                 height: 40px;
-            }
-
-            .filter-chips {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .filter-chip {
-                text-align: center;
-            }
-
-            .fullscreen-modal {
-                gap: 1rem;
-            }
-
-            .menu-button {
-                width: 150px;
-                height: 150px;
-            }
-
-            .faucet-logo {
-                width: 60px;
-                height: 60px;
             }
         }
 
@@ -770,68 +586,6 @@
     </style>
 </head>
 <body data-theme="dark">
-    <!-- Storage Permission Modal -->
-    <div id="storagePermissionModal" class="storage-permission-modal">
-        <div class="storage-permission-content">
-            <h2 class="text-2xl font-bold mb-4 text-blue-400">
-                <i class="fas fa-folder-plus mr-2"></i>
-                Permiso de Almacenamiento
-            </h2>
-            <p class="text-gray-300 mb-6">
-                Para garantizar que tus datos estén seguros y respaldados, necesitamos acceso a una carpeta donde guardar automáticamente tus entradas de minería. Esto te permitirá mantener un respaldo actualizado en caso de futuras actualizaciones.
-            </p>
-            <div class="flex gap-4 justify-center">
-                <button class="btn btn-primary" onclick="requestStoragePermission()">
-                    <i class="fas fa-check"></i>
-                    Conceder Permiso
-                </button>
-                <button class="btn btn-secondary" onclick="continueWithoutPermission()">
-                    <i class="fas fa-times"></i>
-                    Continuar sin Permiso
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Menu Modal -->
-    <div id="mainMenuModal" class="fullscreen-modal">
-        <button class="close-menu-btn" onclick="closeMainMenu()">
-            <i class="fas fa-times"></i>
-        </button>
-        
-        <h2 class="text-3xl font-bold mb-8 text-center">
-            <i class="fas fa-ellipsis-h mr-2"></i>
-            Menú Principal
-        </h2>
-        
-        <div class="flex flex-wrap justify-center gap-8">
-            <button class="menu-button faucet-button" onclick="openFaucetPay()">
-                <img src="https://i.postimg.cc/DzTsDH2r/Picsart-25-07-12-19-06-59-338.png" alt="FaucetPay" class="faucet-logo">
-                <span>FaucetPay</span>
-            </button>
-            
-            <button class="menu-button add-button" onclick="openAddModal(); closeMainMenu()">
-                <i class="fas fa-plus" style="font-size: 3rem;"></i>
-                <span>Agregar Página</span>
-            </button>
-            
-            <button class="menu-button export-button" onclick="openExportModal(); closeMainMenu()">
-                <i class="fas fa-download" style="font-size: 3rem;"></i>
-                <span>Exportar/Importar</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Update Notification -->
-    <div id="updateNotification" class="update-notification">
-        <h3><i class="fas fa-sparkles"></i> Nueva Función Disponible</h3>
-        <p>¡Hemos añadido una nueva categoría <strong>"Shorlin Fause"</strong> especialmente diseñada para páginas donde puedes realizar trabajo como ver anuncios, hacer ciertas tareas, y generar ingresos adicionales. Esta función te permite organizar mejor las páginas que pueden convertirse prácticamente en un segundo trabajo con buen salario si las aprovechas de la manera correcta.</p>
-        <button class="btn btn-primary" onclick="closeUpdateNotification()">
-            <i class="fas fa-check"></i>
-            ¡Entendido!
-        </button>
-    </div>
-
     <!-- Theme Toggle -->
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
         <i id="themeIcon" class="fas fa-moon"></i>
@@ -911,7 +665,6 @@
                             <option value="staking">Staking</option>
                             <option value="defi">DeFi</option>
                             <option value="trading">Trading</option>
-                            <option value="shorlin">Shorlin Fause</option>
                             <option value="other">Otros</option>
                         </select>
                     </div>
@@ -943,9 +696,6 @@
                     <div class="filter-chip" data-category="trading">
                         <i class="fas fa-exchange-alt"></i> Trading
                     </div>
-                    <div class="filter-chip" data-category="shorlin">
-                        <i class="fas fa-briefcase"></i> Shorlin Fause
-                    </div>
                     <div class="filter-chip" data-category="other">
                         <i class="fas fa-ellipsis-h"></i> Otros
                     </div>
@@ -973,9 +723,9 @@
         </div>
     </main>
 
-    <!-- More Button FAB -->
-    <button class="fab" onclick="openMainMenu()" aria-label="Menú principal">
-        <i class="fas fa-ellipsis-h"></i>
+    <!-- Add Entry FAB -->
+    <button class="fab" onclick="openAddModal()" aria-label="Agregar nueva entrada">
+        <i class="fas fa-plus"></i>
     </button>
 
     <!-- Add/Edit Modal -->
@@ -1019,7 +769,6 @@
                         <option value="staking">Staking</option>
                         <option value="defi">DeFi</option>
                         <option value="trading">Trading</option>
-                        <option value="shorlin">Shorlin Fause</option>
                         <option value="other">Otros</option>
                     </select>
                     <div id="categoryError" class="text-red-500 text-sm mt-1"></div>
@@ -1140,6 +889,16 @@
                     <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Sneyder Estudio" class="w-8 h-8">
                     <span>© 2025 Sneyder Estudio - Lunaria Mining Premium</span>
                 </div>
+                <div class="flex gap-4">
+                    <button class="btn btn-secondary" onclick="openExportModal()">
+                        <i class="fas fa-download"></i>
+                        Exportar/Importar
+                    </button>
+                    <a href="https://faucetpay.io/" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-external-link-alt"></i>
+                        FaucetPay
+                    </a>
+                </div>
             </div>
         </div>
     </footer>
@@ -1151,8 +910,6 @@
         let confirmCallback = null;
         let categoryChart = null;
         let monthlyChart = null;
-        let directoryHandle = null;
-        let storagePermissionGranted = false;
 
         // Categories configuration
         const categories = {
@@ -1161,7 +918,6 @@
             staking: { name: 'Staking', icon: 'fas fa-coins', color: '#0ea5e9' },
             defi: { name: 'DeFi', icon: 'fas fa-chart-line', color: '#a855f7' },
             trading: { name: 'Trading', icon: 'fas fa-exchange-alt', color: '#ef4444' },
-            shorlin: { name: 'Shorlin Fause', icon: 'fas fa-briefcase', color: '#10b981' },
             other: { name: 'Otros', icon: 'fas fa-ellipsis-h', color: '#6b7280' }
         };
 
@@ -1177,104 +933,6 @@
             updateStats();
             updateCharts();
             loadTheme();
-            checkStoragePermission();
-            showUpdateNotification();
-        }
-
-        // Storage permission functions
-        async function checkStoragePermission() {
-            const hasSeenPermission = localStorage.getItem('storagePermissionChecked');
-            if (!hasSeenPermission) {
-                setTimeout(() => {
-                    document.getElementById('storagePermissionModal').classList.add('show');
-                }, 1000);
-            } else {
-                storagePermissionGranted = localStorage.getItem('storagePermissionGranted') === 'true';
-            }
-        }
-
-        async function requestStoragePermission() {
-            try {
-                if ('showDirectoryPicker' in window) {
-                    directoryHandle = await window.showDirectoryPicker();
-                    storagePermissionGranted = true;
-                    localStorage.setItem('storagePermissionGranted', 'true');
-                    localStorage.setItem('storagePermissionChecked', 'true');
-                    showNotification('Permiso de almacenamiento concedido correctamente', 'success');
-                    
-                    // Create initial backup
-                    await createBackup();
-                } else {
-                    showNotification('La API de sistema de archivos no está disponible en este navegador', 'warning');
-                    continueWithoutPermission();
-                }
-            } catch (error) {
-                console.error('Error requesting storage permission:', error);
-                showNotification('Error al solicitar permiso de almacenamiento', 'error');
-                continueWithoutPermission();
-            }
-            
-            document.getElementById('storagePermissionModal').classList.remove('show');
-        }
-
-        function continueWithoutPermission() {
-            localStorage.setItem('storagePermissionChecked', 'true');
-            localStorage.setItem('storagePermissionGranted', 'false');
-            document.getElementById('storagePermissionModal').classList.remove('show');
-            showNotification('Continuando sin permiso de almacenamiento', 'info');
-        }
-
-        async function createBackup() {
-            if (!storagePermissionGranted || !directoryHandle) return;
-            
-            try {
-                const entries = await getEntries();
-                const backupData = {
-                    timestamp: new Date().toISOString(),
-                    version: '1.0.0',
-                    entries: entries
-                };
-                
-                const fileName = `lunaria_backup_${new Date().toISOString().split('T')[0]}.json`;
-                const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
-                const writable = await fileHandle.createWritable();
-                
-                await writable.write(JSON.stringify(backupData, null, 2));
-                await writable.close();
-                
-                console.log('Backup created successfully');
-            } catch (error) {
-                console.error('Error creating backup:', error);
-            }
-        }
-
-        // Menu functions
-        function openMainMenu() {
-            document.getElementById('mainMenuModal').classList.add('active');
-        }
-
-        function closeMainMenu() {
-            document.getElementById('mainMenuModal').classList.remove('active');
-        }
-
-        function openFaucetPay() {
-            window.open('https://faucetpay.io/', '_blank');
-            closeMainMenu();
-        }
-
-        // Show update notification
-        function showUpdateNotification() {
-            const hasSeenUpdate = localStorage.getItem('hasSeenShorlinUpdate');
-            if (!hasSeenUpdate) {
-                setTimeout(() => {
-                    document.getElementById('updateNotification').classList.add('show');
-                }, 1000);
-            }
-        }
-
-        function closeUpdateNotification() {
-            document.getElementById('updateNotification').classList.remove('show');
-            localStorage.setItem('hasSeenShorlinUpdate', 'true');
         }
 
         // Database functions
@@ -1308,13 +966,7 @@
                 
                 const request = store.put(entry);
                 request.onerror = () => reject(request.error);
-                request.onsuccess = () => {
-                    resolve();
-                    // Create backup after saving
-                    if (storagePermissionGranted) {
-                        createBackup();
-                    }
-                };
+                request.onsuccess = () => resolve();
             });
         }
 
@@ -1336,13 +988,7 @@
                 
                 const request = store.delete(id);
                 request.onerror = () => reject(request.error);
-                request.onsuccess = () => {
-                    resolve();
-                    // Create backup after deleting
-                    if (storagePermissionGranted) {
-                        createBackup();
-                    }
-                };
+                request.onsuccess = () => resolve();
             });
         }
 
@@ -2057,7 +1703,7 @@
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : type === 'warning' ? 'exclamation' : 'info'}-circle"></i>
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'exclamation'}-circle"></i>
                 ${message}
             `;
             
@@ -2111,8 +1757,6 @@
                 closeViewModal();
                 closeConfirmModal();
                 closeExportModal();
-                closeUpdateNotification();
-                closeMainMenu();
             }
         });
 
