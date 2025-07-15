@@ -249,22 +249,21 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .scroll-container {
-            min-height: 40vh; /* Ensure it has a minimum height */
+        .scroll-container, .form-scroll-container {
             overflow-y: auto;
-            padding-right: 10px;
+            padding-right: 10px; /* space for scrollbar */
         }
         
-        .scroll-container::-webkit-scrollbar {
+        .scroll-container::-webkit-scrollbar, .form-scroll-container::-webkit-scrollbar {
             width: 6px;
         }
         
-        .scroll-container::-webkit-scrollbar-track {
+        .scroll-container::-webkit-scrollbar-track, .form-scroll-container::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
         }
         
-        .scroll-container::-webkit-scrollbar-thumb {
+        .scroll-container::-webkit-scrollbar-thumb, .form-scroll-container::-webkit-scrollbar-thumb {
             background: linear-gradient(45deg, #00F2FF, #0099CC);
             border-radius: 10px;
         }
@@ -334,7 +333,7 @@
         </div>
 
         <!-- Contenedor de resultados -->
-        <div class="scroll-container">
+        <div class="scroll-container min-h-[40vh]">
             <div id="searchResults" class="text-center text-gray-400 mb-4 hidden"></div>
             <main id="linksContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 pb-8">
             </main>
@@ -432,62 +431,69 @@
         </div>
     </div>
 
-    <!-- Modal añadir sitio -->
-    <div id="addLinkModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="modal-glass rounded-2xl shadow-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div class="text-center mb-6">
+    <!-- Modal añadir sitio (Pantalla Completa) -->
+    <div id="addLinkModal" class="modal fixed inset-0 bg-black bg-opacity-80 flex flex-col z-50">
+        <div class="modal-glass rounded-none shadow-none w-full h-full p-4 sm:p-6 flex flex-col border-0" style="background: rgba(13, 15, 26, 0.98);">
+            <!-- Encabezado del Modal -->
+            <div class="flex-shrink-0 text-center mb-6">
                 <i class="fas fa-plus-circle text-cyan-500 text-3xl mb-4"></i>
-                <h2 class="font-orbitron text-xl font-bold text-white">Añadir Sitio</h2>
+                <h2 class="font-orbitron text-xl font-bold text-white">Añadir Nuevo Sitio</h2>
                 <div class="w-16 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mt-2"></div>
             </div>
             
-            <form id="addLinkForm" class="space-y-4">
-                <div>
-                    <label class="block text-cyan-300 text-sm font-bold mb-2">
-                        <i class="fas fa-user mr-2"></i>Tu Nombre
-                    </label>
-                    <input type="text" id="submitterName" class="form-input w-full rounded-lg px-3 py-2" placeholder="Ingresa tu nombre" required>
-                </div>
-                
-                <div>
-                    <label class="block text-cyan-300 text-sm font-bold mb-2">
-                        <i class="fas fa-tag mr-2"></i>Nombre del Sitio
-                    </label>
-                    <input type="text" id="siteName" class="form-input w-full rounded-lg px-3 py-2" placeholder="Nombre del sitio" required>
-                </div>
-                
-                <div>
-                    <label class="block text-cyan-300 text-sm font-bold mb-2">
-                        <i class="fas fa-info-circle mr-2"></i>Descripción
-                    </label>
-                    <textarea id="siteDescription" rows="3" class="form-input w-full rounded-lg px-3 py-2" placeholder="Describe el sitio..." required></textarea>
-                </div>
-                
-                <div>
-                    <label class="block text-cyan-300 text-sm font-bold mb-2">
-                        <i class="fas fa-image mr-2"></i>Imagen
-                    </label>
-                    <label for="siteImageFile" class="neon-button-outline w-full text-center py-2 px-4 rounded-lg cursor-pointer flex items-center justify-center gap-2">
-                        <i class="fas fa-upload"></i>
-                        <span>Seleccionar</span>
-                    </label>
-                    <input type="file" id="siteImageFile" class="hidden" accept="image/*" required>
-                    <p id="file-chosen" class="text-center text-sm text-gray-400 mt-2">Sin archivo</p>
-                    <img id="imagePreview" class="mt-3 rounded-lg hidden max-h-32 mx-auto border-2 border-cyan-500/30"/>
-                </div>
-                
-                <div>
-                    <label class="block text-cyan-300 text-sm font-bold mb-2">
-                        <i class="fas fa-link mr-2"></i>URL
-                    </label>
-                    <input type="url" id="siteUrl" class="form-input w-full rounded-lg px-3 py-2" placeholder="https://ejemplo.com" required>
-                </div>
-                
-                <div class="flex gap-3 pt-4">
+            <!-- Contenedor del Formulario con Scroll -->
+            <div class="flex-grow overflow-y-auto form-scroll-container">
+                <form id="addLinkForm" class="space-y-4 max-w-2xl mx-auto w-full">
+                    <div>
+                        <label class="block text-cyan-300 text-sm font-bold mb-2">
+                            <i class="fas fa-user mr-2"></i>Tu Nombre
+                        </label>
+                        <input type="text" id="submitterName" class="form-input w-full rounded-lg px-3 py-2" placeholder="Ingresa tu nombre" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-cyan-300 text-sm font-bold mb-2">
+                            <i class="fas fa-tag mr-2"></i>Nombre del Sitio
+                        </label>
+                        <input type="text" id="siteName" class="form-input w-full rounded-lg px-3 py-2" placeholder="Nombre del sitio" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-cyan-300 text-sm font-bold mb-2">
+                            <i class="fas fa-info-circle mr-2"></i>Descripción
+                        </label>
+                        <textarea id="siteDescription" rows="3" class="form-input w-full rounded-lg px-3 py-2" placeholder="Describe el sitio..." required></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-cyan-300 text-sm font-bold mb-2">
+                            <i class="fas fa-image mr-2"></i>Imagen (Opcional)
+                        </label>
+                        <label for="siteImageFile" class="neon-button-outline w-full text-center py-2 px-4 rounded-lg cursor-pointer flex items-center justify-center gap-2">
+                            <i class="fas fa-upload"></i>
+                            <span>Seleccionar Archivo</span>
+                        </label>
+                        <input type="file" id="siteImageFile" class="hidden" accept="image/*">
+                        <p id="file-chosen" class="text-center text-sm text-gray-400 mt-2">Sin archivo seleccionado</p>
+                        <img id="imagePreview" class="mt-3 rounded-lg hidden max-h-32 mx-auto border-2 border-cyan-500/30"/>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-cyan-300 text-sm font-bold mb-2">
+                            <i class="fas fa-link mr-2"></i>URL
+                        </label>
+                        <input type="url" id="siteUrl" class="form-input w-full rounded-lg px-3 py-2" placeholder="https://ejemplo.com" required>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Botones de Acción Fijos -->
+            <div class="flex-shrink-0 pt-4 max-w-2xl mx-auto w-full">
+                <div class="flex gap-3">
                     <button type="button" id="cancelAddBtn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-all">
                         <i class="fas fa-times mr-2"></i>Cancelar
                     </button>
-                    <button type="submit" id="saveBtn" class="flex-1 neon-button py-3 px-4 rounded-lg font-semibold">
+                    <button type="submit" form="addLinkForm" id="saveBtn" class="flex-1 neon-button py-3 px-4 rounded-lg font-semibold">
                         <span id="saveBtnText">
                             <i class="fas fa-save mr-2"></i>Guardar
                         </span>
@@ -496,9 +502,10 @@
                         </div>
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+
 
     <!-- Modal confirmación eliminar -->
     <div id="deleteConfirmModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
@@ -538,6 +545,7 @@
         // Configuración Supabase
         const SUPABASE_URL = 'https://mvxsaezwbyqcsjrfhmff.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12eHNhZXp3YnlxY3NqcmZobWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxMzYxNzgsImV4cCI6MjA2NzcxMjE3OH0.9_rKY6DS-GUIU2QOqPN457rWptQefU-59YQTXW3OD7s';
+        const DEFAULT_IMAGE_URL = 'https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png';
 
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -567,11 +575,19 @@
         const toggleModal = (modal, show) => {
             if (show) {
                 modal.style.display = 'flex';
-                modal.offsetHeight;
-                modal.classList.add('is-visible');
+                setTimeout(() => modal.classList.add('is-visible'), 10);
             } else {
                 modal.classList.remove('is-visible');
-                setTimeout(() => modal.style.display = 'none', 300);
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    // Reset form when closing addLinkModal
+                    if (modal.id === 'addLinkModal') {
+                        elements.addLinkForm.reset();
+                        document.getElementById('file-chosen').textContent = 'Sin archivo seleccionado';
+                        document.getElementById('imagePreview').classList.add('hidden');
+                        document.getElementById('imagePreview').src = '';
+                    }
+                }, 300);
             }
         };
 
@@ -608,8 +624,8 @@
             card.dataset.id = link.id;
             
             card.innerHTML = `
-                <img src="${link.image_url}" alt="${link.name}" class="compact-image" 
-                     onerror="this.src='https://placehold.co/200x100/0D0F1A/00F2FF?text=CRYPTO';">
+                <img src="${link.image_url || DEFAULT_IMAGE_URL}" alt="${link.name}" class="compact-image" 
+                     onerror="this.src='${DEFAULT_IMAGE_URL}';">
                 <div class="compact-content">
                     <div class="compact-info">
                         <h3 class="font-semibold text-white text-xs mb-1 truncate">${link.name}</h3>
@@ -644,30 +660,31 @@
 
             // Long press para eliminar
             let longPressTimer;
-            let isLongPress = false;
-
-            const startLongPress = (e) => {
+            card.addEventListener('touchstart', (e) => {
                 if (e.target.closest('button')) return;
-                
-                isLongPress = false;
                 longPressTimer = setTimeout(() => {
-                    isLongPress = true;
                     card.classList.add('long-press-active');
                     if (navigator.vibrate) navigator.vibrate(50);
                     linkToDeleteId = link.id;
                     toggleModal(elements.deleteConfirmModal, true);
                 }, 1000);
-            };
+            }, { passive: true });
 
             const endLongPress = () => {
                 clearTimeout(longPressTimer);
                 card.classList.remove('long-press-active');
             };
 
-            card.addEventListener('touchstart', startLongPress, { passive: true });
             card.addEventListener('touchend', endLongPress, { passive: true });
             card.addEventListener('touchcancel', endLongPress, { passive: true });
-            card.addEventListener('mousedown', startLongPress);
+            card.addEventListener('mousedown', (e) => {
+                 if (e.target.closest('button')) return;
+                 longPressTimer = setTimeout(() => {
+                    card.classList.add('long-press-active');
+                    linkToDeleteId = link.id;
+                    toggleModal(elements.deleteConfirmModal, true);
+                }, 1000);
+            });
             card.addEventListener('mouseup', endLongPress);
             card.addEventListener('mouseleave', endLongPress);
 
@@ -677,7 +694,7 @@
         // Mostrar modal de detalles
         function showDetailModal(link) {
             currentDetailLink = link;
-            document.getElementById('detailImage').src = link.image_url;
+            document.getElementById('detailImage').src = link.image_url || DEFAULT_IMAGE_URL;
             document.getElementById('detailTitle').textContent = link.name;
             document.getElementById('detailSubmitter').textContent = `Por: ${link.submitter_name || 'Anónimo'}`;
             document.getElementById('detailDescription').textContent = link.description || 'Sin descripción disponible.';
@@ -689,19 +706,9 @@
             elements.linksContainer.innerHTML = '';
             
             if (links.length === 0 && elements.searchInput.value) {
-                elements.linksContainer.innerHTML = `
-                    <div class="col-span-full text-center py-12">
-                        <i class="fas fa-search text-cyan-500 text-4xl mb-4"></i>
-                        <p class="text-gray-400">No se encontraron resultados para tu búsqueda.</p>
-                    </div>
-                `;
+                elements.linksContainer.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-search text-cyan-500 text-4xl mb-4"></i><p class="text-gray-400">No se encontraron resultados.</p></div>`;
             } else if (links.length === 0) {
-                 elements.linksContainer.innerHTML = `
-                    <div class="col-span-full text-center py-12">
-                        <i class="fas fa-database text-cyan-500 text-4xl mb-4"></i>
-                        <p class="text-gray-400">Aún no hay sitios. ¡Sé el primero en añadir uno!</p>
-                    </div>
-                `;
+                 elements.linksContainer.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-database text-cyan-500 text-4xl mb-4"></i><p class="text-gray-400">Aún no hay sitios. ¡Sé el primero!</p></div>`;
             } else {
                  links.forEach((link, index) => {
                     setTimeout(() => {
@@ -737,7 +744,7 @@
         // Cargar enlaces
         async function fetchLinks() {
             elements.loadingState.classList.remove('hidden');
-            elements.linksContainer.innerHTML = ''; // Clear previous results
+            elements.linksContainer.innerHTML = '';
             
             try {
                 const { data: links, error } = await supabaseClient
@@ -748,7 +755,7 @@
                 if (error) throw error;
 
                 allLinks = links;
-                performSearch(elements.searchInput.value); // Apply current search filter
+                performSearch(elements.searchInput.value);
                 
             } catch (error) {
                 console.error('Error fetching links:', error);
@@ -772,23 +779,22 @@
             
             try {
                 const file = document.getElementById('siteImageFile').files[0];
-                if (!file) {
-                    showToast('Por favor, selecciona una imagen.', 'error');
-                    throw new Error("No file selected");
+                let imageUrl = DEFAULT_IMAGE_URL;
+
+                if (file) {
+                    const filePath = `public/${Date.now()}-${file.name}`;
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from('images')
+                        .upload(filePath, file);
+
+                    if (uploadError) throw uploadError;
+
+                    const { data } = supabaseClient.storage
+                        .from('images')
+                        .getPublicUrl(filePath);
+                    
+                    imageUrl = data.publicUrl;
                 }
-
-                const filePath = `public/${Date.now()}-${file.name}`;
-                const { error: uploadError } = await supabaseClient.storage
-                    .from('images')
-                    .upload(filePath, file);
-
-                if (uploadError) throw uploadError;
-
-                const { data } = supabaseClient.storage
-                    .from('images')
-                    .getPublicUrl(filePath);
-                
-                const publicUrl = data.publicUrl;
 
                 const { error: insertError } = await supabaseClient
                     .from('links')
@@ -797,22 +803,21 @@
                         name: document.getElementById('siteName').value,
                         description: document.getElementById('siteDescription').value,
                         url: document.getElementById('siteUrl').value,
-                        image_url: publicUrl
+                        image_url: imageUrl
                     });
 
                 if (insertError) throw insertError;
 
-                showToast('Sitio guardado exitosamente');
                 toggleModal(elements.addLinkModal, false);
-                elements.addLinkForm.reset();
-                document.getElementById('file-chosen').textContent = 'Sin archivo';
-                document.getElementById('imagePreview').classList.add('hidden');
-                // No need to call fetchLinks() here, real-time subscription will handle it.
+                showToast('Actualizado con éxito');
+
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
                 
             } catch (error) {
                 console.error('Error saving link:', error);
                 showToast(`Error al guardar: ${error.message}`, 'error');
-            } finally {
                 saveBtn.disabled = false;
                 saveBtnText.classList.remove('hidden');
                 saveSpinner.classList.add('hidden');
@@ -838,7 +843,6 @@
                 showToast('Sitio eliminado exitosamente');
                 toggleModal(elements.deleteConfirmModal, false);
                 document.getElementById('deletePassword').value = '';
-                 // No need to call fetchLinks() here, real-time subscription will handle it.
                 
             } catch (error) {
                 console.error('Error deleting link:', error);
@@ -850,19 +854,14 @@
         async function init() {
             try {
                 const { data: { session }, error } = await supabaseClient.auth.getSession();
-                
                 if (error) throw error;
-                
                 if (!session) {
                     const { error: signInError } = await supabaseClient.auth.signInAnonymously();
                     if (signInError) throw signInError;
                 }
-
                 elements.addLinkBtn.disabled = false;
                 elements.addLinkBtn.innerHTML = '<i class="fas fa-plus mr-2"></i>Añadir Sitio';
-                
                 await fetchLinks();
-                
             } catch (error) {
                 console.error('Initialization Error:', error);
                 elements.addLinkBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Error de Conexión';
@@ -874,46 +873,26 @@
         document.addEventListener('DOMContentLoaded', () => {
             init();
 
-            // Búsqueda
-            elements.searchInput.addEventListener('input', (e) => {
-                performSearch(e.target.value);
-            });
-
+            elements.searchInput.addEventListener('input', (e) => performSearch(e.target.value));
             elements.clearSearch.addEventListener('click', () => {
                 elements.searchInput.value = '';
                 performSearch('');
             });
 
-            // Modales
-            elements.addLinkBtn.addEventListener('click', () => {
-                toggleModal(elements.addLinkModal, true);
-            });
-
-            document.getElementById('cancelAddBtn').addEventListener('click', () => {
-                toggleModal(elements.addLinkModal, false);
-            });
-
-            document.getElementById('closeDetailBtn').addEventListener('click', () => {
-                toggleModal(elements.detailModal, false);
-            });
-
+            elements.addLinkBtn.addEventListener('click', () => toggleModal(elements.addLinkModal, true));
+            document.getElementById('cancelAddBtn').addEventListener('click', () => toggleModal(elements.addLinkModal, false));
+            document.getElementById('closeDetailBtn').addEventListener('click', () => toggleModal(elements.detailModal, false));
             document.getElementById('goToSiteBtn').addEventListener('click', () => {
-                if (currentDetailLink) {
-                    window.open(currentDetailLink.url, '_blank');
-                }
+                if (currentDetailLink) window.open(currentDetailLink.url, '_blank');
             });
-
             document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
                 toggleModal(elements.deleteConfirmModal, false);
                 document.getElementById('deletePassword').value = '';
             });
-
             document.getElementById('confirmDeleteBtn').addEventListener('click', deleteLink);
 
-            // Formulario
             elements.addLinkForm.addEventListener('submit', saveLink);
 
-            // Preview imagen
             document.getElementById('siteImageFile').addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 const fileChosen = document.getElementById('file-chosen');
@@ -921,38 +900,32 @@
                 
                 if (file) {
                     fileChosen.textContent = file.name;
-                    
                     const reader = new FileReader();
-                    reader.onload = (e) => {
-                        imagePreview.src = e.target.result;
+                    reader.onload = (event) => {
+                        imagePreview.src = event.target.result;
                         imagePreview.classList.remove('hidden');
                     };
                     reader.readAsDataURL(file);
                 } else {
-                    fileChosen.textContent = 'Sin archivo';
+                    fileChosen.textContent = 'Sin archivo seleccionado';
                     imagePreview.classList.add('hidden');
                 }
             });
 
-            // Cerrar modales al hacer clic fuera
-            [elements.addLinkModal, elements.detailModal, elements.deleteConfirmModal].forEach(modal => {
+            [elements.detailModal, elements.deleteConfirmModal].forEach(modal => {
                 modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        toggleModal(modal, false);
-                    }
+                    if (e.target === modal) toggleModal(modal, false);
                 });
             });
 
-            // Suscripción tiempo real
             supabaseClient
                 .channel('public:links')
-                .on('postgres_changes', { 
-                    event: '*', 
-                    schema: 'public', 
-                    table: 'links' 
-                }, (payload) => {
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'links' }, 
+                (payload) => {
                     console.log('Change received!', payload);
-                    fetchLinks();
+                    if (document.visibilityState === 'visible') {
+                        fetchLinks();
+                    }
                 })
                 .subscribe();
         });
