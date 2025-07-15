@@ -3,231 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lunaria Mining</title>
+    <title>Lunaria Mining Premium</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="manifest" href="#" id="manifest">
     <link rel="icon" href="https://i.postimg.cc/GpPsSmmX/4491470.png" type="image/png">
     <meta name="theme-color" content="#06b6d4">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Lunaria Mining">
+    <meta name="apple-mobile-web-app-title" content="Lunaria Mining Premium">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/GpPsSmmX/4491470.png">
     
     <style>
         :root {
-            --bg-primary: #1f2937;
-            --bg-secondary: #111827;
-            --bg-card: #374151;
-            --text-primary: #f9fafb;
-            --text-secondary: #d1d5db;
-            --accent: #06b6d4;
-            --accent-dark: #0284c7;
-            --secondary: #4b5563;
-            --error: #dc2626;
-            --success: #0284c7;
-            --shadow: #00000040;
+            --primary-bg: #0f172a;
+            --secondary-bg: #1e293b;
+            --card-bg: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #0ea5e9;
+            --accent-hover: #0284c7;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #475569;
+            --shadow: rgba(0, 0, 0, 0.5);
         }
-        
+
+        [data-theme="light"] {
+            --primary-bg: #f8fafc;
+            --secondary-bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #0ea5e9;
+            --accent-hover: #0284c7;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: var(--bg-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--primary-bg);
             color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            transition: all 0.3s ease;
         }
-        
+
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
-            flex: 1;
+            padding: 0 1rem;
         }
-        
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
-            padding: 20px 0;
-            border-bottom: 2px solid var(--accent);
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        .header h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--accent);
-            text-shadow: 0 0 20px var(--accent);
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 40px 0;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-        }
-        
-        .empty-state i {
-            font-size: 4rem;
-            color: var(--accent);
-            margin-bottom: 20px;
-            display: block;
-        }
-        
-        /* Cards Grid - Optimizado para tarjetas más pequeñas */
-        .cards-grid {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        }
-        
-        .mining-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 2px solid var(--accent);
-            box-shadow: 0 6px 20px var(--shadow);
-            overflow: hidden;
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px var(--shadow);
             transition: all 0.3s ease;
             position: relative;
-            max-width: 280px;
-            margin: 0 auto;
-        }
-        
-        .mining-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px var(--shadow);
-            border-color: var(--accent-dark);
-        }
-        
-        .card-image {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            object-position: center;
-            border-bottom: 2px solid var(--accent);
-            transition: transform 0.3s ease;
-        }
-        
-        .mining-card:hover .card-image {
-            transform: scale(1.05);
-        }
-        
-        .card-content {
-            padding: 15px;
-        }
-        
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-            white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis;
         }
-        
-        .card-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: space-between;
-            align-items: center;
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
         }
-        
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
         .btn {
-            padding: 8px 16px;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s ease;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
         .btn-primary {
             background: var(--accent);
             color: white;
-            flex: 1;
         }
-        
+
         .btn-primary:hover {
-            background: var(--accent-dark);
-            transform: translateY(-1px);
+            background: var(--accent-hover);
+            transform: translateY(-2px);
         }
-        
+
         .btn-secondary {
-            background: var(--secondary);
-            color: white;
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
         }
-        
+
         .btn-secondary:hover {
-            background: #6b7280;
+            background: var(--card-bg);
         }
-        
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
         .btn-danger {
-            background: var(--error);
+            background: var(--danger);
             color: white;
         }
-        
-        .btn-danger:hover {
-            background: #b91c1c;
-        }
-        
-        .btn-small {
-            padding: 6px 10px;
-            font-size: 0.8rem;
-        }
-        
-        .card-actions-right {
-            display: flex;
-            gap: 4px;
-        }
-        
-        /* FAB */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 56px;
-            height: 56px;
-            background: var(--accent);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.4rem;
-            color: white;
-            box-shadow: 0 8px 32px var(--shadow);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .fab:hover {
-            background: var(--accent-dark);
-            transform: scale(1.1);
-        }
-        
-        /* Modals */
+
         .modal {
             position: fixed;
             top: 0;
@@ -238,551 +180,657 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 1000;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
         }
-        
+
         .modal.active {
             opacity: 1;
             visibility: visible;
         }
-        
+
         .modal-content {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 2px solid var(--accent);
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            max-width: 90vw;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            min-width: 500px;
         }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .modal-title {
-            font-size: 1.5rem;
-            color: var(--accent);
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        
-        .close-btn:hover {
-            color: var(--accent);
-        }
-        
-        /* Form */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        
+
         .form-input {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--secondary);
-            border-radius: 8px;
-            background: var(--bg-primary);
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--primary-bg);
             color: var(--text-primary);
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
-        
+
         .form-input:focus {
             outline: none;
             border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
         }
-        
-        .form-input.error {
-            border-color: var(--error);
-        }
-        
-        .form-error {
-            color: var(--error);
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-        
-        .image-upload {
-            text-align: center;
-            border: 2px dashed var(--secondary);
-            border-radius: 8px;
-            padding: 20px;
-            transition: border-color 0.3s ease;
+
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
-        
-        .image-upload:hover {
+
+        .form-select:focus {
+            outline: none;
             border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
         }
-        
-        .image-preview {
-            width: 100%;
-            max-width: 300px;
-            height: 200px;
-            object-fit: cover;
-            object-position: center;
-            border-radius: 8px;
-            margin-bottom: 15px;
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-            margin-top: 30px;
+
+        .category-faucet {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
         }
-        
-        /* Iframe Modal */
-        .iframe-modal .modal-content {
-            max-width: 95vw;
-            max-height: 95vh;
-            width: 95vw;
-            height: 95vh;
+
+        .category-mining {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
         }
-        
-        .iframe-container {
-            width: 100%;
-            height: calc(100% - 60px);
+
+        .category-staking {
+            background: rgba(14, 165, 233, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .category-defi {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+            border: 1px solid #a855f7;
+        }
+
+        .category-trading {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .category-other {
+            background: rgba(148, 163, 184, 0.2);
+            color: var(--text-secondary);
+            border: 1px solid var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .search-filter-bar {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
             border: none;
-            border-radius: 8px;
-            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
         }
-        
-        /* Notifications */
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(14, 165, 233, 0.6);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--accent);
+            color: white;
+        }
+
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             color: white;
-            font-weight: 500;
-            z-index: 3000;
+            font-weight: 600;
+            z-index: 2000;
             transform: translateX(100%);
             transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        
+
         .notification.show {
             transform: translateX(0);
         }
-        
+
         .notification.success {
             background: var(--success);
         }
-        
+
         .notification.error {
-            background: var(--error);
+            background: var(--danger);
         }
-        
-        /* Install Banner */
-        .install-banner {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--accent-dark);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px var(--shadow);
-            z-index: 1500;
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .mining-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mining-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-url {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+
+        .card-actions {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .install-banner.show {
-            transform: translateX(0);
-        }
-        
-        .install-banner-content {
-            flex: 1;
-        }
-        
-        .install-banner-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        
-        /* Footer */
-        .footer {
-            background: var(--bg-secondary);
-            padding: 20px 0;
-            border-top: 2px solid var(--accent);
-            margin-top: auto;
-        }
-        
-        .footer-content {
-            display: flex;
+            gap: 0.5rem;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
         }
-        
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-primary);
-            text-decoration: none;
-            transition: color 0.3s ease;
+
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
         }
-        
-        .footer-brand:hover {
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
             color: var(--accent);
+            margin-bottom: 1rem;
         }
-        
-        .footer-logo {
-            height: 24px;
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
-        
-        .footer-text {
-            font-size: 0.9rem;
+
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
         }
-        
-        .faucetpay-btn {
+
+        .filter-chip:hover,
+        .filter-chip.active {
             background: var(--accent);
             color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            border-color: var(--accent);
         }
-        
-        .faucetpay-btn:hover {
-            background: var(--accent-dark);
-            transform: translateY(-2px);
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--secondary-bg);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
         }
-        
-        /* Responsive Design */
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            transition: width 0.3s ease;
+        }
+
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 15px;
-            }
-            
-            .mining-card {
-                max-width: none;
-            }
-            
-            .card-image {
-                height: 120px;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .fab {
-                bottom: 20px;
-                right: 20px;
-                width: 52px;
-                height: 52px;
-            }
-        }
-        
-        @media (max-width: 480px) {
             .container {
-                padding: 0 15px;
+                padding: 0 0.5rem;
             }
-            
+
             .modal-content {
-                padding: 20px;
+                min-width: 0;
                 width: 95%;
+                padding: 1.5rem;
             }
-            
+
             .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                grid-template-columns: 1fr;
             }
-            
-            .card-title {
-                font-size: 1rem;
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
-            
-            .btn {
-                font-size: 0.8rem;
-                padding: 6px 12px;
+
+            .fab {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
             }
         }
-        
-        /* Tablet optimizations */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                gap: 18px;
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            
-            .header h1 {
-                font-size: 2.2rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-        
-        /* Large screens */
-        @media (min-width: 1200px) {
-            .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            }
-        }
-        
-        /* Loading Spinner */
-        .loading {
+
+        .loading-spinner {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 2px solid #ffffff33;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-top: 2px solid white;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        /* Accessibility */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-        
-        /* Focus styles */
-        .btn:focus,
-        .form-input:focus,
-        .close-btn:focus {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
-        
-        /* Animation classes */
-        .fade-in {
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Hover effects mejorados */
-        .mining-card {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .mining-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-        
-        .mining-card:hover::before {
-            left: 100%;
-        }
     </style>
 </head>
-<body>
-    <!-- Storage Warning Modal -->
-    <div id="storageWarningModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Advertencia de Almacenamiento
-                </h2>
-            </div>
-            <div class="modal-body">
-                <p>Todos los datos se guardan en tu navegador. Si la aplicación se desinstala o se borran los datos del navegador, todas las entradas de minería se perderán.</p>
-                <div class="form-group" style="margin-top: 20px;">
-                    <label class="form-label">
-                        <input type="checkbox" id="dontShowAgain" style="margin-right: 10px;">
-                        No mostrar de nuevo
-                    </label>
-                </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-primary" onclick="closeStorageWarning()">
-                    <i class="fas fa-check"></i>
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Install Banner -->
-    <div id="installBanner" class="install-banner">
-        <div class="install-banner-content">
-            <strong>Puedes instalar Lunaria Mining como una app nativa.</strong>
-        </div>
-        <div class="install-banner-actions">
-            <button class="btn btn-primary btn-small" onclick="installApp()">
-                <i class="fas fa-download"></i>
-                Instalar
-            </button>
-            <button class="close-btn" onclick="closeInstallBanner()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-    
+<body data-theme="dark">
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+        <i id="themeIcon" class="fas fa-moon"></i>
+    </button>
+
     <!-- Header -->
-    <header class="header">
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8">
         <div class="container">
-            <h1>
-                <i class="fas fa-gem"></i>
-                Lunaria Mining
-            </h1>
-            <p>Gestiona tus entradas de minería de forma elegante y eficiente</p>
+            <div class="text-center">
+                <div class="flex justify-center items-center gap-4 mb-4">
+                    <img src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Logo" class="w-16 h-16">
+                    <h1 class="text-5xl font-bold">Lunaria Mining Premium</h1>
+                </div>
+                <p class="text-xl opacity-90">Gestión avanzada de entradas de minería con estadísticas y categorías</p>
+            </div>
         </div>
     </header>
-    
-    <!-- Main Content -->
-    <main class="main-content">
+
+    <!-- Statistics Dashboard -->
+    <section class="py-8">
         <div class="container">
-            <div id="emptyState" class="empty-state">
-                <i class="fas fa-pickaxe"></i>
-                <p>Aún no hay entradas de minería.<br>Agrega una usando el botón de abajo.</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalEntries">0</div>
+                    <div class="stat-label">Total Entradas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalCategories">0</div>
+                    <div class="stat-label">Categorías</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeEntries">0</div>
+                    <div class="stat-label">Entradas Activas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="recentEntries">0</div>
+                    <div class="stat-label">Añadidas Hoy</div>
+                </div>
             </div>
-            
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="chart-container">
+                    <h3 class="text-xl font-bold mb-4">Entradas por Categoría</h3>
+                    <div style="height: 300px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3 class="text-xl font-bold mb-4">Entradas por Mes</h3>
+                    <div style="height: 300px;">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filter Bar -->
+    <section class="py-4">
+        <div class="container">
+            <div class="search-filter-bar">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Buscar</label>
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" id="searchInput" class="form-input pl-10" placeholder="Buscar entradas...">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Categoría</label>
+                        <select id="categoryFilter" class="form-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="faucet">Faucets</option>
+                            <option value="mining">Mining</option>
+                            <option value="staking">Staking</option>
+                            <option value="defi">DeFi</option>
+                            <option value="trading">Trading</option>
+                            <option value="other">Otros</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Ordenar por</label>
+                        <select id="sortBy" class="form-select">
+                            <option value="newest">Más recientes</option>
+                            <option value="oldest">Más antiguos</option>
+                            <option value="name">Nombre A-Z</option>
+                            <option value="category">Categoría</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-chips">
+                    <div class="filter-chip active" data-category="">Todas</div>
+                    <div class="filter-chip" data-category="faucet">
+                        <i class="fas fa-tint"></i> Faucets
+                    </div>
+                    <div class="filter-chip" data-category="mining">
+                        <i class="fas fa-pickaxe"></i> Mining
+                    </div>
+                    <div class="filter-chip" data-category="staking">
+                        <i class="fas fa-coins"></i> Staking
+                    </div>
+                    <div class="filter-chip" data-category="defi">
+                        <i class="fas fa-chart-line"></i> DeFi
+                    </div>
+                    <div class="filter-chip" data-category="trading">
+                        <i class="fas fa-exchange-alt"></i> Trading
+                    </div>
+                    <div class="filter-chip" data-category="other">
+                        <i class="fas fa-ellipsis-h"></i> Otros
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="py-8">
+        <div class="container">
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <i class="fas fa-gem"></i>
+                <h3 class="text-2xl font-bold mb-2">No hay entradas de minería</h3>
+                <p class="mb-4">Comienza agregando tu primera entrada de minería</p>
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i>
+                    Agregar Primera Entrada
+                </button>
+            </div>
+
+            <!-- Cards Grid -->
             <div id="cardsGrid" class="cards-grid"></div>
         </div>
     </main>
-    
-    <!-- Add Mining FAB -->
-    <button class="fab" onclick="openAddModal()" aria-label="Agregar nueva entrada de minería">
+
+    <!-- Add Entry FAB -->
+    <button class="fab" onclick="openAddModal()" aria-label="Agregar nueva entrada">
         <i class="fas fa-plus"></i>
     </button>
-    
-    <!-- Add/Edit Mining Modal -->
+
+    <!-- Add/Edit Modal -->
     <div id="addModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">
-                    <i class="fas fa-plus"></i>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-400">
+                    <i class="fas fa-plus mr-2"></i>
                     <span id="modalTitle">Agregar Entrada de Minería</span>
                 </h2>
-                <button class="close-btn" onclick="closeAddModal()" aria-label="Cerrar modal">
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeAddModal()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="miningForm">
-                    <div class="form-group">
-                        <label class="form-label">Imagen de Portada</label>
-                        <div class="image-upload" onclick="document.getElementById('imageInput').click()">
-                            <img id="imagePreview" class="image-preview" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa de imagen">
-                            <p>
-                                <i class="fas fa-upload"></i>
-                                Cambiar Imagen
-                            </p>
-                        </div>
-                        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+
+            <form id="miningForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Imagen de Portada</label>
+                    <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500 transition-colors" onclick="document.getElementById('imageInput').click()">
+                        <img id="imagePreview" class="w-full max-w-sm h-48 object-cover rounded-lg mx-auto mb-4" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Preview">
+                        <p class="text-gray-400">
+                            <i class="fas fa-upload mr-2"></i>
+                            Hacer clic para cambiar imagen
+                        </p>
                     </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="nameInput">Nombre *</label>
-                        <input type="text" id="nameInput" class="form-input" placeholder="Nombre de la entrada de minería" maxlength="100" required>
-                        <div id="nameError" class="form-error"></div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="urlInput">URL (Opcional)</label>
-                        <input type="url" id="urlInput" class="form-input" placeholder="https://ejemplo.com">
-                        <div id="urlError" class="form-error"></div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeAddModal()">
-                            <i class="fas fa-times"></i>
-                            Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i>
-                            <span id="saveButtonText">Guardar</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Nombre *</label>
+                    <input type="text" id="nameInput" class="form-input" placeholder="Nombre de la entrada" maxlength="100" required>
+                    <div id="nameError" class="text-red-500 text-sm mt-1"></div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Categoría *</label>
+                    <select id="categoryInput" class="form-select" required>
+                        <option value="">Seleccionar categoría</option>
+                        <option value="faucet">Faucets</option>
+                        <option value="mining">Mining</option>
+                        <option value="staking">Staking</option>
+                        <option value="defi">DeFi</option>
+                        <option value="trading">Trading</option>
+                        <option value="other">Otros</option>
+                    </select>
+                    <div id="categoryError" class="text-red-500 text-sm mt-1"></div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">URL</label>
+                    <input type="url" id="urlInput" class="form-input" placeholder="https://ejemplo.com">
+                    <div id="urlError" class="text-red-500 text-sm mt-1"></div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Descripción (Opcional)</label>
+                    <textarea id="descriptionInput" class="form-input" rows="3" placeholder="Descripción breve de la entrada"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Etiquetas (Opcional)</label>
+                    <input type="text" id="tagsInput" class="form-input" placeholder="bitcoin, ethereum, defi (separadas por comas)">
+                </div>
+
+                <div class="flex gap-4 justify-end">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        <span id="saveButtonText">Guardar</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-    
-    <!-- Iframe Modal -->
-    <div id="iframeModal" class="modal iframe-modal">
+
+    <!-- View Entry Modal -->
+    <div id="viewModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">
-                    <i class="fas fa-globe"></i>
-                    <span id="iframeTitle">Cargando...</span>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-400">
+                    <i class="fas fa-eye mr-2"></i>
+                    Detalles de la Entrada
                 </h2>
-                <button class="close-btn" onclick="closeIframeModal()" aria-label="Cerrar página">
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body" style="padding: 0;">
-                <iframe id="contentFrame" class="iframe-container" sandbox="allow-same-origin allow-scripts"></iframe>
-            </div>
+            <div id="viewContent"></div>
         </div>
     </div>
-    
-    <!-- Confirmation Modal -->
+
+    <!-- Confirm Modal -->
     <div id="confirmModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">
-                    <i class="fas fa-question-circle"></i>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-red-400">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
                     Confirmar Acción
                 </h2>
             </div>
-            <div class="modal-body">
-                <p id="confirmMessage"></p>
-            </div>
-            <div class="form-actions">
+            <p id="confirmMessage" class="mb-6 text-lg"></p>
+            <div class="flex gap-4 justify-end">
                 <button class="btn btn-secondary" onclick="closeConfirmModal()">
                     <i class="fas fa-times"></i>
                     Cancelar
@@ -794,75 +842,103 @@
             </div>
         </div>
     </div>
-    
-    <!-- External Link Modal -->
-    <div id="externalLinkModal" class="modal">
+
+    <!-- Export/Import Modal -->
+    <div id="exportModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">
-                    <i class="fas fa-external-link-alt"></i>
-                    Enlace Externo
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-400">
+                    <i class="fas fa-download mr-2"></i>
+                    Exportar/Importar Datos
                 </h2>
-            </div>
-            <div class="modal-body">
-                <p>Esta página requiere abrirse externamente para funcionar. ¿Deseas continuar?</p>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-secondary" onclick="closeExternalLinkModal()">
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeExportModal()">
                     <i class="fas fa-times"></i>
-                    Cancelar
                 </button>
-                <button class="btn btn-primary" onclick="openExternalLink()">
-                    <i class="fas fa-external-link-alt"></i>
-                    Abrir
-                </button>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Exportar Datos</h3>
+                    <div class="flex gap-4">
+                        <button class="btn btn-primary" onclick="exportData()">
+                            <i class="fas fa-download"></i>
+                            Descargar JSON
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportCSV()">
+                            <i class="fas fa-file-csv"></i>
+                            Descargar CSV
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Importar Datos</h3>
+                    <input type="file" id="importFile" accept=".json,.csv" class="form-input mb-4">
+                    <button class="btn btn-success" onclick="importData()">
+                        <i class="fas fa-upload"></i>
+                        Importar Archivo
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="bg-gray-800 text-white py-8 mt-16">
         <div class="container">
-            <div class="footer-content">
-                <a href="https://sneyder-estudio.github.io/" target="_blank" class="footer-brand">
-                    <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Sneyder Estudio" class="footer-logo">
-                    <span class="footer-text">© 2025 Sneyder Estudio</span>
-                </a>
-                
-                <a href="https://faucetpay.io/" target="_blank" class="faucetpay-btn">
-                    <i class="fas fa-coins"></i>
-                    Ir a FaucetPay
-                </a>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Sneyder Estudio" class="w-8 h-8">
+                    <span>© 2025 Sneyder Estudio - Lunaria Mining Premium</span>
+                </div>
+                <div class="flex gap-4">
+                    <button class="btn btn-secondary" onclick="openExportModal()">
+                        <i class="fas fa-download"></i>
+                        Exportar/Importar
+                    </button>
+                    <a href="https://faucetpay.io/" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-external-link-alt"></i>
+                        FaucetPay
+                    </a>
+                </div>
             </div>
         </div>
     </footer>
-    
+
     <script>
         // Global variables
         let db;
-        let deferredPrompt;
         let editingEntry = null;
         let confirmCallback = null;
-        let pendingExternalUrl = null;
-        
+        let categoryChart = null;
+        let monthlyChart = null;
+
+        // Categories configuration
+        const categories = {
+            faucet: { name: 'Faucets', icon: 'fas fa-tint', color: '#22c55e' },
+            mining: { name: 'Mining', icon: 'fas fa-pickaxe', color: '#f59e0b' },
+            staking: { name: 'Staking', icon: 'fas fa-coins', color: '#0ea5e9' },
+            defi: { name: 'DeFi', icon: 'fas fa-chart-line', color: '#a855f7' },
+            trading: { name: 'Trading', icon: 'fas fa-exchange-alt', color: '#ef4444' },
+            other: { name: 'Otros', icon: 'fas fa-ellipsis-h', color: '#6b7280' }
+        };
+
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
         });
-        
+
         async function initializeApp() {
             await initializeDatabase();
             await loadEntries();
-            showStorageWarning();
-            showInstallBanner();
-            registerServiceWorker();
-            setupPWAInstallPrompt();
+            setupEventListeners();
+            updateStats();
+            updateCharts();
+            loadTheme();
         }
-        
-        // IndexedDB functions
+
+        // Database functions
         async function initializeDatabase() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('LunariaMiningDB', 1);
+                const request = indexedDB.open('LunariaMiningPremiumDB', 2);
                 
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
@@ -876,12 +952,13 @@
                     if (!db.objectStoreNames.contains('entries')) {
                         const store = db.createObjectStore('entries', { keyPath: 'id' });
                         store.createIndex('name', 'name', { unique: false });
+                        store.createIndex('category', 'category', { unique: false });
                         store.createIndex('createdAt', 'createdAt', { unique: false });
                     }
                 };
             });
         }
-        
+
         async function saveEntry(entry) {
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction(['entries'], 'readwrite');
@@ -892,7 +969,7 @@
                 request.onsuccess = () => resolve();
             });
         }
-        
+
         async function getEntries() {
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction(['entries'], 'readonly');
@@ -903,7 +980,7 @@
                 request.onsuccess = () => resolve(request.result);
             });
         }
-        
+
         async function deleteEntry(id) {
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction(['entries'], 'readwrite');
@@ -914,80 +991,136 @@
                 request.onsuccess = () => resolve();
             });
         }
-        
+
         // UI Functions
         async function loadEntries() {
             try {
                 const entries = await getEntries();
-                const grid = document.getElementById('cardsGrid');
-                const emptyState = document.getElementById('emptyState');
-                
-                if (entries.length === 0) {
-                    grid.style.display = 'none';
-                    emptyState.style.display = 'block';
-                } else {
-                    grid.style.display = 'grid';
-                    emptyState.style.display = 'none';
-                    
-                    // Sort by creation date (newest first)
-                    entries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                    
-                    grid.innerHTML = entries.map(entry => createCardHTML(entry)).join('');
-                }
+                const filteredEntries = filterEntries(entries);
+                renderEntries(filteredEntries);
             } catch (error) {
                 console.error('Error loading entries:', error);
                 showNotification('Error al cargar las entradas', 'error');
             }
         }
-        
+
+        function filterEntries(entries) {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+
+            let filtered = entries.filter(entry => {
+                const matchesSearch = entry.name.toLowerCase().includes(searchTerm) ||
+                                    (entry.description && entry.description.toLowerCase().includes(searchTerm)) ||
+                                    (entry.tags && entry.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
+                
+                const matchesCategory = !categoryFilter || entry.category === categoryFilter;
+                
+                return matchesSearch && matchesCategory;
+            });
+
+            // Sort entries
+            switch (sortBy) {
+                case 'newest':
+                    filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    break;
+                case 'oldest':
+                    filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                    break;
+                case 'name':
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'category':
+                    filtered.sort((a, b) => a.category.localeCompare(b.category));
+                    break;
+            }
+
+            return filtered;
+        }
+
+        function renderEntries(entries) {
+            const grid = document.getElementById('cardsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (entries.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+            } else {
+                grid.style.display = 'grid';
+                emptyState.style.display = 'none';
+                
+                grid.innerHTML = entries.map(entry => createCardHTML(entry)).join('');
+            }
+        }
+
         function createCardHTML(entry) {
+            const category = categories[entry.category] || categories.other;
+            const formattedDate = new Date(entry.createdAt).toLocaleDateString();
+            
             return `
                 <div class="mining-card fade-in">
-                    <img src="${entry.image}" alt="${entry.name}" class="card-image" loading="lazy">
+                    <img src="${entry.image}" alt="${escapeHtml(entry.name)}" class="card-image" loading="lazy">
                     <div class="card-content">
-                        <h3 class="card-title" title="${escapeHtml(entry.name)}">${escapeHtml(entry.name)}</h3>
-                        <div class="card-actions">
-                            <button class="btn btn-primary" onclick="openMiningPage('${entry.id}')">
-                                <i class="fas fa-play"></i>
-                                Ir
-                            </button>
-                            <div class="card-actions-right">
-                                <button class="btn btn-secondary btn-small" onclick="editEntry('${entry.id}')" aria-label="Editar entrada">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-danger btn-small" onclick="showDeleteConfirmation('${entry.id}')" aria-label="Eliminar entrada">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="card-title">${escapeHtml(entry.name)}</h3>
+                            <div class="category-badge category-${entry.category}">
+                                <i class="${category.icon}"></i>
+                                ${category.name}
                             </div>
+                        </div>
+                        
+                        ${entry.description ? `<p class="text-gray-400 text-sm mb-3">${escapeHtml(entry.description)}</p>` : ''}
+                        
+                        ${entry.url ? `<div class="card-url mb-3"><i class="fas fa-link mr-1"></i>${escapeHtml(entry.url)}</div>` : ''}
+                        
+                        <div class="flex justify-between items-center text-xs text-gray-500 mb-4">
+                            <span><i class="fas fa-calendar mr-1"></i>${formattedDate}</span>
+                            ${entry.tags && entry.tags.length > 0 ? `<div class="flex gap-1">${entry.tags.map(tag => `<span class="bg-gray-700 px-2 py-1 rounded">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary flex-1" onclick="openMiningPage('${entry.id}')">
+                                <i class="fas fa-play"></i>
+                                Abrir
+                            </button>
+                            <button class="btn btn-secondary" onclick="viewEntry('${entry.id}')" title="Ver detalles">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-warning" onclick="editEntry('${entry.id}')" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger" onclick="showDeleteConfirmation('${entry.id}')" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             `;
         }
-        
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-        
+
         // Modal functions
         function openAddModal() {
             editingEntry = null;
-            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus"></i> Agregar Entrada de Minería';
+            document.getElementById('modalTitle').textContent = 'Agregar Entrada de Minería';
             document.getElementById('saveButtonText').textContent = 'Guardar';
             document.getElementById('miningForm').reset();
             document.getElementById('imagePreview').src = 'https://i.postimg.cc/GpPsSmmX/4491470.png';
             clearErrors();
             document.getElementById('addModal').classList.add('active');
         }
-        
+
         function closeAddModal() {
             document.getElementById('addModal').classList.remove('active');
             editingEntry = null;
             clearErrors();
         }
-        
+
         async function editEntry(id) {
             try {
                 const entries = await getEntries();
@@ -999,10 +1132,13 @@
                 }
                 
                 editingEntry = entry;
-                document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar Entrada de Minería';
+                document.getElementById('modalTitle').textContent = 'Editar Entrada de Minería';
                 document.getElementById('saveButtonText').textContent = 'Actualizar';
                 document.getElementById('nameInput').value = entry.name;
+                document.getElementById('categoryInput').value = entry.category;
                 document.getElementById('urlInput').value = entry.url || '';
+                document.getElementById('descriptionInput').value = entry.description || '';
+                document.getElementById('tagsInput').value = entry.tags ? entry.tags.join(', ') : '';
                 document.getElementById('imagePreview').src = entry.image;
                 clearErrors();
                 document.getElementById('addModal').classList.add('active');
@@ -1011,17 +1147,73 @@
                 showNotification('Error al cargar la entrada', 'error');
             }
         }
-        
+
+        async function viewEntry(id) {
+            try {
+                const entries = await getEntries();
+                const entry = entries.find(e => e.id === id);
+                
+                if (!entry) {
+                    showNotification('Entrada no encontrada', 'error');
+                    return;
+                }
+                
+                const category = categories[entry.category] || categories.other;
+                const formattedDate = new Date(entry.createdAt).toLocaleDateString();
+                
+                const content = `
+                    <div class="space-y-6">
+                        <div class="text-center">
+                            <img src="${entry.image}" alt="${escapeHtml(entry.name)}" class="w-full max-w-md h-64 object-cover rounded-lg mx-auto mb-4">
+                            <h3 class="text-2xl font-bold">${escapeHtml(entry.name)}</h3>
+                            <div class="category-badge category-${entry.category} mt-2">
+                                <i class="${category.icon}"></i>
+                                ${category.name}
+                            </div>
+                        </div>
+                        
+                        ${entry.description ? `<div><strong>Descripción:</strong><p class="mt-2 text-gray-400">${escapeHtml(entry.description)}</p></div>` : ''}
+                        
+                        ${entry.url ? `<div><strong>URL:</strong><p class="mt-2"><a href="${entry.url}" target="_blank" class="text-blue-400 hover:underline">${escapeHtml(entry.url)}</a></p></div>` : ''}
+                        
+                        ${entry.tags && entry.tags.length > 0 ? `<div><strong>Etiquetas:</strong><div class="flex flex-wrap gap-2 mt-2">${entry.tags.map(tag => `<span class="bg-gray-700 px-3 py-1 rounded-full text-sm">${escapeHtml(tag)}</span>`).join('')}</div></div>` : ''}
+                        
+                        <div class="text-sm text-gray-500">
+                            <p><strong>Creado:</strong> ${formattedDate}</p>
+                            ${entry.updatedAt && entry.updatedAt !== entry.createdAt ? `<p><strong>Actualizado:</strong> ${new Date(entry.updatedAt).toLocaleDateString()}</p>` : ''}
+                        </div>
+                        
+                        <div class="flex gap-4 justify-center">
+                            ${entry.url ? `<button class="btn btn-primary" onclick="openMiningPage('${entry.id}')"><i class="fas fa-external-link-alt"></i> Abrir Sitio</button>` : ''}
+                            <button class="btn btn-warning" onclick="editEntry('${entry.id}'); closeViewModal()"><i class="fas fa-edit"></i> Editar</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('viewContent').innerHTML = content;
+                document.getElementById('viewModal').classList.add('active');
+            } catch (error) {
+                console.error('Error loading entry for view:', error);
+                showNotification('Error al cargar la entrada', 'error');
+            }
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
         function showDeleteConfirmation(id) {
             confirmCallback = () => performDelete(id);
-            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas eliminar esta entrada de minería?';
+            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas eliminar esta entrada de minería? Esta acción no se puede deshacer.';
             document.getElementById('confirmModal').classList.add('active');
         }
-        
+
         async function performDelete(id) {
             try {
                 await deleteEntry(id);
                 await loadEntries();
+                updateStats();
+                updateCharts();
                 showNotification('Entrada eliminada correctamente', 'success');
                 closeConfirmModal();
             } catch (error) {
@@ -1029,35 +1221,43 @@
                 showNotification('Error al eliminar la entrada', 'error');
             }
         }
-        
+
         function closeConfirmModal() {
             document.getElementById('confirmModal').classList.remove('active');
             confirmCallback = null;
         }
-        
+
         function confirmAction() {
             if (confirmCallback) {
                 confirmCallback();
             }
         }
-        
+
         // Form handling
         document.getElementById('miningForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const name = document.getElementById('nameInput').value.trim();
+            const category = document.getElementById('categoryInput').value;
             const url = document.getElementById('urlInput').value.trim();
+            const description = document.getElementById('descriptionInput').value.trim();
+            const tagsInput = document.getElementById('tagsInput').value.trim();
             const image = document.getElementById('imagePreview').src;
             
-            if (!validateForm(name, url)) {
+            if (!validateForm(name, category, url)) {
                 return;
             }
             
             try {
+                const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+                
                 const entry = {
                     id: editingEntry ? editingEntry.id : generateId(),
                     name: name,
+                    category: category,
                     url: url,
+                    description: description,
+                    tags: tags,
                     image: image,
                     createdAt: editingEntry ? editingEntry.createdAt : new Date().toISOString(),
                     updatedAt: new Date().toISOString()
@@ -1065,6 +1265,8 @@
                 
                 await saveEntry(entry);
                 await loadEntries();
+                updateStats();
+                updateCharts();
                 
                 const message = editingEntry ? 'Entrada actualizada correctamente' : '¡Entrada de minería guardada!';
                 showNotification(message, 'success');
@@ -1074,65 +1276,64 @@
                 showNotification('Error al guardar la entrada', 'error');
             }
         });
-        
-        function validateForm(name, url) {
+
+        function validateForm(name, category, url) {
             clearErrors();
             let isValid = true;
             
             if (!name) {
                 showFieldError('nameError', 'El nombre es obligatorio');
-                document.getElementById('nameInput').classList.add('error');
                 isValid = false;
             } else if (name.length > 100) {
                 showFieldError('nameError', 'El nombre no puede exceder 100 caracteres');
-                document.getElementById('nameInput').classList.add('error');
+                isValid = false;
+            }
+            
+            if (!category) {
+                showFieldError('categoryError', 'La categoría es obligatoria');
                 isValid = false;
             }
             
             if (url && !isValidUrl(url)) {
-                showFieldError('urlError', 'Por favor, proporciona una URL válida (https://...)');
-                document.getElementById('urlInput').classList.add('error');
+                showFieldError('urlError', 'Por favor, proporciona una URL válida');
                 isValid = false;
             }
             
             return isValid;
         }
-        
+
         function clearErrors() {
             document.getElementById('nameError').textContent = '';
+            document.getElementById('categoryError').textContent = '';
             document.getElementById('urlError').textContent = '';
-            document.getElementById('nameInput').classList.remove('error');
-            document.getElementById('urlInput').classList.remove('error');
         }
-        
+
         function showFieldError(fieldId, message) {
             document.getElementById(fieldId).textContent = message;
         }
-        
+
         function isValidUrl(string) {
             try {
-                const url = new URL(string);
-                return url.protocol === 'https:' || url.protocol === 'http:';
+                new URL(string);
+                return true;
             } catch (_) {
                 return false;
             }
         }
-        
+
         // Image handling
         async function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            // Validate file type
-            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             if (!validTypes.includes(file.type)) {
-                showNotification('Formato de imagen no soportado. Usa JPEG, PNG, GIF, WebP o BMP.', 'error');
+                showNotification('Formato de imagen no soportado', 'error');
                 return;
             }
             
-            // Validate file size (10MB limit)
             if (file.size > 10 * 1024 * 1024) {
-                showNotification('La imagen es demasiado grande. Máximo 10MB.', 'error');
+                showNotification('La imagen es demasiado grande. Máximo 10MB', 'error');
                 return;
             }
             
@@ -1144,7 +1345,7 @@
                 showNotification('Error al procesar la imagen', 'error');
             }
         }
-        
+
         function compressImage(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -1154,9 +1355,8 @@
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         
-                        // Calculate new dimensions
-                        const maxWidth = 1920;
-                        const maxHeight = 1080;
+                        const maxWidth = 800;
+                        const maxHeight = 600;
                         let { width, height } = img;
                         
                         if (width > height) {
@@ -1174,19 +1374,8 @@
                         canvas.width = width;
                         canvas.height = height;
                         
-                        // Draw and compress
                         ctx.drawImage(img, 0, 0, width, height);
-                        
-                        // Try different quality levels to stay under 1MB
-                        let quality = 0.8;
-                        let dataUrl = canvas.toDataURL('image/jpeg', quality);
-                        
-                        while (dataUrl.length > 1024 * 1024 && quality > 0.1) {
-                            quality -= 0.1;
-                            dataUrl = canvas.toDataURL('image/jpeg', quality);
-                        }
-                        
-                        resolve(dataUrl);
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
                     };
                     img.onerror = reject;
                     img.src = event.target.result;
@@ -1195,7 +1384,298 @@
                 reader.readAsDataURL(file);
             });
         }
-        
+
+        // Statistics functions
+        async function updateStats() {
+            try {
+                const entries = await getEntries();
+                const today = new Date().toDateString();
+                const recentEntries = entries.filter(entry => 
+                    new Date(entry.createdAt).toDateString() === today
+                );
+                
+                const uniqueCategories = [...new Set(entries.map(entry => entry.category))];
+                const activeEntries = entries.filter(entry => entry.url);
+                
+                document.getElementById('totalEntries').textContent = entries.length;
+                document.getElementById('totalCategories').textContent = uniqueCategories.length;
+                document.getElementById('activeEntries').textContent = activeEntries.length;
+                document.getElementById('recentEntries').textContent = recentEntries.length;
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+
+        async function updateCharts() {
+            try {
+                const entries = await getEntries();
+                updateCategoryChart(entries);
+                updateMonthlyChart(entries);
+            } catch (error) {
+                console.error('Error updating charts:', error);
+            }
+        }
+
+        function updateCategoryChart(entries) {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            
+            const categoryCounts = {};
+            entries.forEach(entry => {
+                categoryCounts[entry.category] = (categoryCounts[entry.category] || 0) + 1;
+            });
+            
+            const data = {
+                labels: Object.keys(categoryCounts).map(key => categories[key]?.name || key),
+                datasets: [{
+                    data: Object.values(categoryCounts),
+                    backgroundColor: Object.keys(categoryCounts).map(key => categories[key]?.color || '#6b7280'),
+                    borderWidth: 0
+                }]
+            };
+            
+            if (categoryChart) {
+                categoryChart.destroy();
+            }
+            
+            categoryChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim(),
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateMonthlyChart(entries) {
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            
+            const monthCounts = {};
+            entries.forEach(entry => {
+                const month = new Date(entry.createdAt).toLocaleDateString('es-ES', { 
+                    year: 'numeric', 
+                    month: 'short' 
+                });
+                monthCounts[month] = (monthCounts[month] || 0) + 1;
+            });
+            
+            const sortedMonths = Object.keys(monthCounts).sort((a, b) => 
+                new Date(a + ' 1') - new Date(b + ' 1')
+            );
+            
+            const data = {
+                labels: sortedMonths,
+                datasets: [{
+                    label: 'Entradas Creadas',
+                    data: sortedMonths.map(month => monthCounts[month]),
+                    backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                    borderColor: 'rgba(14, 165, 233, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            };
+            
+            if (monthlyChart) {
+                monthlyChart.destroy();
+            }
+            
+            monthlyChart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', debounce(loadEntries, 300));
+            document.getElementById('categoryFilter').addEventListener('change', loadEntries);
+            document.getElementById('sortBy').addEventListener('change', loadEntries);
+            
+            // Filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.dataset.category;
+                    document.getElementById('categoryFilter').value = category;
+                    loadEntries();
+                });
+            });
+        }
+
+        // Theme functions
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (body.dataset.theme === 'dark') {
+                body.dataset.theme = 'light';
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.dataset.theme = 'dark';
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'dark');
+            }
+            
+            // Update charts with new theme
+            setTimeout(() => {
+                updateCharts();
+            }, 100);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            body.dataset.theme = savedTheme;
+            themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Export/Import functions
+        function openExportModal() {
+            document.getElementById('exportModal').classList.add('active');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.remove('active');
+        }
+
+        async function exportData() {
+            try {
+                const entries = await getEntries();
+                const dataStr = JSON.stringify(entries, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `lunaria-mining-backup-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+                showNotification('Datos exportados correctamente', 'success');
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                showNotification('Error al exportar los datos', 'error');
+            }
+        }
+
+        async function exportCSV() {
+            try {
+                const entries = await getEntries();
+                const csvContent = [
+                    ['Nombre', 'Categoría', 'URL', 'Descripción', 'Etiquetas', 'Fecha Creación'].join(','),
+                    ...entries.map(entry => [
+                        `"${entry.name}"`,
+                        `"${entry.category}"`,
+                        `"${entry.url || ''}"`,
+                        `"${entry.description || ''}"`,
+                        `"${entry.tags ? entry.tags.join('; ') : ''}"`,
+                        `"${new Date(entry.createdAt).toLocaleDateString()}"`
+                    ].join(','))
+                ].join('\n');
+                
+                const dataBlob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `lunaria-mining-backup-${new Date().toISOString().split('T')[0]}.csv`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+                showNotification('CSV exportado correctamente', 'success');
+            } catch (error) {
+                console.error('Error exporting CSV:', error);
+                showNotification('Error al exportar el CSV', 'error');
+            }
+        }
+
+        async function importData() {
+            const fileInput = document.getElementById('importFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showNotification('Por favor, selecciona un archivo', 'warning');
+                return;
+            }
+            
+            try {
+                const text = await file.text();
+                let entries = [];
+                
+                if (file.type === 'application/json') {
+                    entries = JSON.parse(text);
+                } else if (file.type === 'text/csv') {
+                    // CSV import logic would go here
+                    showNotification('Importación de CSV no implementada aún', 'warning');
+                    return;
+                }
+                
+                // Validate and import entries
+                for (const entry of entries) {
+                    if (entry.name && entry.category) {
+                        await saveEntry({
+                            ...entry,
+                            id: generateId(),
+                            createdAt: entry.createdAt || new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        });
+                    }
+                }
+                
+                await loadEntries();
+                updateStats();
+                updateCharts();
+                closeExportModal();
+                showNotification(`${entries.length} entradas importadas correctamente`, 'success');
+            } catch (error) {
+                console.error('Error importing data:', error);
+                showNotification('Error al importar los datos', 'error');
+            }
+        }
+
         // Mining page functions
         async function openMiningPage(id) {
             try {
@@ -1207,73 +1687,25 @@
                     return;
                 }
                 
-                // Try to load in iframe first
-                const iframe = document.getElementById('contentFrame');
-                const iframeTitle = document.getElementById('iframeTitle');
-                
-                iframeTitle.textContent = entry.name;
-                
-                // Set up iframe error handling
-                iframe.onerror = () => {
-                    closeIframeModal();
-                    showExternalLinkModal(entry.url);
-                };
-                
-                // Load iframe
-                iframe.src = entry.url;
-                document.getElementById('iframeModal').classList.add('active');
-                
-                // Check if iframe loads successfully
-                setTimeout(() => {
-                    try {
-                        iframe.contentWindow.location.href;
-                    } catch (error) {
-                        // If we can't access iframe content, it likely failed due to CORS
-                        if (document.getElementById('iframeModal').classList.contains('active')) {
-                            closeIframeModal();
-                            showExternalLinkModal(entry.url);
-                        }
-                    }
-                }, 3000);
-                
+                window.open(entry.url, '_blank');
             } catch (error) {
                 console.error('Error opening mining page:', error);
                 showNotification('Error al abrir la página de minería', 'error');
             }
         }
-        
-        function closeIframeModal() {
-            document.getElementById('iframeModal').classList.remove('active');
-            const iframe = document.getElementById('contentFrame');
-            iframe.src = '';
-        }
-        
-        function showExternalLinkModal(url) {
-            pendingExternalUrl = url;
-            document.getElementById('externalLinkModal').classList.add('active');
-        }
-        
-        function closeExternalLinkModal() {
-            document.getElementById('externalLinkModal').classList.remove('active');
-            pendingExternalUrl = null;
-        }
-        
-        function openExternalLink() {
-            if (pendingExternalUrl) {
-                window.open(pendingExternalUrl, '_blank');
-                closeExternalLinkModal();
-            }
-        }
-        
+
         // Utility functions
         function generateId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
         }
-        
+
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
-            notification.textContent = message;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'exclamation'}-circle"></i>
+                ${message}
+            `;
             
             document.body.appendChild(notification);
             
@@ -1288,126 +1720,64 @@
                 }, 300);
             }, 3000);
         }
-        
-        // Storage warning
-        function showStorageWarning() {
-            const hideWarning = localStorage.getItem('hideStorageWarning');
-            if (!hideWarning) {
-                document.getElementById('storageWarningModal').classList.add('active');
-            }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
         }
-        
-        function closeStorageWarning() {
-            const dontShow = document.getElementById('dontShowAgain').checked;
-            if (dontShow) {
-                localStorage.setItem('hideStorageWarning', 'true');
-            }
-            document.getElementById('storageWarningModal').classList.remove('active');
-        }
-        
-        // Install banner
-        function showInstallBanner() {
-            const hidePrompt = localStorage.getItem('hideInstallPrompt');
-            if (!hidePrompt && !window.matchMedia('(display-mode: standalone)').matches) {
-                setTimeout(() => {
-                    document.getElementById('installBanner').classList.add('show');
-                }, 3000);
-            }
-        }
-        
-        function closeInstallBanner() {
-            localStorage.setItem('hideInstallPrompt', 'true');
-            document.getElementById('installBanner').classList.remove('show');
-        }
-        
-        // PWA functions
-        function setupPWAInstallPrompt() {
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-            });
-            
-            window.addEventListener('appinstalled', () => {
-                deferredPrompt = null;
-                document.getElementById('installBanner').classList.remove('show');
-                showNotification('¡Lunaria Mining instalada correctamente!', 'success');
-            });
-        }
-        
-        async function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                
-                if (outcome === 'accepted') {
-                    closeInstallBanner();
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'n':
+                        e.preventDefault();
+                        openAddModal();
+                        break;
+                    case 'k':
+                        e.preventDefault();
+                        document.getElementById('searchInput').focus();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        openExportModal();
+                        break;
                 }
-                
-                deferredPrompt = null;
-            } else {
-                showNotification('La instalación no está disponible en este navegador', 'error');
             }
-        }
-        
-        function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js').catch(error => {
-                    console.error('Service Worker registration failed:', error);
-                });
+            
+            if (e.key === 'Escape') {
+                closeAddModal();
+                closeViewModal();
+                closeConfirmModal();
+                closeExportModal();
             }
-        }
-        
-        // Service Worker inline (for demo purposes)
-        const swCode = `
-            const CACHE_NAME = 'lunaria-mining-v1';
-            const urlsToCache = [
-                '/',
-                '/index.html',
-                'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css',
-                'https://i.postimg.cc/GpPsSmmX/4491470.png',
-                'https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png'
-            ];
-            
-            self.addEventListener('install', (event) => {
-                event.waitUntil(
-                    caches.open(CACHE_NAME)
-                        .then((cache) => cache.addAll(urlsToCache))
-                );
-            });
-            
-            self.addEventListener('fetch', (event) => {
-                event.respondWith(
-                    caches.match(event.request)
-                        .then((response) => {
-                            if (response) {
-                                return response;
-                            }
-                            return fetch(event.request);
-                        })
-                );
-            });
-        `;
-        
-        // Create service worker blob
-        const swBlob = new Blob([swCode], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(swBlob);
-        
-        // Register service worker
+        });
+
+        // Service Worker and PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register(swUrl).catch(error => {
-                console.error('Service Worker registration failed:', error);
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
             });
         }
-        
+
         // Manifest
         const manifest = {
-            name: 'Lunaria Mining',
-            short_name: 'Lunaria',
-            description: 'Gestiona tus entradas de minería de forma elegante y eficiente',
+            name: 'Lunaria Mining Premium',
+            short_name: 'Lunaria Premium',
+            description: 'Gestión avanzada de entradas de minería con estadísticas y categorías',
             start_url: '/',
             display: 'standalone',
-            background_color: '#1f2937',
-            theme_color: '#06b6d4',
+            background_color: '#0f172a',
+            theme_color: '#0ea5e9',
             icons: [
                 {
                     src: 'https://i.postimg.cc/GpPsSmmX/4491470.png',
@@ -1421,57 +1791,10 @@
                 }
             ]
         };
-        
-        // Create manifest blob and set it
+
         const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
         const manifestUrl = URL.createObjectURL(manifestBlob);
         document.getElementById('manifest').href = manifestUrl;
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-                switch (e.key) {
-                    case 'n':
-                        e.preventDefault();
-                        openAddModal();
-                        break;
-                    case 'Escape':
-                        e.preventDefault();
-                        closeAddModal();
-                        closeIframeModal();
-                        closeConfirmModal();
-                        closeExternalLinkModal();
-                        break;
-                }
-            }
-        });
-        
-        // Handle online/offline status
-        window.addEventListener('online', () => {
-            showNotification('Conexión restaurada', 'success');
-        });
-        
-        window.addEventListener('offline', () => {
-            showNotification('Sin conexión. Algunas funciones pueden estar limitadas.', 'error');
-        });
-        
-        // Performance optimization
-        if ('loading' in HTMLImageElement.prototype) {
-            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-                img.loading = 'lazy';
-            });
-        }
-        
-        // Accessibility improvements
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                document.body.classList.add('keyboard-navigation');
-            }
-        });
-        
-        document.addEventListener('mousedown', () => {
-            document.body.classList.remove('keyboard-navigation');
-        });
     </script>
 </body>
 </html>
