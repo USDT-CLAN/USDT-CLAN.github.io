@@ -170,6 +170,13 @@
             color: white;
         }
 
+        .btn-small {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            min-width: 35px;
+            height: 35px;
+        }
+
         .modal {
             position: fixed;
             top: 0;
@@ -491,6 +498,35 @@
             gap: 0.5rem;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .card-header {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .export-individual-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .export-individual-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
         }
 
         .chart-container {
@@ -1461,9 +1497,14 @@
             
             return `
                 <div class="mining-card fade-in">
-                    <img src="${entry.image}" alt="${escapeHtml(entry.name)}" class="card-image" loading="lazy">
+                    <div class="relative">
+                        <img src="${entry.image}" alt="${escapeHtml(entry.name)}" class="card-image" loading="lazy">
+                        <button class="export-individual-btn" onclick="exportIndividualEntry('${entry.id}')" title="Exportar esta tarjeta">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                    </div>
                     <div class="card-content">
-                        <div class="flex justify-between items-start mb-3">
+                        <div class="card-header">
                             <h3 class="card-title">${escapeHtml(entry.name)}</h3>
                             <div class="category-badge category-${entry.category}">
                                 <i class="${category.icon}"></i>
@@ -1485,13 +1526,13 @@
                                 <i class="fas fa-play"></i>
                                 Abrir
                             </button>
-                            <button class="btn btn-secondary" onclick="viewEntry('${entry.id}')" title="Ver detalles">
+                            <button class="btn btn-secondary btn-small" onclick="viewEntry('${entry.id}')" title="Ver detalles">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="btn btn-warning" onclick="editEntry('${entry.id}')" title="Editar">
+                            <button class="btn btn-warning btn-small" onclick="editEntry('${entry.id}')" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-danger" onclick="showDeleteConfirmation('${entry.id}')" title="Eliminar">
+                            <button class="btn btn-danger btn-small" onclick="showDeleteConfirmation('${entry.id}')" title="Eliminar">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -1504,6 +1545,59 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // Export individual entry function
+        async function exportIndividualEntry(id) {
+            try {
+                const entries = await getEntries();
+                const entry = entries.find(e => e.id === id);
+                
+                if (!entry) {
+                    showNotification('Entrada no encontrada', 'error');
+                    return;
+                }
+                
+                const exportData = {
+                    version: '1.0.0',
+                    exportDate: new Date().toISOString(),
+                    exportType: 'individual',
+                    totalEntries: 1,
+                    entries: [{
+                        id: entry.id,
+                        name: entry.name,
+                        category: entry.category,
+                        url: entry.url || '',
+                        description: entry.description || '',
+                        tags: entry.tags || [],
+                        image: entry.image,
+                        createdAt: entry.createdAt,
+                        updatedAt: entry.updatedAt
+                    }]
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
+                
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                
+                // Sanitize filename
+                const sanitizedName = entry.name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
+                link.download = `lunaria-entry-${sanitizedName}-${new Date().toISOString().split('T')[0]}.json`;
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                showNotification(`Entrada "${entry.name}" exportada correctamente`, 'success');
+                
+            } catch (error) {
+                console.error('Error exporting individual entry:', error);
+                showNotification('Error al exportar la entrada', 'error');
+            }
         }
 
         // Modal functions
@@ -1588,6 +1682,7 @@
                         <div class="flex gap-4 justify-center">
                             ${entry.url ? `<button class="btn btn-primary" onclick="openMiningPage('${entry.id}')"><i class="fas fa-external-link-alt"></i> Abrir Sitio</button>` : ''}
                             <button class="btn btn-warning" onclick="editEntry('${entry.id}'); closeViewModal()"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn btn-success" onclick="exportIndividualEntry('${entry.id}')"><i class="fas fa-download"></i> Exportar</button>
                         </div>
                     </div>
                 `;
@@ -1975,7 +2070,7 @@
             themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
         }
 
-        // Export/Import functions - CORREGIDAS Y MEJORADAS
+        // Export/Import functions
         function openExportModal() {
             document.getElementById('exportModal').classList.add('active');
         }
