@@ -203,6 +203,29 @@
             min-width: 500px;
         }
 
+        .fullscreen-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--primary-bg);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .form-input {
             width: 100%;
             padding: 0.875rem 1rem;
@@ -278,6 +301,12 @@
             background: rgba(239, 68, 68, 0.2);
             color: var(--danger);
             border: 1px solid var(--danger);
+        }
+
+        .category-shorlin {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid #10b981;
         }
 
         .category-other {
@@ -407,6 +436,10 @@
             background: var(--warning);
         }
 
+        .notification.info {
+            background: var(--accent);
+        }
+
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -520,6 +553,170 @@
             transition: width 0.3s ease;
         }
 
+        .update-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 2rem;
+            z-index: 3000;
+            max-width: 600px;
+            width: 90vw;
+            text-align: center;
+            box-shadow: 0 20px 60px var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .update-notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .update-notification h3 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .update-notification p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .storage-permission-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .storage-permission-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .storage-permission-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90vw;
+            text-align: center;
+            border: 2px solid var(--accent);
+        }
+
+        .menu-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.05);
+        }
+
+        .menu-button.faucet-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .menu-button.add-button {
+            background: var(--accent);
+            color: white;
+        }
+
+        .menu-button.export-button {
+            background: var(--success);
+            color: white;
+        }
+
+        .faucet-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .close-menu-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-menu-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .import-progress {
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .import-progress.show {
+            display: block;
+        }
+
+        .import-log {
+            background: var(--primary-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        .import-log .success {
+            color: var(--success);
+        }
+
+        .import-log .error {
+            color: var(--danger);
+        }
+
+        .import-log .warning {
+            color: var(--warning);
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 0 0.5rem;
@@ -551,6 +748,29 @@
                 right: 1rem;
                 width: 40px;
                 height: 40px;
+            }
+
+            .filter-chips {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-chip {
+                text-align: center;
+            }
+
+            .fullscreen-modal {
+                gap: 1rem;
+            }
+
+            .menu-button {
+                width: 150px;
+                height: 150px;
+            }
+
+            .faucet-logo {
+                width: 60px;
+                height: 60px;
             }
         }
 
@@ -586,6 +806,68 @@
     </style>
 </head>
 <body data-theme="dark">
+    <!-- Storage Permission Modal -->
+    <div id="storagePermissionModal" class="storage-permission-modal">
+        <div class="storage-permission-content">
+            <h2 class="text-2xl font-bold mb-4 text-blue-400">
+                <i class="fas fa-folder-plus mr-2"></i>
+                Permiso de Almacenamiento
+            </h2>
+            <p class="text-gray-300 mb-6">
+                Para garantizar que tus datos estén seguros y respaldados, necesitamos acceso a una carpeta donde guardar automáticamente tus entradas de minería. Esto te permitirá mantener un respaldo actualizado en caso de futuras actualizaciones.
+            </p>
+            <div class="flex gap-4 justify-center">
+                <button class="btn btn-primary" onclick="requestStoragePermission()">
+                    <i class="fas fa-check"></i>
+                    Conceder Permiso
+                </button>
+                <button class="btn btn-secondary" onclick="continueWithoutPermission()">
+                    <i class="fas fa-times"></i>
+                    Continuar sin Permiso
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Menu Modal -->
+    <div id="mainMenuModal" class="fullscreen-modal">
+        <button class="close-menu-btn" onclick="closeMainMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <h2 class="text-3xl font-bold mb-8 text-center">
+            <i class="fas fa-ellipsis-h mr-2"></i>
+            Menú Principal
+        </h2>
+        
+        <div class="flex flex-wrap justify-center gap-8">
+            <button class="menu-button faucet-button" onclick="openFaucetPay()">
+                <img src="https://i.postimg.cc/DzTsDH2r/Picsart-25-07-12-19-06-59-338.png" alt="FaucetPay" class="faucet-logo">
+                <span>FaucetPay</span>
+            </button>
+            
+            <button class="menu-button add-button" onclick="openAddModal(); closeMainMenu()">
+                <i class="fas fa-plus" style="font-size: 3rem;"></i>
+                <span>Agregar Página</span>
+            </button>
+            
+            <button class="menu-button export-button" onclick="openExportModal(); closeMainMenu()">
+                <i class="fas fa-download" style="font-size: 3rem;"></i>
+                <span>Exportar/Importar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Update Notification -->
+    <div id="updateNotification" class="update-notification">
+        <h3><i class="fas fa-sparkles"></i> Nueva Función Disponible</h3>
+        <p>¡Hemos añadido una nueva categoría <strong>"Shorlin Fause"</strong> especialmente diseñada para páginas donde puedes realizar trabajo como ver anuncios, hacer ciertas tareas, y generar ingresos adicionales. Esta función te permite organizar mejor las páginas que pueden convertirse prácticamente en un segundo trabajo con buen salario si las aprovechas de la manera correcta.</p>
+        <button class="btn btn-primary" onclick="closeUpdateNotification()">
+            <i class="fas fa-check"></i>
+            ¡Entendido!
+        </button>
+    </div>
+
     <!-- Theme Toggle -->
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
         <i id="themeIcon" class="fas fa-moon"></i>
@@ -665,6 +947,7 @@
                             <option value="staking">Staking</option>
                             <option value="defi">DeFi</option>
                             <option value="trading">Trading</option>
+                            <option value="shorlin">Shorlin Fause</option>
                             <option value="other">Otros</option>
                         </select>
                     </div>
@@ -696,6 +979,9 @@
                     <div class="filter-chip" data-category="trading">
                         <i class="fas fa-exchange-alt"></i> Trading
                     </div>
+                    <div class="filter-chip" data-category="shorlin">
+                        <i class="fas fa-briefcase"></i> Shorlin Fause
+                    </div>
                     <div class="filter-chip" data-category="other">
                         <i class="fas fa-ellipsis-h"></i> Otros
                     </div>
@@ -723,9 +1009,9 @@
         </div>
     </main>
 
-    <!-- Add Entry FAB -->
-    <button class="fab" onclick="openAddModal()" aria-label="Agregar nueva entrada">
-        <i class="fas fa-plus"></i>
+    <!-- More Button FAB -->
+    <button class="fab" onclick="openMainMenu()" aria-label="Menú principal">
+        <i class="fas fa-ellipsis-h"></i>
     </button>
 
     <!-- Add/Edit Modal -->
@@ -769,6 +1055,7 @@
                         <option value="staking">Staking</option>
                         <option value="defi">DeFi</option>
                         <option value="trading">Trading</option>
+                        <option value="shorlin">Shorlin Fause</option>
                         <option value="other">Otros</option>
                     </select>
                     <div id="categoryError" class="text-red-500 text-sm mt-1"></div>
@@ -876,6 +1163,18 @@
                         <i class="fas fa-upload"></i>
                         Importar Archivo
                     </button>
+                    
+                    <!-- Import Progress -->
+                    <div id="importProgress" class="import-progress">
+                        <div class="flex items-center justify-between mb-2">
+                            <span>Procesando archivo...</span>
+                            <div class="loading-spinner"></div>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="importProgressBar" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div id="importLog" class="import-log"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -889,16 +1188,6 @@
                     <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Sneyder Estudio" class="w-8 h-8">
                     <span>© 2025 Sneyder Estudio - Lunaria Mining Premium</span>
                 </div>
-                <div class="flex gap-4">
-                    <button class="btn btn-secondary" onclick="openExportModal()">
-                        <i class="fas fa-download"></i>
-                        Exportar/Importar
-                    </button>
-                    <a href="https://faucetpay.io/" target="_blank" class="btn btn-primary">
-                        <i class="fas fa-external-link-alt"></i>
-                        FaucetPay
-                    </a>
-                </div>
             </div>
         </div>
     </footer>
@@ -910,6 +1199,8 @@
         let confirmCallback = null;
         let categoryChart = null;
         let monthlyChart = null;
+        let directoryHandle = null;
+        let storagePermissionGranted = false;
 
         // Categories configuration
         const categories = {
@@ -918,6 +1209,7 @@
             staking: { name: 'Staking', icon: 'fas fa-coins', color: '#0ea5e9' },
             defi: { name: 'DeFi', icon: 'fas fa-chart-line', color: '#a855f7' },
             trading: { name: 'Trading', icon: 'fas fa-exchange-alt', color: '#ef4444' },
+            shorlin: { name: 'Shorlin Fause', icon: 'fas fa-briefcase', color: '#10b981' },
             other: { name: 'Otros', icon: 'fas fa-ellipsis-h', color: '#6b7280' }
         };
 
@@ -933,6 +1225,104 @@
             updateStats();
             updateCharts();
             loadTheme();
+            checkStoragePermission();
+            showUpdateNotification();
+        }
+
+        // Storage permission functions
+        async function checkStoragePermission() {
+            const hasSeenPermission = localStorage.getItem('storagePermissionChecked');
+            if (!hasSeenPermission) {
+                setTimeout(() => {
+                    document.getElementById('storagePermissionModal').classList.add('show');
+                }, 1000);
+            } else {
+                storagePermissionGranted = localStorage.getItem('storagePermissionGranted') === 'true';
+            }
+        }
+
+        async function requestStoragePermission() {
+            try {
+                if ('showDirectoryPicker' in window) {
+                    directoryHandle = await window.showDirectoryPicker();
+                    storagePermissionGranted = true;
+                    localStorage.setItem('storagePermissionGranted', 'true');
+                    localStorage.setItem('storagePermissionChecked', 'true');
+                    showNotification('Permiso de almacenamiento concedido correctamente', 'success');
+                    
+                    // Create initial backup
+                    await createBackup();
+                } else {
+                    showNotification('La API de sistema de archivos no está disponible en este navegador', 'warning');
+                    continueWithoutPermission();
+                }
+            } catch (error) {
+                console.error('Error requesting storage permission:', error);
+                showNotification('Error al solicitar permiso de almacenamiento', 'error');
+                continueWithoutPermission();
+            }
+            
+            document.getElementById('storagePermissionModal').classList.remove('show');
+        }
+
+        function continueWithoutPermission() {
+            localStorage.setItem('storagePermissionChecked', 'true');
+            localStorage.setItem('storagePermissionGranted', 'false');
+            document.getElementById('storagePermissionModal').classList.remove('show');
+            showNotification('Continuando sin permiso de almacenamiento', 'info');
+        }
+
+        async function createBackup() {
+            if (!storagePermissionGranted || !directoryHandle) return;
+            
+            try {
+                const entries = await getEntries();
+                const backupData = {
+                    timestamp: new Date().toISOString(),
+                    version: '1.0.0',
+                    entries: entries
+                };
+                
+                const fileName = `lunaria_backup_${new Date().toISOString().split('T')[0]}.json`;
+                const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
+                const writable = await fileHandle.createWritable();
+                
+                await writable.write(JSON.stringify(backupData, null, 2));
+                await writable.close();
+                
+                console.log('Backup created successfully');
+            } catch (error) {
+                console.error('Error creating backup:', error);
+            }
+        }
+
+        // Menu functions
+        function openMainMenu() {
+            document.getElementById('mainMenuModal').classList.add('active');
+        }
+
+        function closeMainMenu() {
+            document.getElementById('mainMenuModal').classList.remove('active');
+        }
+
+        function openFaucetPay() {
+            window.open('https://faucetpay.io/', '_blank');
+            closeMainMenu();
+        }
+
+        // Show update notification
+        function showUpdateNotification() {
+            const hasSeenUpdate = localStorage.getItem('hasSeenShorlinUpdate');
+            if (!hasSeenUpdate) {
+                setTimeout(() => {
+                    document.getElementById('updateNotification').classList.add('show');
+                }, 1000);
+            }
+        }
+
+        function closeUpdateNotification() {
+            document.getElementById('updateNotification').classList.remove('show');
+            localStorage.setItem('hasSeenShorlinUpdate', 'true');
         }
 
         // Database functions
@@ -966,7 +1356,13 @@
                 
                 const request = store.put(entry);
                 request.onerror = () => reject(request.error);
-                request.onsuccess = () => resolve();
+                request.onsuccess = () => {
+                    resolve();
+                    // Create backup after saving
+                    if (storagePermissionGranted) {
+                        createBackup();
+                    }
+                };
             });
         }
 
@@ -988,7 +1384,13 @@
                 
                 const request = store.delete(id);
                 request.onerror = () => reject(request.error);
-                request.onsuccess = () => resolve();
+                request.onsuccess = () => {
+                    resolve();
+                    // Create backup after deleting
+                    if (storagePermissionGranted) {
+                        createBackup();
+                    }
+                };
             });
         }
 
@@ -1573,65 +1975,142 @@
             themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
         }
 
-        // Export/Import functions
+        // Export/Import functions - CORREGIDAS Y MEJORADAS
         function openExportModal() {
             document.getElementById('exportModal').classList.add('active');
         }
 
         function closeExportModal() {
             document.getElementById('exportModal').classList.remove('active');
+            hideImportProgress();
         }
 
+        function showImportProgress() {
+            document.getElementById('importProgress').classList.add('show');
+        }
+
+        function hideImportProgress() {
+            document.getElementById('importProgress').classList.remove('show');
+            document.getElementById('importLog').innerHTML = '';
+            document.getElementById('importProgressBar').style.width = '0%';
+        }
+
+        function updateImportProgress(progress, message, type = 'info') {
+            document.getElementById('importProgressBar').style.width = `${progress}%`;
+            const log = document.getElementById('importLog');
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Función de exportación JSON mejorada
         async function exportData() {
             try {
                 const entries = await getEntries();
-                const dataStr = JSON.stringify(entries, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                
+                if (entries.length === 0) {
+                    showNotification('No hay entradas para exportar', 'warning');
+                    return;
+                }
+                
+                const exportData = {
+                    version: '1.0.0',
+                    exportDate: new Date().toISOString(),
+                    totalEntries: entries.length,
+                    entries: entries.map(entry => ({
+                        id: entry.id,
+                        name: entry.name,
+                        category: entry.category,
+                        url: entry.url || '',
+                        description: entry.description || '',
+                        tags: entry.tags || [],
+                        image: entry.image,
+                        createdAt: entry.createdAt,
+                        updatedAt: entry.updatedAt
+                    }))
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
                 
                 const url = URL.createObjectURL(dataBlob);
                 const link = document.createElement('a');
                 link.href = url;
                 link.download = `lunaria-mining-backup-${new Date().toISOString().split('T')[0]}.json`;
+                
+                document.body.appendChild(link);
                 link.click();
+                document.body.removeChild(link);
                 
                 URL.revokeObjectURL(url);
-                showNotification('Datos exportados correctamente', 'success');
+                showNotification(`${entries.length} entradas exportadas correctamente`, 'success');
+                
             } catch (error) {
                 console.error('Error exporting data:', error);
                 showNotification('Error al exportar los datos', 'error');
             }
         }
 
+        // Función de exportación CSV mejorada
         async function exportCSV() {
             try {
                 const entries = await getEntries();
+                
+                if (entries.length === 0) {
+                    showNotification('No hay entradas para exportar', 'warning');
+                    return;
+                }
+                
+                // Escapar comillas y comas en CSV
+                const escapeCSV = (value) => {
+                    if (value === null || value === undefined) return '';
+                    const str = String(value);
+                    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                        return `"${str.replace(/"/g, '""')}"`;
+                    }
+                    return str;
+                };
+                
+                const headers = ['ID', 'Nombre', 'Categoría', 'URL', 'Descripción', 'Etiquetas', 'Fecha Creación', 'Última Actualización'];
                 const csvContent = [
-                    ['Nombre', 'Categoría', 'URL', 'Descripción', 'Etiquetas', 'Fecha Creación'].join(','),
+                    headers.join(','),
                     ...entries.map(entry => [
-                        `"${entry.name}"`,
-                        `"${entry.category}"`,
-                        `"${entry.url || ''}"`,
-                        `"${entry.description || ''}"`,
-                        `"${entry.tags ? entry.tags.join('; ') : ''}"`,
-                        `"${new Date(entry.createdAt).toLocaleDateString()}"`
+                        escapeCSV(entry.id),
+                        escapeCSV(entry.name),
+                        escapeCSV(entry.category),
+                        escapeCSV(entry.url || ''),
+                        escapeCSV(entry.description || ''),
+                        escapeCSV(entry.tags ? entry.tags.join('; ') : ''),
+                        escapeCSV(new Date(entry.createdAt).toLocaleDateString()),
+                        escapeCSV(new Date(entry.updatedAt).toLocaleDateString())
                     ].join(','))
                 ].join('\n');
                 
-                const dataBlob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                // Agregar BOM para UTF-8
+                const BOM = '\uFEFF';
+                const dataBlob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8' });
+                
                 const url = URL.createObjectURL(dataBlob);
                 const link = document.createElement('a');
                 link.href = url;
                 link.download = `lunaria-mining-backup-${new Date().toISOString().split('T')[0]}.csv`;
+                
+                document.body.appendChild(link);
                 link.click();
+                document.body.removeChild(link);
                 
                 URL.revokeObjectURL(url);
-                showNotification('CSV exportado correctamente', 'success');
+                showNotification(`${entries.length} entradas exportadas en CSV`, 'success');
+                
             } catch (error) {
                 console.error('Error exporting CSV:', error);
                 showNotification('Error al exportar el CSV', 'error');
             }
         }
 
+        // Función de importación robusta
         async function importData() {
             const fileInput = document.getElementById('importFile');
             const file = fileInput.files[0];
@@ -1641,39 +2120,218 @@
                 return;
             }
             
+            showImportProgress();
+            updateImportProgress(0, 'Iniciando importación...');
+            
             try {
                 const text = await file.text();
-                let entries = [];
+                let importedEntries = [];
+                let successCount = 0;
+                let errorCount = 0;
+                let skippedCount = 0;
                 
-                if (file.type === 'application/json') {
-                    entries = JSON.parse(text);
-                } else if (file.type === 'text/csv') {
-                    // CSV import logic would go here
-                    showNotification('Importación de CSV no implementada aún', 'warning');
-                    return;
+                if (file.type === 'application/json' || file.name.endsWith('.json')) {
+                    updateImportProgress(10, 'Procesando archivo JSON...');
+                    importedEntries = await parseJSONFile(text);
+                } else if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+                    updateImportProgress(10, 'Procesando archivo CSV...');
+                    importedEntries = await parseCSVFile(text);
+                } else {
+                    throw new Error('Formato de archivo no soportado');
                 }
                 
-                // Validate and import entries
-                for (const entry of entries) {
-                    if (entry.name && entry.category) {
-                        await saveEntry({
-                            ...entry,
+                updateImportProgress(30, `Encontradas ${importedEntries.length} entradas para procesar`);
+                
+                // Obtener entradas existentes para verificar duplicados
+                const existingEntries = await getEntries();
+                const existingNames = new Set(existingEntries.map(e => e.name.toLowerCase()));
+                
+                // Procesar cada entrada
+                for (let i = 0; i < importedEntries.length; i++) {
+                    const entry = importedEntries[i];
+                    const progress = 30 + (i / importedEntries.length) * 60;
+                    
+                    try {
+                        // Validar entrada
+                        if (!entry.name || !entry.category) {
+                            updateImportProgress(progress, `Saltando entrada ${i + 1}: faltan datos obligatorios`, 'warning');
+                            skippedCount++;
+                            continue;
+                        }
+                        
+                        // Verificar duplicados
+                        if (existingNames.has(entry.name.toLowerCase())) {
+                            updateImportProgress(progress, `Saltando entrada "${entry.name}": ya existe`, 'warning');
+                            skippedCount++;
+                            continue;
+                        }
+                        
+                        // Crear nueva entrada
+                        const newEntry = {
                             id: generateId(),
-                            createdAt: entry.createdAt || new Date().toISOString(),
+                            name: entry.name,
+                            category: validateCategory(entry.category),
+                            url: entry.url || '',
+                            description: entry.description || '',
+                            tags: Array.isArray(entry.tags) ? entry.tags : [],
+                            image: entry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png',
+                            createdAt: entry.createdAt ? new Date(entry.createdAt).toISOString() : new Date().toISOString(),
                             updatedAt: new Date().toISOString()
-                        });
+                        };
+                        
+                        await saveEntry(newEntry);
+                        existingNames.add(entry.name.toLowerCase());
+                        successCount++;
+                        
+                        updateImportProgress(progress, `Importada: "${entry.name}"`, 'success');
+                        
+                    } catch (error) {
+                        updateImportProgress(progress, `Error al importar "${entry.name}": ${error.message}`, 'error');
+                        errorCount++;
                     }
                 }
                 
+                updateImportProgress(100, 'Finalizando importación...');
+                
+                // Actualizar UI
                 await loadEntries();
                 updateStats();
                 updateCharts();
-                closeExportModal();
-                showNotification(`${entries.length} entradas importadas correctamente`, 'success');
+                
+                // Mostrar resumen
+                const summary = `Importación completada: ${successCount} exitosas, ${skippedCount} omitidas, ${errorCount} con errores`;
+                updateImportProgress(100, summary, successCount > 0 ? 'success' : 'warning');
+                
+                if (successCount > 0) {
+                    showNotification(`${successCount} entradas importadas correctamente`, 'success');
+                } else {
+                    showNotification('No se importaron entradas nuevas', 'warning');
+                }
+                
+                // Limpiar input
+                fileInput.value = '';
+                
             } catch (error) {
                 console.error('Error importing data:', error);
+                updateImportProgress(100, `Error de importación: ${error.message}`, 'error');
                 showNotification('Error al importar los datos', 'error');
             }
+        }
+
+        // Función para parsear archivo JSON
+        async function parseJSONFile(text) {
+            try {
+                const data = JSON.parse(text);
+                
+                // Soporte para diferentes formatos de JSON
+                if (Array.isArray(data)) {
+                    return data;
+                } else if (data.entries && Array.isArray(data.entries)) {
+                    return data.entries;
+                } else if (data.data && Array.isArray(data.data)) {
+                    return data.data;
+                } else {
+                    throw new Error('Formato JSON no reconocido');
+                }
+            } catch (error) {
+                throw new Error(`Error al parsear JSON: ${error.message}`);
+            }
+        }
+
+        // Función para parsear archivo CSV
+        async function parseCSVFile(text) {
+            try {
+                const lines = text.split('\n').filter(line => line.trim());
+                if (lines.length < 2) {
+                    throw new Error('El archivo CSV debe tener al menos una línea de encabezado y una de datos');
+                }
+                
+                const headers = parseCSVLine(lines[0]);
+                const entries = [];
+                
+                for (let i = 1; i < lines.length; i++) {
+                    const values = parseCSVLine(lines[i]);
+                    if (values.length === 0) continue;
+                    
+                    const entry = {};
+                    headers.forEach((header, index) => {
+                        const normalizedHeader = header.toLowerCase().trim();
+                        let value = values[index] || '';
+                        
+                        // Mapear headers comunes
+                        if (normalizedHeader.includes('nombre') || normalizedHeader.includes('name')) {
+                            entry.name = value;
+                        } else if (normalizedHeader.includes('categoría') || normalizedHeader.includes('category')) {
+                            entry.category = value;
+                        } else if (normalizedHeader.includes('url') || normalizedHeader.includes('link')) {
+                            entry.url = value;
+                        } else if (normalizedHeader.includes('descripción') || normalizedHeader.includes('description')) {
+                            entry.description = value;
+                        } else if (normalizedHeader.includes('etiquetas') || normalizedHeader.includes('tags')) {
+                            entry.tags = value ? value.split(';').map(tag => tag.trim()) : [];
+                        } else if (normalizedHeader.includes('fecha') || normalizedHeader.includes('date') || normalizedHeader.includes('created')) {
+                            entry.createdAt = value;
+                        }
+                    });
+                    
+                    if (entry.name) {
+                        entries.push(entry);
+                    }
+                }
+                
+                return entries;
+            } catch (error) {
+                throw new Error(`Error al parsear CSV: ${error.message}`);
+            }
+        }
+
+        // Función para parsear línea CSV
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"' && (i === 0 || line[i-1] === ',')) {
+                    inQuotes = true;
+                } else if (char === '"' && inQuotes && (i === line.length - 1 || line[i+1] === ',')) {
+                    inQuotes = false;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim());
+            return result;
+        }
+
+        // Función para validar categoría
+        function validateCategory(category) {
+            const validCategories = ['faucet', 'mining', 'staking', 'defi', 'trading', 'shorlin', 'other'];
+            const normalizedCategory = category.toLowerCase();
+            
+            // Mapear categorías comunes
+            const categoryMap = {
+                'faucets': 'faucet',
+                'minería': 'mining',
+                'minar': 'mining',
+                'staking': 'staking',
+                'stake': 'staking',
+                'defi': 'defi',
+                'trading': 'trading',
+                'trade': 'trading',
+                'shorlin': 'shorlin',
+                'trabajo': 'shorlin',
+                'otros': 'other',
+                'other': 'other'
+            };
+            
+            return categoryMap[normalizedCategory] || (validCategories.includes(normalizedCategory) ? normalizedCategory : 'other');
         }
 
         // Mining page functions
@@ -1703,7 +2361,7 @@
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'exclamation'}-circle"></i>
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : type === 'warning' ? 'exclamation' : 'info'}-circle"></i>
                 ${message}
             `;
             
@@ -1716,9 +2374,11 @@
             setTimeout(() => {
                 notification.classList.remove('show');
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
                 }, 300);
-            }, 3000);
+            }, 5000);
         }
 
         function debounce(func, wait) {
@@ -1757,6 +2417,8 @@
                 closeViewModal();
                 closeConfirmModal();
                 closeExportModal();
+                closeUpdateNotification();
+                closeMainMenu();
             }
         });
 
