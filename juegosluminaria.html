@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>GameSphere - Experiencia PS5</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        :root {
+            --ps-dark-blue: #00205b;
+            --ps-blue: #0070d1;
+            --ps-light-blue: #59aeff;
+            --ps-bg: #0c0c14;
+            --ps-card-bg: #1a1a2e;
+            --ps-text-primary: #ffffff;
+            --ps-text-secondary: #a0a0a0;
+            --ps-border: #252547;
+            --ps-accent: #0072ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            overscroll-behavior: none;
+            touch-action: manipulation;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--ps-bg);
+            color: var(--ps-text-primary);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(0, 112, 209, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(0, 29, 91, 0.15), transparent 40%);
+            animation: backgroundPulse 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes backgroundPulse {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        #app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ps5-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: linear-gradient(to right, rgba(10, 10, 20, 0.9), rgba(0, 32, 91, 0.7), rgba(10, 10, 20, 0.9));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            height: 70px;
+            backdrop-filter: blur(10px);
+            z-index: 50;
+        }
+
+        .ps5-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ps5-logo-icon {
+            font-size: 2rem;
+            color: var(--ps-blue);
+        }
+
+        .ps5-logo-text {
+            font-weight: 900;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--ps-light-blue), var(--ps-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .game-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            padding: 1.5rem 2.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--ps-text-primary);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .games-carousel {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0 2.5rem;
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+            padding-bottom: 1rem;
+            position: relative;
+        }
+
+        .games-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .game-card {
+            flex: 0 0 auto;
+            position: relative;
+            width: 270px;
+            height: 380px;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            transform-origin: center bottom;
+            cursor: pointer;
+            border: 2px solid var(--ps-border);
+        }
+
+        .game-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 114, 255, 0.3);
+            border-color: var(--ps-blue);
+            z-index: 10;
+        }
+
+        .game-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .game-card:hover .game-card-img {
+            transform: scale(1.1);
+        }
+
+        .game-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 20, 0.9), transparent);
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover .game-card-overlay {
+            background: linear-gradient(to top, rgba(0, 32, 91, 0.9), transparent);
+            padding-bottom: 2rem;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--ps-text-primary);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover .game-title {
+            transform: translateY(-5px);
+            color: var(--ps-light-blue);
+        }
+
+        .add-game-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: rgba(26, 26, 46, 0.7);
+            border: 2px dashed var(--ps-border);
+            transition: all 0.3s ease;
+        }
+
+        .add-game-card:hover {
+            border-color: var(--ps-blue);
+            background: rgba(0, 32, 91, 0.3);
+        }
+
+        .add-game-card i {
+            font-size: 3rem;
+            color: var(--ps-text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .add-game-card span {
+            color: var(--ps-text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .add-game-card:hover i,
+        .add-game-card:hover span {
+            color: var(--ps-light-blue);
+        }
+
+        .game-card-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-card:hover .game-card-actions {
+            opacity: 1;
+        }
+
+        .card-action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--ps-text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-action-btn:hover {
+            background: var(--ps-blue);
+            transform: scale(1.1);
+        }
+
+        .delete-btn:hover {
+            background: #e53935;
+        }
+
+        .ps5-bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 20, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100px;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-section {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--ps-text-secondary);
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .indicator-online {
+            background: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+        }
+
+        .indicator-offline {
+            background: #e53935;
+            box-shadow: 0 0 10px rgba(229, 57, 53, 0.7);
+        }
+
+        .indicator-syncing {
+            background: #ffc107;
+            box-shadow: 0 0 10px rgba(255, 193, 7, 0.7);
+            animation: pulseSyncing 1.5s infinite;
+        }
+
+        @keyframes pulseSyncing {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .chart-container {
+            width: 400px;
+            height: 80px;
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 10px;
+            border: 1px solid var(--ps-border);
+        }
+
+        .time-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .clock {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--ps-text-primary);
+        }
+
+        .date {
+            font-size: 0.9rem;
+            color: var(--ps-text-secondary);
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--ps-card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--ps-border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 114, 255, 0.2);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--ps-text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--ps-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            background: rgba(26, 26, 46, 0.7);
+            border: 1px solid var(--ps-border);
+            color: var(--ps-text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--ps-blue);
+            box-shadow: 0 0 10px rgba(0, 114, 255, 0.2);
+        }
+
+        .image-upload-area {
+            cursor: pointer;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px dashed var(--ps-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-area:hover {
+            border-color: var(--ps-blue);
+            background: rgba(0, 32, 91, 0.1);
+        }
+
+        .image-upload-area i {
+            font-size: 2.5rem;
+            color: var(--ps-text-secondary);
+        }
+
+        .image-upload-text {
+            color: var(--ps-text-secondary);
+            text-align: center;
+        }
+
+        .image-upload-preview {
+            width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            object-fit: contain;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: rgba(26, 26, 46, 0.7);
+            color: var(--ps-text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(26, 26, 46, 1);
+            color: var(--ps-text-primary);
+        }
+
+        .btn-primary {
+            background: var(--ps-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--ps-dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.3);
+        }
+
+        .btn-danger {
+            background: #e53935;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c62828;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 57, 53, 0.3);
+        }
+        
+        /* --- Loading Overlay Animation --- */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--ps-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition-delay: 0.3s;
+        }
+
+        .startup-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .startup-logo {
+            font-size: 5rem;
+            color: var(--ps-blue);
+            animation: startup-logo-pop 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+        }
+
+        .startup-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--ps-light-blue), var(--ps-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            animation: startup-text-fade-in 1s ease 0.5s forwards;
+        }
+        
+        #loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        @keyframes startup-logo-pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes startup-text-fade-in {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* --- Installation Modal --- */
+        #installation-modal .modal-content {
+            text-align: center;
+        }
+
+        #install-game-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--ps-light-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background: rgba(10, 10, 20, 0.8);
+            border-radius: 10px;
+            border: 1px solid var(--ps-border);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        #install-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(to right, var(--ps-accent), var(--ps-light-blue));
+            border-radius: 10px;
+            transition: width 0.3s ease-out;
+        }
+        
+        #install-status {
+            color: var(--ps-text-secondary);
+            font-size: 1rem;
+            height: 20px; /* Reserve space to prevent layout shift */
+            transition: opacity 0.5s ease;
+        }
+        
+        #install-percentage {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--ps-text-primary);
+        }
+
+        #close-install-modal {
+            display: none; /* Hidden by default */
+        }
+        
+        /* Storage selector */
+        .storage-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 20px;
+            padding: 8px;
+            display: flex;
+            gap: 5px;
+            border: 1px solid var(--ps-border);
+            z-index: 50;
+        }
+
+        .storage-option {
+            padding: 5px 15px;
+            border-radius: 15px;
+            color: var(--ps-text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .storage-option.active {
+            background: var(--ps-blue);
+            color: white;
+        }
+
+        /* PS5 Quick Nav */
+        .quick-nav {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 50;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid var(--ps-border);
+            color: var(--ps-text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--ps-blue);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 114, 255, 0.5);
+        }
+
+        /* Notifications */
+        .ps5-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            width: 300px;
+            border-left: 4px solid var(--ps-blue);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+
+        .ps5-notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .notification-icon {
+            color: var(--ps-blue);
+            font-size: 1.2rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .notification-message {
+            color: var(--ps-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Fullscreen mode styling */
+        .fullscreen-game {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: black;
+            display: none;
+        }
+
+        .fullscreen-game iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .exit-fullscreen {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
+        }
+
+        .exit-fullscreen:hover {
+            background: #e53935;
+            transform: scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .scale-in {
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s forwards;
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            .ps5-top-bar {
+                padding: 0.8rem 1.5rem;
+                height: 60px;
+            }
+
+            .ps5-logo-text {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                padding: 1.2rem 1.5rem;
+                font-size: 1.5rem;
+            }
+
+            .games-carousel {
+                padding: 0 1.5rem;
+                gap: 1rem;
+            }
+
+            .game-card {
+                width: 200px;
+                height: 300px;
+            }
+
+            .game-title {
+                font-size: 1.1rem;
+            }
+
+            .ps5-bottom-bar {
+                padding: 0.8rem 1.5rem;
+                height: 80px;
+            }
+
+            .chart-container {
+                width: 200px;
+            }
+
+            .clock {
+                font-size: 1.5rem;
+            }
+
+            .quick-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="startup-animation">
+            <i class="fas fa-gamepad startup-logo"></i>
+            <h1 class="startup-text">GameSphere</h1>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="ps5-notification">
+        <div class="notification-header">
+            <i id="notification-icon" class="fas fa-info-circle notification-icon"></i>
+            <div id="notification-title" class="notification-title">Título</div>
+        </div>
+        <div id="notification-message" class="notification-message">Mensaje de notificación</div>
+    </div>
+
+    <!-- Fullscreen Game Container -->
+    <div id="fullscreen-game" class="fullscreen-game">
+        <iframe id="game-iframe" allowfullscreen></iframe>
+        <button id="exit-fullscreen" class="exit-fullscreen">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container">
+        <!-- Top Bar -->
+        <div class="ps5-top-bar">
+            <div class="ps5-logo">
+                <i class="fas fa-gamepad ps5-logo-icon"></i>
+                <div class="ps5-logo-text">GameSphere</div>
+            </div>
+            <div class="storage-selector">
+                <div class="storage-option active" data-storage="firebase">Firebase</div>
+                <div class="storage-option" data-storage="local">Local</div>
+            </div>
+        </div>
+
+        <!-- Game Section -->
+        <div class="game-section">
+            <!-- Quick Navigation -->
+            <div class="quick-nav">
+                <div class="nav-btn" id="home-btn">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-btn" id="refresh-btn">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <div class="nav-btn" id="settings-btn">
+                    <i class="fas fa-cog"></i>
+                </div>
+            </div>
+
+            <h2 class="section-title">Mi Colección</h2>
+            <div id="games-carousel" class="games-carousel">
+                <!-- Games will be loaded here -->
+            </div>
+
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="ps5-bottom-bar">
+            <div class="status-section">
+                <div class="status-item">
+                    <div id="connection-indicator" class="status-indicator indicator-online"></div>
+                    <span id="connection-text">Conectado</span>
+                </div>
+                <div class="status-item">
+                    <span id="storage-text">Firebase</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="play-stats-chart"></canvas>
+            </div>
+            <div class="time-section">
+                <div id="clock" class="clock">12:00</div>
+                <div id="date" class="date">Lunes, 1 de Enero</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Game Modal -->
+    <div id="add-game-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Añadir Nuevo Juego</h3>
+            </div>
+            <form id="add-game-form">
+                <div class="form-group">
+                    <label class="form-label" for="game-name">Nombre del Juego</label>
+                    <input type="text" id="game-name" class="form-input" placeholder="Ej: Minecraft" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="game-url">URL del Juego</label>
+                    <input type="url" id="game-url" class="form-input" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Imagen de Portada</label>
+                    <input type="file" id="game-image" accept="image/*" class="hidden">
+                    <div id="image-upload-area" class="image-upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div class="image-upload-text">Haz clic para seleccionar una imagen</div>
+                        <img id="image-preview" class="image-upload-preview">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel-add-game" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Instalar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Installation Modal -->
+    <div id="installation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Instalando Juego</h3>
+            </div>
+            <h4 id="install-game-name"></h4>
+            <div class="progress-bar-container">
+                <div id="install-progress-bar"></div>
+            </div>
+            <div id="install-percentage">0%</div>
+            <div id="install-status">Iniciando...</div>
+            <div class="modal-footer">
+                <button id="close-install-modal" class="btn btn-primary">Completado</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmar Eliminación</h3>
+            </div>
+            <p id="delete-message" class="text-center my-6 text-gray-300">¿Estás seguro de que deseas eliminar este juego?</p>
+            <div class="modal-footer">
+                <button id="cancel-delete" class="btn btn-secondary">Cancelar</button>
+                <button id="confirm-delete" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Configuración</h3>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Almacenamiento</label>
+                <div class="flex items-center gap-4 mt-2">
+                    <div class="storage-option active" data-settings-storage="firebase">Firebase (Online)</div>
+                    <div class="storage-option" data-settings-storage="local">Local (Offline)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Imagen por Defecto</label>
+                <div class="image-upload-area" style="padding: 1rem; margin-top: 0.5rem;">
+                    <img src="https://i.postimg.cc/Z0t1tfqS/Picsart-25-07-30-21-48-11-059.png" style="max-height: 100px; border-radius: 8px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-settings" class="btn btn-primary">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let games = [];
+        let currentStorageMode = 'firebase';
+        let isFirebaseInitialized = false;
+        let isOnline = navigator.onLine;
+        let isSyncing = false;
+        let pendingSyncOperations = [];
+        let gameToDeleteId = null;
+        let selectedImageFile = null;
+        let playStatsChart = null;
+        let defaultCoverImage = 'https://i.postimg.cc/Z0t1tfqS/Picsart-25-07-30-21-48-11-059.png';
+
+        // Firebase configuration - Replace with your actual config if available
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_sGJQIZWxqKCzxQlGQUkOiRnaxkwilEU",
+            authDomain: "gamesphere-ps5.firebaseapp.com",
+            projectId: "gamesphere-ps5",
+            storageBucket: "gamesphere-ps5.appspot.com",
+            messagingSenderId: "444012345678",
+            appId: "1:444012345678:web:333010101010101010101"
+        };
+
+        // DOM Elements
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const gamesCarousel = document.getElementById('games-carousel');
+        const addGameModal = document.getElementById('add-game-modal');
+        const addGameForm = document.getElementById('add-game-form');
+        const deleteModal = document.getElementById('delete-modal');
+        const settingsModal = document.getElementById('settings-modal');
+        const installationModal = document.getElementById('installation-modal');
+        const imageUploadArea = document.getElementById('image-upload-area');
+        const gameImageInput = document.getElementById('game-image');
+        const imagePreview = document.getElementById('image-preview');
+        const connectionIndicator = document.getElementById('connection-indicator');
+        const connectionText = document.getElementById('connection-text');
+        const storageText = document.getElementById('storage-text');
+        const notification = document.getElementById('notification');
+        const fullscreenGameContainer = document.getElementById('fullscreen-game');
+        const gameIframe = document.getElementById('game-iframe');
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+            setupEventListeners();
+            updateClock();
+            setInterval(updateClock, 1000);
+        });
+
+        // Initialize application
+        function initializeApp() {
+            setTimeout(() => {
+                hideLoadingOverlay();
+                if (isOnline) {
+                    loadGamesFromLocalStorage();
+                    showNotification('success', 'Bienvenido', 'GameSphere iniciado correctamente');
+                } else {
+                    currentStorageMode = 'local';
+                    loadGamesFromLocalStorage();
+                    updateStorageModeUI();
+                    showNotification('warning', 'Modo Offline', 'Trabajando con almacenamiento local');
+                }
+            }, 2500); // Duration of the startup animation
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Add game modal
+            gamesCarousel.addEventListener('click', (e) => {
+                if (e.target.closest('.add-game-card')) {
+                    showModal(addGameModal);
+                }
+            });
+            document.getElementById('cancel-add-game')?.addEventListener('click', () => hideModal(addGameModal));
+            addGameForm?.addEventListener('submit', handleAddGame);
+
+            // Delete modal
+            document.getElementById('cancel-delete')?.addEventListener('click', () => hideModal(deleteModal));
+            document.getElementById('confirm-delete')?.addEventListener('click', handleDeleteGame);
+
+            // Settings modal
+            document.getElementById('settings-btn')?.addEventListener('click', () => showModal(settingsModal));
+            document.getElementById('close-settings')?.addEventListener('click', () => hideModal(settingsModal));
+            
+            // Installation modal
+            document.getElementById('close-install-modal').addEventListener('click', () => hideModal(installationModal));
+
+            // Storage selector
+            document.querySelectorAll('.storage-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const storageMode = option.dataset.storage || option.dataset.settingsStorage;
+                    if (storageMode && storageMode !== currentStorageMode) {
+                        currentStorageMode = storageMode;
+                        updateStorageModeUI();
+                        loadGames();
+                    }
+                });
+            });
+
+            // Image upload
+            imageUploadArea?.addEventListener('click', () => gameImageInput.click());
+            gameImageInput?.addEventListener('change', handleImageSelect);
+
+            // Quick nav buttons
+            document.getElementById('home-btn')?.addEventListener('click', () => {
+                showNotification('info', 'Inicio', 'Ya estás en la página principal');
+            });
+            document.getElementById('refresh-btn')?.addEventListener('click', () => {
+                loadGames();
+                showNotification('info', 'Actualizado', 'Biblioteca de juegos actualizada');
+            });
+
+            // Exit fullscreen
+            document.getElementById('exit-fullscreen')?.addEventListener('click', exitFullscreen);
+
+            // Online/Offline detection
+            window.addEventListener('online', handleOnlineStatus);
+            window.addEventListener('offline', handleOfflineStatus);
+        }
+
+        // Load games
+        function loadGames() {
+            if (currentStorageMode === 'firebase' && isOnline && isFirebaseInitialized) {
+                // For demo, we'll simulate loading from Firebase
+                showLoadingOverlay();
+                setTimeout(() => {
+                    loadGamesFromLocalStorage();
+                    hideLoadingOverlay();
+                }, 1000);
+            } else {
+                loadGamesFromLocalStorage();
+            }
+        }
+
+        // Load games from local storage
+        function loadGamesFromLocalStorage() {
+            const storedGames = localStorage.getItem('gamesphere_games');
+            if (storedGames) {
+                games = JSON.parse(storedGames);
+            } else {
+                // Add some sample games for the demo
+                games = [
+                    {
+                        id: 'game_1',
+                        name: 'Call of Duty',
+                        url: 'https://www.callofduty.com',
+                        image: defaultCoverImage,
+                        playCount: 15,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 'game_2',
+                        name: 'Minecraft',
+                        url: 'https://www.minecraft.net',
+                        image: 'https://i.postimg.cc/Z0t1tfqS/Picsart-25-07-30-21-48-11-059.png',
+                        playCount: 8,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 'game_3',
+                        name: 'Fortnite',
+                        url: 'https://www.epicgames.com/fortnite',
+                        image: defaultCoverImage,
+                        playCount: 12,
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                saveGamesToLocalStorage();
+            }
+            renderGames();
+            renderPlayStatsChart();
+        }
+
+        // Save games to local storage
+        function saveGamesToLocalStorage() {
+            localStorage.setItem('gamesphere_games', JSON.stringify(games));
+        }
+
+        // Render games in the carousel
+        function renderGames() {
+            gamesCarousel.innerHTML = '';
+
+            // Sort games by most recently created
+            const sortedGames = [...games].sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateB - dateA;
+            });
+
+            // Add game cards
+            sortedGames.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card scale-in';
+                gameCard.dataset.id = game.id;
+                gameCard.innerHTML = `
+                    <img src="${game.image || defaultCoverImage}" alt="${game.name}" class="game-card-img" 
+                         onerror="this.src='${defaultCoverImage}'">
+                    <div class="game-card-overlay">
+                        <div class="game-title">${game.name}</div>
+                    </div>
+                    <div class="game-card-actions">
+                        <button class="card-action-btn delete-btn" data-id="${game.id}" title="Eliminar">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                gameCard.addEventListener('click', (e) => {
+                    const deleteBtn = e.target.closest('.delete-btn');
+                    if (deleteBtn) {
+                        e.stopPropagation();
+                        showDeleteConfirmation(deleteBtn.dataset.id);
+                    } else {
+                        playGame(game);
+                    }
+                });
+                gamesCarousel.appendChild(gameCard);
+            });
+
+            // Add "Add Game" card
+            const addCard = document.createElement('div');
+            addCard.className = 'game-card add-game-card scale-in';
+            addCard.innerHTML = `
+                <i class="fas fa-plus"></i>
+                <span>Añadir Juego</span>
+            `;
+            gamesCarousel.appendChild(addCard);
+        }
+
+        // Play a game
+        function playGame(game) {
+            // Increment play count
+            game.playCount = (game.playCount || 0) + 1;
+            saveGamesToLocalStorage();
+            renderPlayStatsChart();
+
+            // Show notification
+            showNotification('info', 'Iniciando Juego', `Cargando ${game.name}...`);
+
+            // Open game in fullscreen
+            setTimeout(() => {
+                gameIframe.src = game.url;
+                fullscreenGameContainer.style.display = 'block';
+                
+                // Request fullscreen mode
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+            }, 500);
+        }
+
+        // Exit fullscreen game
+        function exitFullscreen() {
+            fullscreenGameContainer.style.display = 'none';
+            gameIframe.src = '';
+            
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+        
+        // Handle Add Game submission -> Starts installation simulation
+        function handleAddGame(e) {
+            e.preventDefault();
+            const name = document.getElementById('game-name').value.trim();
+            const url = document.getElementById('game-url').value.trim();
+            
+            const newGame = {
+                id: 'game_' + Date.now(),
+                name,
+                url,
+                image: selectedImageFile ? URL.createObjectURL(selectedImageFile) : defaultCoverImage,
+                playCount: 0,
+                createdAt: new Date().toISOString()
+            };
+            
+            hideModal(addGameModal);
+            startInstallation(newGame);
+        }
+        
+        // --- Installation Simulation ---
+        function startInstallation(gameData) {
+            const installGameName = document.getElementById('install-game-name');
+            const progressBar = document.getElementById('install-progress-bar');
+            const percentageText = document.getElementById('install-percentage');
+            const statusText = document.getElementById('install-status');
+            const closeButton = document.getElementById('close-install-modal');
+
+            // Reset UI
+            installGameName.textContent = gameData.name;
+            progressBar.style.width = '0%';
+            percentageText.textContent = '0%';
+            statusText.textContent = 'Iniciando descarga...';
+            closeButton.style.display = 'none';
+            
+            showModal(installationModal);
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    statusText.textContent = '¡Instalación completada!';
+                    closeButton.style.display = 'inline-block';
+                    
+                    // Actually add the game to the library
+                    games.push(gameData);
+                    saveGamesToLocalStorage();
+                    renderGames();
+                    renderPlayStatsChart();
+                    showNotification('success', 'Juego Instalado', `${gameData.name} está listo para jugar`);
+                    
+                    // Reset form
+                    addGameForm.reset();
+                    imagePreview.style.display = 'none';
+                    selectedImageFile = null;
+                }
+                
+                // Update UI
+                progressBar.style.width = `${progress}%`;
+                percentageText.textContent = `${Math.floor(progress)}%`;
+
+                // Update status text at different stages
+                if (progress > 90) {
+                    statusText.textContent = 'Finalizando...';
+                } else if (progress > 60) {
+                    statusText.textContent = 'Instalando componentes...';
+                } else if (progress > 25) {
+                    statusText.textContent = 'Verificando archivos...';
+                }
+
+            }, 150);
+        }
+
+        // Handle image selection
+        function handleImageSelect(e) {
+            selectedImageFile = e.target.files[0];
+            if (selectedImageFile) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imagePreview.src = event.target.result;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(selectedImageFile);
+            }
+        }
+
+        // Delete confirmation
+        function showDeleteConfirmation(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (game) {
+                document.getElementById('delete-message').textContent = `¿Estás seguro de que deseas eliminar "${game.name}"?`;
+                gameToDeleteId = gameId;
+                showModal(deleteModal);
+            }
+        }
+
+        // Handle delete game
+        function handleDeleteGame() {
+            if (gameToDeleteId) {
+                const gameIndex = games.findIndex(g => g.id === gameToDeleteId);
+                if (gameIndex !== -1) {
+                    const deletedGame = games[gameIndex];
+                    games.splice(gameIndex, 1);
+                    saveGamesToLocalStorage();
+                    renderGames();
+                    renderPlayStatsChart();
+                    showNotification('success', 'Juego Eliminado', `${deletedGame.name} ha sido eliminado`);
+                }
+                hideModal(deleteModal);
+                gameToDeleteId = null;
+            }
+        }
+
+        // Render play statistics chart
+        function renderPlayStatsChart() {
+            const ctx = document.getElementById('play-stats-chart');
+            
+            if (playStatsChart) {
+                playStatsChart.destroy();
+            }
+            
+            const statsGames = [...games]
+                .filter(game => game.playCount > 0)
+                .sort((a, b) => b.playCount - a.playCount)
+                .slice(0, 5);
+            
+            playStatsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: statsGames.map(game => game.name),
+                    datasets: [{
+                        label: 'Veces jugado',
+                        data: statsGames.map(game => game.playCount),
+                        backgroundColor: 'rgba(0, 114, 255, 0.6)',
+                        borderColor: 'rgba(0, 114, 255, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(160, 160, 160, 1)',
+                                stepSize: 1
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Show notification
+        function showNotification(type, title, message) {
+            const notificationIcon = document.getElementById('notification-icon');
+            const notificationTitle = document.getElementById('notification-title');
+            const notificationMessage = document.getElementById('notification-message');
+            
+            notificationIcon.className = 'notification-icon fas';
+            switch (type) {
+                case 'success':
+                    notificationIcon.classList.add('fa-check-circle');
+                    notification.style.borderColor = '#4caf50';
+                    break;
+                case 'warning':
+                    notificationIcon.classList.add('fa-exclamation-triangle');
+                    notification.style.borderColor = '#ffc107';
+                    break;
+                case 'error':
+                    notificationIcon.classList.add('fa-times-circle');
+                    notification.style.borderColor = '#e53935';
+                    break;
+                default:
+                    notificationIcon.classList.add('fa-info-circle');
+                    notification.style.borderColor = '#0070d1';
+            }
+            
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Update clock
+        function updateClock() {
+            const now = new Date();
+            const clock = document.getElementById('clock');
+            const date = document.getElementById('date');
+            
+            clock.textContent = now.toLocaleTimeString('es-ES', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            date.textContent = now.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long'
+            });
+        }
+
+        // Handle online status
+        function handleOnlineStatus() {
+            isOnline = true;
+            connectionIndicator.classList.remove('indicator-offline');
+            connectionIndicator.classList.add('indicator-online');
+            connectionText.textContent = 'Conectado';
+            showNotification('success', 'Conexión Restablecida', 'Ahora estás en línea');
+        }
+
+        // Handle offline status
+        function handleOfflineStatus() {
+            isOnline = false;
+            connectionIndicator.classList.remove('indicator-online');
+            connectionIndicator.classList.add('indicator-offline');
+            connectionText.textContent = 'Desconectado';
+            showNotification('warning', 'Sin Conexión', 'Estás trabajando en modo offline');
+        }
+
+        // Update storage mode UI
+        function updateStorageModeUI() {
+            const storageOptions = document.querySelectorAll('.storage-option');
+            storageOptions.forEach(option => {
+                const optionMode = option.dataset.storage || option.dataset.settingsStorage;
+                if (optionMode === currentStorageMode) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+            
+            storageText.textContent = currentStorageMode === 'firebase' ? 'Firebase' : 'Local';
+        }
+
+        // Show loading overlay
+        function showLoadingOverlay() {
+            loadingOverlay.classList.remove('hidden');
+        }
+
+        // Hide loading overlay
+        function hideLoadingOverlay() {
+            loadingOverlay.classList.add('hidden');
+        }
+
+        // Show modal
+        function showModal(modal) {
+            modal.classList.add('active');
+        }
+
+        // Hide modal
+        function hideModal(modal) {
+            modal.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
+
