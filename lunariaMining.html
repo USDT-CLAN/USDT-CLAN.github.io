@@ -7,7 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="manifest" href="#" id="manifest">
+    <!-- El manifiesto se generará dinámicamente en JS para este entorno de Canvas -->
+    <link rel="manifest" href="#" id="manifest"> 
     <link rel="icon" href="https://i.postimg.cc/GpPsSmmX/4491470.png" type="image/png">
     <meta name="theme-color" content="#06b6d4">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -386,6 +387,33 @@
             box-shadow: 0 12px 40px rgba(14, 165, 233, 0.6);
         }
 
+        .games-button {
+            position: fixed;
+            top: 2rem; /* Align with theme toggle */
+            left: 2rem; /* Position on the top left */
+            width: 50px; /* Make it circular like theme toggle */
+            height: 50px; /* Make it circular like theme toggle */
+            background-color: #22c55e; /* Green color */
+            color: white;
+            border: none;
+            border-radius: 50%; /* Make it circular */
+            cursor: pointer;
+            font-size: 1.25rem; /* Icon size */
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4); /* Green shadow */
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .games-button:hover {
+            background-color: #16a34a; /* Darker green on hover */
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.6);
+        }
+
+
         .theme-toggle {
             position: fixed;
             top: 2rem;
@@ -522,10 +550,37 @@
             font-size: 0.875rem;
             transition: all 0.3s ease;
             z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .export-individual-btn:hover {
             background: var(--accent);
+            transform: scale(1.1);
+        }
+        
+        .share-individual-btn {
+            position: absolute;
+            top: 10px;
+            right: 55px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .share-individual-btn:hover {
+            background: var(--success);
             transform: scale(1.1);
         }
 
@@ -711,6 +766,9 @@
             font-size: 1.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .close-menu-btn:hover {
@@ -752,6 +810,117 @@
         .import-log .warning {
             color: var(--warning);
         }
+        
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .share-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .share-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            max-width: 90vw;
+            width: 500px;
+            position: relative;
+        }
+        
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: var(--secondary-bg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .share-option:hover {
+            transform: translateY(-3px);
+            background: var(--accent);
+            color: white;
+        }
+        
+        .share-option i {
+            font-size: 1.5rem;
+        }
+        
+        .share-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: var(--secondary-bg);
+        }
+        
+        .share-preview img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .scale-animation {
+            animation: scale 0.3s forwards;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -777,6 +946,15 @@
                 right: 1rem;
                 width: 50px;
                 height: 50px;
+            }
+            
+            /* Adjust games button for mobile */
+            .games-button {
+                top: 1rem;
+                left: 1rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
 
             .theme-toggle {
@@ -808,6 +986,10 @@
                 width: 60px;
                 height: 60px;
             }
+            
+            .share-options {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         .fade-in {
@@ -838,6 +1020,24 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            z-index: 100;
+            pointer-events: none;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .tooltip.visible {
+            opacity: 1;
         }
     </style>
 </head>
@@ -896,8 +1096,8 @@
 
     <!-- Update Notification -->
     <div id="updateNotification" class="update-notification">
-        <h3><i class="fas fa-sparkles"></i> Nueva Función Disponible</h3>
-        <p>¡Hemos añadido una nueva categoría <strong>"Shorlin Fause"</strong> especialmente diseñada para páginas donde puedes realizar trabajo como ver anuncios, hacer ciertas tareas, y generar ingresos adicionales. Esta función te permite organizar mejor las páginas que pueden convertirse prácticamente en un segundo trabajo con buen salario si las aprovechas de la manera correcta.</p>
+        <h3 id="updateNotificationTitle"><i class="fas fa-sparkles mr-2"></i></h3>
+        <p id="updateNotificationDescription"></p>
         <button class="btn btn-primary" onclick="closeUpdateNotification()">
             <i class="fas fa-check"></i>
             ¡Entendido!
@@ -907,6 +1107,11 @@
     <!-- Theme Toggle -->
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
         <i id="themeIcon" class="fas fa-moon"></i>
+    </button>
+
+    <!-- "Tus juegos" Button (Moved to top-left) -->
+    <button class="games-button" onclick="window.location.href='juegosluminaria.html'" aria-label="Tus juegos">
+        <i class="fas fa-gamepad"></i>
     </button>
 
     <!-- Header -->
@@ -946,16 +1151,18 @@
 
             <!-- Charts -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Chart for Most Used Pages -->
                 <div class="chart-container">
-                    <h3 class="text-xl font-bold mb-4">Entradas por Categoría</h3>
+                    <h3 class="text-xl font-bold mb-4">Páginas Más Usadas</h3>
                     <div style="height: 300px;">
-                        <canvas id="categoryChart"></canvas>
+                        <canvas id="pageUsageChart"></canvas>
                     </div>
                 </div>
+                <!-- Chart for Most Used Categories -->
                 <div class="chart-container">
-                    <h3 class="text-xl font-bold mb-4">Entradas por Mes</h3>
+                    <h3 class="text-xl font-bold mb-4">Categorías Más Usadas</h3>
                     <div style="height: 300px;">
-                        <canvas id="monthlyChart"></canvas>
+                        <canvas id="categoryUsageChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -1049,6 +1256,9 @@
     <button class="fab" onclick="openMainMenu()" aria-label="Menú principal">
         <i class="fas fa-ellipsis-h"></i>
     </button>
+    
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
 
     <!-- Add/Edit Modal -->
     <div id="addModal" class="modal">
@@ -1157,11 +1367,61 @@
                 <button class="btn btn-secondary" onclick="closeConfirmModal()">
                     <i class="fas fa-times"></i>
                     Cancelar
-                </button>
+                    </button>
                 <button class="btn btn-danger" onclick="confirmAction()">
                     <i class="fas fa-check"></i>
                     Confirmar
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-green-400">
+                    <i class="fas fa-share-alt mr-2"></i>
+                    Compartir Entrada
+                </h2>
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeShareModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="sharePreview" class="share-preview">
+                <img id="shareImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa">
+                <div>
+                    <h3 id="shareName" class="font-bold">Nombre de entrada</h3>
+                    <p id="shareCategory" class="text-sm text-gray-400">Categoría</p>
+                </div>
+            </div>
+            
+            <div class="share-options">
+                <div class="share-option" onclick="shareViaWebShare()">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Compartir</span>
+                </div>
+                <div class="share-option" onclick="shareViaWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </div>
+                <div class="share-option" onclick="shareViaTelegram()">
+                    <i class="fab fa-telegram"></i>
+                    <span>Telegram</span>
+                </div>
+                <div class="share-option" onclick="shareViaMessenger()">
+                    <i class="fab fa-facebook-messenger"></i>
+                    <span>Messenger</span>
+                </div>
+                <div class="share-option" onclick="shareViaEmail()">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </div>
+                <div class="share-option" onclick="copyShareLink()">
+                    <i class="fas fa-copy"></i>
+                    <span>Copiar Link</span>
+                </div>
             </div>
         </div>
     </div>
@@ -1214,18 +1474,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-16">
-        <div class="container">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-4">
-                    <img src="https://i.postimg.cc/mDgqGyw3/Picsart-25-03-28-04-00-43-410.png" alt="Sneyder Estudio" class="w-8 h-8">
-                    <span>© 2025 Sneyder Estudio - Lunaria Mining Premium</span>
-                </div>
-            </div>
-        </div>
     </footer>
 
     <script>
@@ -1233,10 +1481,43 @@
         let db;
         let editingEntry = null;
         let confirmCallback = null;
-        let categoryChart = null;
-        let monthlyChart = null;
+        let pageUsageChart = null; // New global variable for page usage chart
+        let categoryUsageChart = null; // New global variable for category usage chart
         let directoryHandle = null;
         let storagePermissionGranted = false;
+        let currentShareEntry = null;
+        let tooltipTimeout = null;
+        let currentUpdateIdShown = null; // Variable para rastrear la ID de la actualización mostrada
+
+        // Definición de las actualizaciones de la aplicación
+        // Añade nuevas actualizaciones aquí con una nueva ID para que se muestren automáticamente
+        const appUpdates = [
+            {
+                id: 'v1.0.0',
+                title: '¡Bienvenido a Lunaria Mining Premium!',
+                description: 'Hemos lanzado la aplicación para ayudarte a gestionar tus entradas de minería. ¡Esperamos que te sea muy útil!'
+            },
+            {
+                id: 'v1.1.0',
+                title: '¡Nuevas Funciones Disponibles!',
+                description: 'Hemos mejorado la aplicación! Ahora puedes compartir las tarjetas directamente a través de las aplicaciones de mensajería de tu dispositivo con la nueva función de compartir. Además, hemos añadido una nueva categoría <strong>"Shorlin Fause"</strong> especialmente diseñada para páginas donde puedes realizar trabajo como ver anuncios, hacer ciertas tareas, y generar ingresos adicionales.'
+            },
+            {
+                id: 'v1.2.0',
+                title: '¡Mejoras en la Interfaz y Rendimiento!',
+                description: 'Hemos optimizado la interfaz de usuario para una navegación más fluida y una experiencia visual mejorada. También se han realizado ajustes internos para un rendimiento más rápido. ¡Disfrútalo!'
+            },
+            {
+                id: 'v1.3.0',
+                title: '¡Gráficas de Uso y Notificaciones Automáticas!',
+                description: 'Ahora puedes ver las páginas y categorías que más usas en nuevas gráficas de barras dinámicas. Además, recibirás notificaciones automáticas con cada actualización importante de la aplicación. ¡Mantente al día con las novedades!'
+            },
+            {
+                id: 'v1.4.0', // ¡Esta es la nueva actualización para la integración de archivos!
+                title: '¡Integración Avanzada de Archivos!',
+                description: 'Ahora puedes **abrir directamente tus archivos JSON y CSV** con la aplicación Lunaria Mining Premium desde el explorador de archivos de tu dispositivo. También apareceremos en la opción "Abrir con" para que importar tus tarjetas sea más fácil que nunca. ¡Comparte tus datos sin esfuerzo!'
+            }
+        ];
 
         // Categories configuration
         const categories = {
@@ -1249,6 +1530,20 @@
             other: { name: 'Otros', icon: 'fas fa-ellipsis-h', color: '#6b7280' }
         };
 
+        // Colors for bar charts
+        const barColors = [
+            'rgba(255, 99, 132, 0.8)', // Red
+            'rgba(54, 162, 235, 0.8)', // Blue
+            'rgba(255, 206, 86, 0.8)', // Yellow
+            'rgba(75, 192, 192, 0.8)', // Green
+            'rgba(153, 102, 255, 0.8)', // Purple
+            'rgba(255, 159, 64, 0.8)', // Orange
+            'rgba(199, 199, 199, 0.8)', // Grey
+            'rgba(83, 102, 255, 0.8)', // Indigo
+            'rgba(255, 99, 255, 0.8)', // Pink
+            'rgba(99, 255, 132, 0.8)'  // Light Green
+        ];
+
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
@@ -1259,10 +1554,57 @@
             await loadEntries();
             setupEventListeners();
             updateStats();
-            updateCharts();
+            updateUsageCharts(); // Call to update new usage charts
             loadTheme();
             checkStoragePermission();
-            showUpdateNotification();
+            checkAppUpdates(); // Call to check for app updates
+            setupToolTip();
+            
+            // Handle incoming files if the app was launched via file handling
+            if ('launchQueue' in window) {
+                launchQueue.setConsumer(async (launchParams) => {
+                    if (launchParams.files && launchParams.files.length > 0) {
+                        showNotification('Detectando archivos entrantes...', 'info');
+                        for (const fileHandle of launchParams.files) {
+                            try {
+                                const file = await fileHandle.getFile();
+                                showNotification(`Importando archivo: ${file.name}`, 'info');
+                                await importData(file); // Pass the File object directly
+                            } catch (error) {
+                                console.error('Error handling incoming file:', error);
+                                showNotification(`Error al procesar el archivo ${fileHandle.name}: ${error.message}`, 'error');
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Tooltip setup
+        function setupToolTip() {
+            const tooltip = document.getElementById('tooltip');
+            
+            document.addEventListener('mouseover', (e) => {
+                const target = e.target;
+                if (target.hasAttribute('data-tooltip')) {
+                    const tooltipText = target.getAttribute('data-tooltip');
+                    tooltip.textContent = tooltipText;
+                    
+                    const rect = target.getBoundingClientRect();
+                    tooltip.style.top = `${rect.top - tooltip.offsetHeight - 5}px`;
+                    tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
+                    
+                    clearTimeout(tooltipTimeout);
+                    tooltipTimeout = setTimeout(() => {
+                        tooltip.classList.add('visible');
+                    }, 200);
+                }
+            });
+            
+            document.addEventListener('mouseout', () => {
+                clearTimeout(tooltipTimeout);
+                tooltip.classList.remove('visible');
+            });
         }
 
         // Storage permission functions
@@ -1315,7 +1657,7 @@
                 const entries = await getEntries();
                 const backupData = {
                     timestamp: new Date().toISOString(),
-                    version: '1.0.0',
+                    version: '1.1.0',
                     entries: entries
                 };
                 
@@ -1346,26 +1688,151 @@
             closeMainMenu();
         }
 
-        // Show update notification
-        function showUpdateNotification() {
-            const hasSeenUpdate = localStorage.getItem('hasSeenShorlinUpdate');
-            if (!hasSeenUpdate) {
-                setTimeout(() => {
-                    document.getElementById('updateNotification').classList.add('show');
-                }, 1000);
+        // Función para revisar y mostrar actualizaciones
+        async function checkAppUpdates() {
+            const lastSeenUpdateId = localStorage.getItem('lastSeenAppUpdateId');
+            const latestUpdate = appUpdates[appUpdates.length - 1]; // Obtiene la última actualización en el array
+
+            if (latestUpdate && latestUpdate.id !== lastSeenUpdateId) {
+                // Hay una nueva actualización, la mostramos
+                document.getElementById('updateNotificationTitle').innerHTML = `<i class="fas fa-sparkles mr-2"></i> ${latestUpdate.title}`;
+                document.getElementById('updateNotificationDescription').innerHTML = latestUpdate.description;
+                document.getElementById('updateNotification').classList.add('show');
+                currentUpdateIdShown = latestUpdate.id; // Guarda la ID de la actualización mostrada para registrarla al cerrar
             }
         }
 
+        // Función para cerrar la notificación de actualización
         function closeUpdateNotification() {
             document.getElementById('updateNotification').classList.remove('show');
-            localStorage.setItem('hasSeenShorlinUpdate', 'true');
+            if (currentUpdateIdShown) {
+                // Guarda la ID de la actualización como vista en localStorage
+                localStorage.setItem('lastSeenAppUpdateId', currentUpdateIdShown);
+                currentUpdateIdShown = null; // Resetea la variable
+            }
+        }
+
+        // Share functionality
+        function openShareModal(id) {
+            getEntryById(id).then(entry => {
+                if (!entry) {
+                    showNotification('Entrada no encontrada', 'error');
+                    return;
+                }
+                
+                currentShareEntry = entry;
+                
+                document.getElementById('shareImage').src = entry.image;
+                document.getElementById('shareName').textContent = entry.name;
+                document.getElementById('shareCategory').textContent = categories[entry.category]?.name || 'Otra categoría';
+                
+                document.getElementById('shareModal').classList.add('active');
+            }).catch(error => {
+                console.error('Error getting entry for sharing:', error);
+                showNotification('Error al preparar la entrada para compartir', 'error');
+            });
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('active');
+            currentShareEntry = null;
+        }
+
+        async function shareViaWebShare() {
+            if (!currentShareEntry) return;
+            
+            if (!navigator.share) {
+                showNotification('Tu navegador no soporta la API de Compartir', 'warning');
+                return;
+            }
+            
+            try {
+                await navigator.share({
+                    title: `${currentShareEntry.name} | Lunaria Mining`,
+                    text: `¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}!`,
+                    url: currentShareEntry.url || window.location.href
+                });
+                
+                showNotification('¡Contenido compartido exitosamente!', 'success');
+                closeShareModal();
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    showNotification('Error al compartir contenido', 'error');
+                    console.error('Error sharing:', error);
+                }
+            }
+        }
+
+        function shareViaWhatsApp() {
+            if (!currentShareEntry) return;
+            
+            const text = encodeURIComponent(`¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}! ${currentShareEntry.url || ''}`);
+            const url = `https://wa.me/?text=${text}`;
+            
+            window.open(url, '_blank');
+            closeShareModal();
+        }
+
+        function shareViaTelegram() {
+            if (!currentShareEntry) return;
+            
+            const text = encodeURIComponent(`¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}! ${currentShareEntry.url || ''}`);
+            const url = `https://t.me/share/url?url=${encodeURIComponent(currentShareEntry.url || window.location.href)}&text=${text}`;
+            
+            window.open(url, '_blank');
+            closeShareModal();
+        }
+
+        function shareViaMessenger() {
+            if (!currentShareEntry) return;
+            
+            const url = `https://www.facebook.com/dialog/send?link=${encodeURIComponent(currentShareEntry.url || window.location.href)}&app_id=123456789&redirect_uri=${encodeURIComponent(window.location.href)}`;
+            
+            window.open(url, '_blank');
+            closeShareModal();
+        }
+
+        function shareViaEmail() {
+            if (!currentShareEntry) return;
+            
+            const subject = encodeURIComponent(`Sitio de minería: ${currentShareEntry.name}`);
+            const body = encodeURIComponent(`¡Hola!\n\nQuiero compartir contigo esta página de minería:\n\nNombre: ${currentShareEntry.name}\nCategoría: ${categories[currentShareEntry.category]?.name || 'Otra'}\n${currentShareEntry.description ? 'Descripción: ' + currentShareEntry.description + '\n' : ''}${currentShareEntry.url ? 'URL: ' + currentShareEntry.url : ''}\n\n¡Saludos!`);
+            
+            const url = `mailto:?subject=${subject}&body=${body}`;
+            
+            window.location.href = url;
+            closeShareModal();
+        }
+
+        function copyShareLink() {
+            if (!currentShareEntry || !currentShareEntry.url) {
+                showNotification('No hay URL disponible para copiar', 'warning');
+                return;
+            }
+            
+            const textArea = document.createElement('textarea');
+            textArea.value = currentShareEntry.url;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showNotification('URL copiada al portapapeles', 'success');
+                closeShareModal();
+            } catch (error) {
+                showNotification('Error al copiar la URL', 'error');
+                console.error('Error copying text:', error);
+            }
+            
+            document.body.removeChild(textArea);
         }
 
         // Database functions
         async function initializeDatabase() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('LunariaMiningPremiumDB', 2);
-                
+                // Increment database version to trigger onupgradeneeded for new object stores
+                const request = indexedDB.open('LunariaMiningPremiumDB', 4); // Changed from 3 to 4
+
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
                     db = request.result;
@@ -1380,6 +1847,18 @@
                         store.createIndex('name', 'name', { unique: false });
                         store.createIndex('category', 'category', { unique: false });
                         store.createIndex('createdAt', 'createdAt', { unique: false });
+                    }
+
+                    // New object store for page usage statistics
+                    if (!db.objectStoreNames.contains('pageUsage')) {
+                        const pageUsageStore = db.createObjectStore('pageUsage', { keyPath: 'url' });
+                        pageUsageStore.createIndex('count', 'count', { unique: false });
+                    }
+
+                    // New object store for category usage statistics
+                    if (!db.objectStoreNames.contains('categoryUsage')) {
+                        const categoryUsageStore = db.createObjectStore('categoryUsage', { keyPath: 'category' });
+                        categoryUsageStore.createIndex('count', 'count', { unique: false });
                     }
                 };
             });
@@ -1413,6 +1892,17 @@
             });
         }
 
+        async function getEntryById(id) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['entries'], 'readonly');
+                const store = transaction.objectStore('entries');
+                
+                const request = store.get(id);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+            });
+        }
+
         async function deleteEntry(id) {
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction(['entries'], 'readwrite');
@@ -1427,6 +1917,91 @@
                         createBackup();
                     }
                 };
+            });
+        }
+
+        /**
+         * Tracks usage for a given page URL.
+         * @param {string} url - The URL of the page.
+         * @param {string} name - The name of the page.
+         */
+        async function trackPageUsage(url, name) {
+            if (!url) return; // Don't track if URL is empty
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['pageUsage'], 'readwrite');
+                const store = transaction.objectStore('pageUsage');
+                
+                const getRequest = store.get(url);
+                getRequest.onsuccess = () => {
+                    const existingEntry = getRequest.result;
+                    let count = 1;
+                    if (existingEntry) {
+                        count = existingEntry.count + 1;
+                    }
+                    const putRequest = store.put({ url: url, name: name, count: count });
+                    putRequest.onerror = () => reject(putRequest.error);
+                    putRequest.onsuccess = () => {
+                        resolve();
+                        updatePageUsageChart(); // Update chart after tracking
+                    };
+                };
+                getRequest.onerror = () => reject(getRequest.error);
+            });
+        }
+
+        /**
+         * Tracks usage for a given category.
+         * @param {string} categoryKey - The key of the category (e.g., 'faucet', 'mining').
+         */
+        async function trackCategoryUsage(categoryKey) {
+            if (!categoryKey) return;
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['categoryUsage'], 'readwrite');
+                const store = transaction.objectStore('categoryUsage');
+                
+                const getRequest = store.get(categoryKey);
+                getRequest.onsuccess = () => {
+                    const existingEntry = getRequest.result;
+                    let count = 1;
+                    if (existingEntry) {
+                        count = existingEntry.count + 1;
+                    }
+                    const putRequest = store.put({ category: categoryKey, name: categories[categoryKey]?.name || categoryKey, count: count });
+                    putRequest.onerror = () => reject(putRequest.error);
+                    putRequest.onsuccess = () => {
+                        resolve();
+                        updateCategoryUsageChart(); // Update chart after tracking
+                    };
+                };
+                getRequest.onerror = () => reject(getRequest.error);
+            });
+        }
+
+        /**
+         * Retrieves all page usage statistics.
+         * @returns {Promise<Array>} Array of page usage objects.
+         */
+        async function getPageUsageStats() {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['pageUsage'], 'readonly');
+                const store = transaction.objectStore('pageUsage');
+                const request = store.getAll();
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+            });
+        }
+
+        /**
+         * Retrieves all category usage statistics.
+         * @returns {Promise<Array>} Array of category usage objects.
+         */
+        async function getCategoryUsageStats() {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['categoryUsage'], 'readonly');
+                const store = transaction.objectStore('categoryUsage');
+                const request = store.getAll();
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
             });
         }
 
@@ -1499,8 +2074,11 @@
                 <div class="mining-card fade-in">
                     <div class="relative">
                         <img src="${entry.image}" alt="${escapeHtml(entry.name)}" class="card-image" loading="lazy">
-                        <button class="export-individual-btn" onclick="exportIndividualEntry('${entry.id}')" title="Exportar esta tarjeta">
+                        <button class="export-individual-btn" onclick="exportIndividualEntry('${entry.id}')" data-tooltip="Exportar tarjeta">
                             <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button class="share-individual-btn" onclick="openShareModal('${entry.id}')" data-tooltip="Compartir tarjeta">
+                            <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
                     <div class="card-content">
@@ -1518,7 +2096,7 @@
                         
                         <div class="flex justify-between items-center text-xs text-gray-500 mb-4">
                             <span><i class="fas fa-calendar mr-1"></i>${formattedDate}</span>
-                            ${entry.tags && entry.tags.length > 0 ? `<div class="flex gap-1">${entry.tags.map(tag => `<span class="bg-gray-700 px-2 py-1 rounded">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+                            ${entry.tags && entry.tags.length > 0 ? `<div class="flex gap-1 flex-wrap">${entry.tags.map(tag => `<span class="bg-gray-700 px-2 py-1 rounded">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
                         </div>
                         
                         <div class="card-actions">
@@ -1526,13 +2104,13 @@
                                 <i class="fas fa-play"></i>
                                 Abrir
                             </button>
-                            <button class="btn btn-secondary btn-small" onclick="viewEntry('${entry.id}')" title="Ver detalles">
+                            <button class="btn btn-secondary btn-small" onclick="viewEntry('${entry.id}')" data-tooltip="Ver detalles">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="btn btn-warning btn-small" onclick="editEntry('${entry.id}')" title="Editar">
+                            <button class="btn btn-warning btn-small" onclick="editEntry('${entry.id}')" data-tooltip="Editar">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-danger btn-small" onclick="showDeleteConfirmation('${entry.id}')" title="Eliminar">
+                            <button class="btn btn-danger btn-small" onclick="showDeleteConfirmation('${entry.id}')" data-tooltip="Eliminar">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -1542,6 +2120,7 @@
         }
 
         function escapeHtml(text) {
+            if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
@@ -1559,7 +2138,7 @@
                 }
                 
                 const exportData = {
-                    version: '1.0.0',
+                    version: '1.1.0',
                     exportDate: new Date().toISOString(),
                     exportType: 'individual',
                     totalEntries: 1,
@@ -1679,10 +2258,11 @@
                             ${entry.updatedAt && entry.updatedAt !== entry.createdAt ? `<p><strong>Actualizado:</strong> ${new Date(entry.updatedAt).toLocaleDateString()}</p>` : ''}
                         </div>
                         
-                        <div class="flex gap-4 justify-center">
-                            ${entry.url ? `<button class="btn btn-primary" onclick="openMiningPage('${entry.id}')"><i class="fas fa-external-link-alt"></i> Abrir Sitio</button>` : ''}
-                            <button class="btn btn-warning" onclick="editEntry('${entry.id}'); closeViewModal()"><i class="fas fa-edit"></i> Editar</button>
-                            <button class="btn btn-success" onclick="exportIndividualEntry('${entry.id}')"><i class="fas fa-download"></i> Exportar</button>
+                        <div class="flex flex-wrap gap-4 justify-center">
+                            ${entry.url ? `<button class="btn btn-primary" onclick="openMiningPage('${entry.id}')"><i class="fas fa-external-link-alt mr-1"></i> Abrir Sitio</button>` : ''}
+                            <button class="btn btn-warning" onclick="editEntry('${entry.id}'); closeViewModal()"><i class="fas fa-edit mr-1"></i> Editar</button>
+                            <button class="btn btn-success" onclick="exportIndividualEntry('${entry.id}')"><i class="fas fa-download mr-1"></i> Exportar</button>
+                            <button class="btn btn-secondary" onclick="openShareModal('${entry.id}'); closeViewModal()"><i class="fas fa-share-alt mr-1"></i> Compartir</button>
                         </div>
                     </div>
                 `;
@@ -1710,7 +2290,7 @@
                 await deleteEntry(id);
                 await loadEntries();
                 updateStats();
-                updateCharts();
+                updateUsageCharts(); // Update usage charts after delete
                 showNotification('Entrada eliminada correctamente', 'success');
                 closeConfirmModal();
             } catch (error) {
@@ -1763,7 +2343,7 @@
                 await saveEntry(entry);
                 await loadEntries();
                 updateStats();
-                updateCharts();
+                updateUsageCharts(); // Update usage charts after saving
                 
                 const message = editingEntry ? 'Entrada actualizada correctamente' : '¡Entrada de minería guardada!';
                 showNotification(message, 'success');
@@ -1803,10 +2383,6 @@
             document.getElementById('nameError').textContent = '';
             document.getElementById('categoryError').textContent = '';
             document.getElementById('urlError').textContent = '';
-        }
-
-        function showFieldError(fieldId, message) {
-            document.getElementById(fieldId).textContent = message;
         }
 
         function isValidUrl(string) {
@@ -1903,106 +2479,56 @@
             }
         }
 
-        async function updateCharts() {
-            try {
-                const entries = await getEntries();
-                updateCategoryChart(entries);
-                updateMonthlyChart(entries);
-            } catch (error) {
-                console.error('Error updating charts:', error);
-            }
+        // New function to update both usage charts
+        async function updateUsageCharts() {
+            await updatePageUsageChart();
+            await updateCategoryUsageChart();
         }
 
-        function updateCategoryChart(entries) {
-            const ctx = document.getElementById('categoryChart').getContext('2d');
-            
-            const categoryCounts = {};
-            entries.forEach(entry => {
-                categoryCounts[entry.category] = (categoryCounts[entry.category] || 0) + 1;
-            });
-            
-            const data = {
-                labels: Object.keys(categoryCounts).map(key => categories[key]?.name || key),
-                datasets: [{
-                    data: Object.values(categoryCounts),
-                    backgroundColor: Object.keys(categoryCounts).map(key => categories[key]?.color || '#6b7280'),
-                    borderWidth: 0
-                }]
-            };
-            
-            if (categoryChart) {
-                categoryChart.destroy();
+        /**
+         * Updates the chart showing most used pages.
+         */
+        async function updatePageUsageChart() {
+            const ctx = document.getElementById('pageUsageChart').getContext('2d');
+            const usageStats = await getPageUsageStats();
+
+            // Sort by count descending and take top 10
+            const sortedStats = usageStats.sort((a, b) => b.count - a.count).slice(0, 10);
+
+            const labels = sortedStats.map(stat => stat.name);
+            const data = sortedStats.map(stat => stat.count);
+            const backgroundColors = labels.map((_, i) => barColors[i % barColors.length]);
+
+            if (pageUsageChart) {
+                pageUsageChart.destroy();
             }
             
-            categoryChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: data,
+            pageUsageChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Veces Usada',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors.map(color => color.replace('0.8', '1')), // Solid border
+                        borderWidth: 1
+                    }]
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim(),
-                                usePointStyle: true,
-                                padding: 20
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function updateMonthlyChart(entries) {
-            const ctx = document.getElementById('monthlyChart').getContext('2d');
-            
-            const monthCounts = {};
-            entries.forEach(entry => {
-                const month = new Date(entry.createdAt).toLocaleDateString('es-ES', { 
-                    year: 'numeric', 
-                    month: 'short' 
-                });
-                monthCounts[month] = (monthCounts[month] || 0) + 1;
-            });
-            
-            const sortedMonths = Object.keys(monthCounts).sort((a, b) => 
-                new Date(a + ' 1') - new Date(b + ' 1')
-            );
-            
-            const data = {
-                labels: sortedMonths,
-                datasets: [{
-                    label: 'Entradas Creadas',
-                    data: sortedMonths.map(month => monthCounts[month]),
-                    backgroundColor: 'rgba(14, 165, 233, 0.2)',
-                    borderColor: 'rgba(14, 165, 233, 1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
-                }]
-            };
-            
-            if (monthlyChart) {
-                monthlyChart.destroy();
-            }
-            
-            monthlyChart = new Chart(ctx, {
-                type: 'line',
-                data: data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
+                            display: false // No need for legend in single dataset bar chart
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim(),
+                                precision: 0 // Ensure integer ticks for count
                             },
                             grid: {
                                 color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
@@ -2021,10 +2547,79 @@
             });
         }
 
+        /**
+         * Updates the chart showing most used categories.
+         */
+        async function updateCategoryUsageChart() {
+            const ctx = document.getElementById('categoryUsageChart').getContext('2d');
+            const usageStats = await getCategoryUsageStats();
+
+            // Sort by count descending and take top 10
+            const sortedStats = usageStats.sort((a, b) => b.count - a.count).slice(0, 10);
+
+            const labels = sortedStats.map(stat => categories[stat.category]?.name || stat.category);
+            const data = sortedStats.map(stat => stat.count);
+            const backgroundColors = labels.map((_, i) => barColors[i % barColors.length]);
+
+            if (categoryUsageChart) {
+                categoryUsageChart.destroy();
+            }
+            
+            categoryUsageChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Veces Usada',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors.map(color => color.replace('0.8', '1')), // Solid border
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim(),
+                                precision: 0
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
         // Event listeners
         function setupEventListeners() {
             document.getElementById('searchInput').addEventListener('input', debounce(loadEntries, 300));
-            document.getElementById('categoryFilter').addEventListener('change', loadEntries);
+            
+            // Event listener for category filter (select dropdown)
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                loadEntries();
+                trackCategoryUsage(this.value); // Track category usage when selected
+            });
+
             document.getElementById('sortBy').addEventListener('change', loadEntries);
             
             // Filter chips
@@ -2036,6 +2631,7 @@
                     const category = this.dataset.category;
                     document.getElementById('categoryFilter').value = category;
                     loadEntries();
+                    trackCategoryUsage(category); // Track category usage when chip is clicked
                 });
             });
         }
@@ -2057,7 +2653,7 @@
             
             // Update charts with new theme
             setTimeout(() => {
-                updateCharts();
+                updateUsageCharts(); // Update new usage charts with new theme
             }, 100);
         }
 
@@ -2111,7 +2707,7 @@
                 }
                 
                 const exportData = {
-                    version: '1.0.0',
+                    version: '1.1.0',
                     exportDate: new Date().toISOString(),
                     totalEntries: entries.length,
                     entries: entries.map(entry => ({
@@ -2206,9 +2802,10 @@
         }
 
         // Función de importación robusta
-        async function importData() {
+        // Ahora acepta un 'File' object directamente o lo toma del input de archivo
+        async function importData(fileToImport = null) {
             const fileInput = document.getElementById('importFile');
-            const file = fileInput.files[0];
+            const file = fileToImport || fileInput.files[0]; // Usa el archivo pasado o el del input
             
             if (!file) {
                 showNotification('Por favor, selecciona un archivo', 'warning');
@@ -2291,7 +2888,7 @@
                 // Actualizar UI
                 await loadEntries();
                 updateStats();
-                updateCharts();
+                updateUsageCharts(); // Update usage charts after import
                 
                 // Mostrar resumen
                 const summary = `Importación completada: ${successCount} exitosas, ${skippedCount} omitidas, ${errorCount} con errores`;
@@ -2303,8 +2900,10 @@
                     showNotification('No se importaron entradas nuevas', 'warning');
                 }
                 
-                // Limpiar input
-                fileInput.value = '';
+                // Limpiar input solo si se usó el input de archivo
+                if (!fileToImport) {
+                    fileInput.value = '';
+                }
                 
             } catch (error) {
                 console.error('Error importing data:', error);
@@ -2336,6 +2935,12 @@
         // Función para parsear archivo CSV
         async function parseCSVFile(text) {
             try {
+                // Eliminar BOM si existe
+                const bom = '\uFEFF';
+                if (text.startsWith(bom)) {
+                    text = text.substr(bom.length);
+                }
+                
                 const lines = text.split('\n').filter(line => line.trim());
                 if (lines.length < 2) {
                     throw new Error('El archivo CSV debe tener al menos una línea de encabezado y una de datos');
@@ -2389,19 +2994,19 @@
             for (let i = 0; i < line.length; i++) {
                 const char = line[i];
                 
-                if (char === '"' && (i === 0 || line[i-1] === ',')) {
+                if (char === '"' && (i === 0 || line[i-1] === ',' || line[i-1] === '\r')) {
                     inQuotes = true;
-                } else if (char === '"' && inQuotes && (i === line.length - 1 || line[i+1] === ',')) {
+                } else if (char === '"' && inQuotes && (i === line.length - 1 || line[i+1] === ',' || line[i+1] === '\r')) {
                     inQuotes = false;
                 } else if (char === ',' && !inQuotes) {
-                    result.push(current.trim());
+                    result.push(current.trim().replace(/^"(.*)"$/, '$1'));
                     current = '';
                 } else {
                     current += char;
                 }
             }
             
-            result.push(current.trim());
+            result.push(current.trim().replace(/^"(.*)"$/, '$1'));
             return result;
         }
 
@@ -2441,10 +3046,19 @@
                 }
                 
                 window.open(entry.url, '_blank');
+                trackPageUsage(entry.url, entry.name); // Track page usage when opened
             } catch (error) {
                 console.error('Error opening mining page:', error);
                 showNotification('Error al abrir la página de minería', 'error');
             }
+        }
+
+        // Feedback form function
+        function showFeedbackForm() {
+            const subject = encodeURIComponent('Feedback sobre Lunaria Mining Premium');
+            const body = encodeURIComponent('Hola,\n\nQuisiera compartir mi opinión sobre la aplicación Lunaria Mining Premium:\n\n[Tu mensaje aquí]\n\nInformación de mi dispositivo:\n- Navegador: ' + navigator.userAgent + '\n- Plataforma: ' + navigator.platform);
+            
+            window.open(`mailto:contacto@sneyderstudio.com?subject=${subject}&body=${body}`, '_blank');
         }
 
         // Utility functions
@@ -2512,6 +3126,7 @@
                 closeViewModal();
                 closeConfirmModal();
                 closeExportModal();
+                closeShareModal();
                 closeUpdateNotification();
                 closeMainMenu();
             }
@@ -2526,7 +3141,7 @@
             });
         }
 
-        // Manifest
+        // Manifest for PWA capabilities including file handling
         const manifest = {
             name: 'Lunaria Mining Premium',
             short_name: 'Lunaria Premium',
@@ -2546,6 +3161,42 @@
                     sizes: '512x512',
                     type: 'image/png'
                 }
+            ],
+            // Configuración para la función "Compartir con" (Web Share Target API)
+            share_target: {
+                action: "/", // La página principal manejará el archivo compartido
+                method: "GET", // Para compartir texto/URL, para archivos suele ser POST
+                // Para compartir archivos con POST, necesitarías un backend.
+                // Aquí se define para GET, que es más para compartir texto/URL.
+                // La File Handling API es la forma principal de abrir archivos directamente.
+                params: {
+                    title: "title",
+                    text: "text",
+                    url: "url",
+                    files: [ // Define los tipos de archivos que puede recibir
+                        {
+                            name: "file",
+                            accept: ["application/json", "text/csv"]
+                        }
+                    ]
+                }
+            },
+            // Configuración para la función "Abrir con" (File Handling API)
+            file_handlers: [
+                {
+                    action: "/", // La página principal manejará el archivo abierto
+                    accept: {
+                        "application/json": [".json"],
+                        "text/csv": [".csv"]
+                    },
+                    icons: [ // Icono que se mostrará en el diálogo "Abrir con"
+                        {
+                            src: 'https://i.postimg.cc/GpPsSmmX/4491470.png',
+                            sizes: '192x192',
+                            type: 'image/png'
+                        }
+                    ]
+                }
             ]
         };
 
@@ -2555,3 +3206,4 @@
     </script>
 </body>
 </html>
+
