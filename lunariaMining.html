@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- El manifiesto se generará dinámicamente en JS para este entorno de Canvas -->
+    <!-- El manifiesto se genera dinámicamente en JS y se enlaza aquí -->
     <link rel="manifest" href="#" id="manifest"> 
     <link rel="icon" href="https://i.postimg.cc/GpPsSmmX/4491470.png" type="image/png">
     <meta name="theme-color" content="#06b6d4">
@@ -1490,7 +1490,6 @@
         let currentUpdateIdShown = null; // Variable para rastrear la ID de la actualización mostrada
 
         // Definición de las actualizaciones de la aplicación
-        // Añade nuevas actualizaciones aquí con una nueva ID para que se muestren automáticamente
         const appUpdates = [
             {
                 id: 'v1.0.0',
@@ -1554,29 +1553,43 @@
             await loadEntries();
             setupEventListeners();
             updateStats();
-            updateUsageCharts(); // Call to update new usage charts
+            updateUsageCharts();
             loadTheme();
             checkStoragePermission();
-            checkAppUpdates(); // Call to check for app updates
+            checkAppUpdates();
             setupToolTip();
             
-            // Handle incoming files if the app was launched via file handling
+            // --- MEJORA: Manejo optimizado de archivos entrantes ---
+            // Verifica si la API Launch Queue está disponible.
             if ('launchQueue' in window) {
+                console.log('File Handling API is supported.');
+                // Establece un consumidor para la cola de lanzamiento.
                 launchQueue.setConsumer(async (launchParams) => {
-                    if (launchParams.files && launchParams.files.length > 0) {
-                        showNotification('Detectando archivos entrantes...', 'info');
-                        for (const fileHandle of launchParams.files) {
-                            try {
-                                const file = await fileHandle.getFile();
-                                showNotification(`Importando archivo: ${file.name}`, 'info');
-                                await importData(file); // Pass the File object directly
-                            } catch (error) {
-                                console.error('Error handling incoming file:', error);
-                                showNotification(`Error al procesar el archivo ${fileHandle.name}: ${error.message}`, 'error');
-                            }
+                    // Si no hay archivos, no hace nada.
+                    if (!launchParams || !launchParams.files || launchParams.files.length === 0) {
+                        return;
+                    }
+                    
+                    showNotification('Detectando archivo entrante...', 'info');
+                    
+                    // Itera sobre cada archivo recibido.
+                    for (const fileHandle of launchParams.files) {
+                        try {
+                            // Obtiene el objeto File del manejador.
+                            const file = await fileHandle.getFile();
+                            showNotification(`Procesando archivo: ${file.name}`, 'info');
+                            
+                            // Llama a la función de importación con el archivo.
+                            await importData(file);
+                            
+                        } catch (error) {
+                            console.error('Error al procesar archivo entrante:', error);
+                            showNotification(`Error al procesar el archivo: ${error.message}`, 'error');
                         }
                     }
                 });
+            } else {
+                console.warn('File Handling API not supported in this browser.');
             }
         }
 
@@ -1628,7 +1641,6 @@
                     localStorage.setItem('storagePermissionChecked', 'true');
                     showNotification('Permiso de almacenamiento concedido correctamente', 'success');
                     
-                    // Create initial backup
                     await createBackup();
                 } else {
                     showNotification('La API de sistema de archivos no está disponible en este navegador', 'warning');
@@ -1657,7 +1669,7 @@
                 const entries = await getEntries();
                 const backupData = {
                     timestamp: new Date().toISOString(),
-                    version: '1.1.0',
+                    version: '1.4.0',
                     entries: entries
                 };
                 
@@ -1688,27 +1700,23 @@
             closeMainMenu();
         }
 
-        // Función para revisar y mostrar actualizaciones
         async function checkAppUpdates() {
             const lastSeenUpdateId = localStorage.getItem('lastSeenAppUpdateId');
-            const latestUpdate = appUpdates[appUpdates.length - 1]; // Obtiene la última actualización en el array
+            const latestUpdate = appUpdates[appUpdates.length - 1];
 
             if (latestUpdate && latestUpdate.id !== lastSeenUpdateId) {
-                // Hay una nueva actualización, la mostramos
                 document.getElementById('updateNotificationTitle').innerHTML = `<i class="fas fa-sparkles mr-2"></i> ${latestUpdate.title}`;
                 document.getElementById('updateNotificationDescription').innerHTML = latestUpdate.description;
                 document.getElementById('updateNotification').classList.add('show');
-                currentUpdateIdShown = latestUpdate.id; // Guarda la ID de la actualización mostrada para registrarla al cerrar
+                currentUpdateIdShown = latestUpdate.id;
             }
         }
 
-        // Función para cerrar la notificación de actualización
         function closeUpdateNotification() {
             document.getElementById('updateNotification').classList.remove('show');
             if (currentUpdateIdShown) {
-                // Guarda la ID de la actualización como vista en localStorage
                 localStorage.setItem('lastSeenAppUpdateId', currentUpdateIdShown);
-                currentUpdateIdShown = null; // Resetea la variable
+                currentUpdateIdShown = null;
             }
         }
 
@@ -1765,41 +1773,32 @@
 
         function shareViaWhatsApp() {
             if (!currentShareEntry) return;
-            
             const text = encodeURIComponent(`¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}! ${currentShareEntry.url || ''}`);
             const url = `https://wa.me/?text=${text}`;
-            
             window.open(url, '_blank');
             closeShareModal();
         }
 
         function shareViaTelegram() {
             if (!currentShareEntry) return;
-            
             const text = encodeURIComponent(`¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}! ${currentShareEntry.url || ''}`);
             const url = `https://t.me/share/url?url=${encodeURIComponent(currentShareEntry.url || window.location.href)}&text=${text}`;
-            
             window.open(url, '_blank');
             closeShareModal();
         }
 
         function shareViaMessenger() {
             if (!currentShareEntry) return;
-            
             const url = `https://www.facebook.com/dialog/send?link=${encodeURIComponent(currentShareEntry.url || window.location.href)}&app_id=123456789&redirect_uri=${encodeURIComponent(window.location.href)}`;
-            
             window.open(url, '_blank');
             closeShareModal();
         }
 
         function shareViaEmail() {
             if (!currentShareEntry) return;
-            
             const subject = encodeURIComponent(`Sitio de minería: ${currentShareEntry.name}`);
             const body = encodeURIComponent(`¡Hola!\n\nQuiero compartir contigo esta página de minería:\n\nNombre: ${currentShareEntry.name}\nCategoría: ${categories[currentShareEntry.category]?.name || 'Otra'}\n${currentShareEntry.description ? 'Descripción: ' + currentShareEntry.description + '\n' : ''}${currentShareEntry.url ? 'URL: ' + currentShareEntry.url : ''}\n\n¡Saludos!`);
-            
             const url = `mailto:?subject=${subject}&body=${body}`;
-            
             window.location.href = url;
             closeShareModal();
         }
@@ -1830,8 +1829,7 @@
         // Database functions
         async function initializeDatabase() {
             return new Promise((resolve, reject) => {
-                // Increment database version to trigger onupgradeneeded for new object stores
-                const request = indexedDB.open('LunariaMiningPremiumDB', 4); // Changed from 3 to 4
+                const request = indexedDB.open('LunariaMiningPremiumDB', 4);
 
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
@@ -1849,13 +1847,11 @@
                         store.createIndex('createdAt', 'createdAt', { unique: false });
                     }
 
-                    // New object store for page usage statistics
                     if (!db.objectStoreNames.contains('pageUsage')) {
                         const pageUsageStore = db.createObjectStore('pageUsage', { keyPath: 'url' });
                         pageUsageStore.createIndex('count', 'count', { unique: false });
                     }
 
-                    // New object store for category usage statistics
                     if (!db.objectStoreNames.contains('categoryUsage')) {
                         const categoryUsageStore = db.createObjectStore('categoryUsage', { keyPath: 'category' });
                         categoryUsageStore.createIndex('count', 'count', { unique: false });
@@ -1873,7 +1869,6 @@
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
                     resolve();
-                    // Create backup after saving
                     if (storagePermissionGranted) {
                         createBackup();
                     }
@@ -1912,7 +1907,6 @@
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
                     resolve();
-                    // Create backup after deleting
                     if (storagePermissionGranted) {
                         createBackup();
                     }
@@ -1920,13 +1914,8 @@
             });
         }
 
-        /**
-         * Tracks usage for a given page URL.
-         * @param {string} url - The URL of the page.
-         * @param {string} name - The name of the page.
-         */
         async function trackPageUsage(url, name) {
-            if (!url) return; // Don't track if URL is empty
+            if (!url) return;
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction(['pageUsage'], 'readwrite');
                 const store = transaction.objectStore('pageUsage');
@@ -1942,17 +1931,13 @@
                     putRequest.onerror = () => reject(putRequest.error);
                     putRequest.onsuccess = () => {
                         resolve();
-                        updatePageUsageChart(); // Update chart after tracking
+                        updatePageUsageChart();
                     };
                 };
                 getRequest.onerror = () => reject(getRequest.error);
             });
         }
 
-        /**
-         * Tracks usage for a given category.
-         * @param {string} categoryKey - The key of the category (e.g., 'faucet', 'mining').
-         */
         async function trackCategoryUsage(categoryKey) {
             if (!categoryKey) return;
             return new Promise((resolve, reject) => {
@@ -1970,17 +1955,13 @@
                     putRequest.onerror = () => reject(putRequest.error);
                     putRequest.onsuccess = () => {
                         resolve();
-                        updateCategoryUsageChart(); // Update chart after tracking
+                        updateCategoryUsageChart();
                     };
                 };
                 getRequest.onerror = () => reject(getRequest.error);
             });
         }
 
-        /**
-         * Retrieves all page usage statistics.
-         * @returns {Promise<Array>} Array of page usage objects.
-         */
         async function getPageUsageStats() {
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction(['pageUsage'], 'readonly');
@@ -1991,10 +1972,6 @@
             });
         }
 
-        /**
-         * Retrieves all category usage statistics.
-         * @returns {Promise<Array>} Array of category usage objects.
-         */
         async function getCategoryUsageStats() {
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction(['categoryUsage'], 'readonly');
@@ -2032,7 +2009,6 @@
                 return matchesSearch && matchesCategory;
             });
 
-            // Sort entries
             switch (sortBy) {
                 case 'newest':
                     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -2126,7 +2102,6 @@
             return div.innerHTML;
         }
 
-        // Export individual entry function
         async function exportIndividualEntry(id) {
             try {
                 const entries = await getEntries();
@@ -2138,7 +2113,7 @@
                 }
                 
                 const exportData = {
-                    version: '1.1.0',
+                    version: '1.4.0',
                     exportDate: new Date().toISOString(),
                     exportType: 'individual',
                     totalEntries: 1,
@@ -2162,7 +2137,6 @@
                 const link = document.createElement('a');
                 link.href = url;
                 
-                // Sanitize filename
                 const sanitizedName = entry.name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
                 link.download = `lunaria-entry-${sanitizedName}-${new Date().toISOString().split('T')[0]}.json`;
                 
@@ -2290,7 +2264,7 @@
                 await deleteEntry(id);
                 await loadEntries();
                 updateStats();
-                updateUsageCharts(); // Update usage charts after delete
+                updateUsageCharts();
                 showNotification('Entrada eliminada correctamente', 'success');
                 closeConfirmModal();
             } catch (error) {
@@ -2343,7 +2317,7 @@
                 await saveEntry(entry);
                 await loadEntries();
                 updateStats();
-                updateUsageCharts(); // Update usage charts after saving
+                updateUsageCharts();
                 
                 const message = editingEntry ? 'Entrada actualizada correctamente' : '¡Entrada de minería guardada!';
                 showNotification(message, 'success');
@@ -2479,20 +2453,15 @@
             }
         }
 
-        // New function to update both usage charts
         async function updateUsageCharts() {
             await updatePageUsageChart();
             await updateCategoryUsageChart();
         }
 
-        /**
-         * Updates the chart showing most used pages.
-         */
         async function updatePageUsageChart() {
             const ctx = document.getElementById('pageUsageChart').getContext('2d');
             const usageStats = await getPageUsageStats();
 
-            // Sort by count descending and take top 10
             const sortedStats = usageStats.sort((a, b) => b.count - a.count).slice(0, 10);
 
             const labels = sortedStats.map(stat => stat.name);
@@ -2511,7 +2480,7 @@
                         label: 'Veces Usada',
                         data: data,
                         backgroundColor: backgroundColors,
-                        borderColor: backgroundColors.map(color => color.replace('0.8', '1')), // Solid border
+                        borderColor: backgroundColors.map(color => color.replace('0.8', '1')),
                         borderWidth: 1
                     }]
                 },
@@ -2520,7 +2489,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            display: false // No need for legend in single dataset bar chart
+                            display: false
                         }
                     },
                     scales: {
@@ -2528,7 +2497,7 @@
                             beginAtZero: true,
                             ticks: {
                                 color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim(),
-                                precision: 0 // Ensure integer ticks for count
+                                precision: 0
                             },
                             grid: {
                                 color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
@@ -2547,14 +2516,10 @@
             });
         }
 
-        /**
-         * Updates the chart showing most used categories.
-         */
         async function updateCategoryUsageChart() {
             const ctx = document.getElementById('categoryUsageChart').getContext('2d');
             const usageStats = await getCategoryUsageStats();
 
-            // Sort by count descending and take top 10
             const sortedStats = usageStats.sort((a, b) => b.count - a.count).slice(0, 10);
 
             const labels = sortedStats.map(stat => categories[stat.category]?.name || stat.category);
@@ -2573,7 +2538,7 @@
                         label: 'Veces Usada',
                         data: data,
                         backgroundColor: backgroundColors,
-                        borderColor: backgroundColors.map(color => color.replace('0.8', '1')), // Solid border
+                        borderColor: backgroundColors.map(color => color.replace('0.8', '1')),
                         borderWidth: 1
                     }]
                 },
@@ -2614,15 +2579,13 @@
         function setupEventListeners() {
             document.getElementById('searchInput').addEventListener('input', debounce(loadEntries, 300));
             
-            // Event listener for category filter (select dropdown)
             document.getElementById('categoryFilter').addEventListener('change', function() {
                 loadEntries();
-                trackCategoryUsage(this.value); // Track category usage when selected
+                trackCategoryUsage(this.value);
             });
 
             document.getElementById('sortBy').addEventListener('change', loadEntries);
             
-            // Filter chips
             document.querySelectorAll('.filter-chip').forEach(chip => {
                 chip.addEventListener('click', function() {
                     document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -2631,7 +2594,7 @@
                     const category = this.dataset.category;
                     document.getElementById('categoryFilter').value = category;
                     loadEntries();
-                    trackCategoryUsage(category); // Track category usage when chip is clicked
+                    trackCategoryUsage(category);
                 });
             });
         }
@@ -2651,9 +2614,8 @@
                 localStorage.setItem('theme', 'dark');
             }
             
-            // Update charts with new theme
             setTimeout(() => {
-                updateUsageCharts(); // Update new usage charts with new theme
+                updateUsageCharts();
             }, 100);
         }
 
@@ -2696,7 +2658,6 @@
             log.scrollTop = log.scrollHeight;
         }
 
-        // Función de exportación JSON mejorada
         async function exportData() {
             try {
                 const entries = await getEntries();
@@ -2707,7 +2668,7 @@
                 }
                 
                 const exportData = {
-                    version: '1.1.0',
+                    version: '1.4.0',
                     exportDate: new Date().toISOString(),
                     totalEntries: entries.length,
                     entries: entries.map(entry => ({
@@ -2744,7 +2705,6 @@
             }
         }
 
-        // Función de exportación CSV mejorada
         async function exportCSV() {
             try {
                 const entries = await getEntries();
@@ -2754,7 +2714,6 @@
                     return;
                 }
                 
-                // Escapar comillas y comas en CSV
                 const escapeCSV = (value) => {
                     if (value === null || value === undefined) return '';
                     const str = String(value);
@@ -2779,7 +2738,6 @@
                     ].join(','))
                 ].join('\n');
                 
-                // Agregar BOM para UTF-8
                 const BOM = '\uFEFF';
                 const dataBlob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8' });
                 
@@ -2801,11 +2759,11 @@
             }
         }
 
-        // Función de importación robusta
-        // Ahora acepta un 'File' object directamente o lo toma del input de archivo
+        // --- MEJORA: Función de importación optimizada para manejar archivos externos ---
         async function importData(fileToImport = null) {
             const fileInput = document.getElementById('importFile');
-            const file = fileToImport || fileInput.files[0]; // Usa el archivo pasado o el del input
+            // Usa el archivo pasado como argumento (desde Launch Queue) o el del input.
+            const file = fileToImport || fileInput.files[0];
             
             if (!file) {
                 showNotification('Por favor, selecciona un archivo', 'warning');
@@ -2834,31 +2792,26 @@
                 
                 updateImportProgress(30, `Encontradas ${importedEntries.length} entradas para procesar`);
                 
-                // Obtener entradas existentes para verificar duplicados
                 const existingEntries = await getEntries();
                 const existingNames = new Set(existingEntries.map(e => e.name.toLowerCase()));
                 
-                // Procesar cada entrada
                 for (let i = 0; i < importedEntries.length; i++) {
                     const entry = importedEntries[i];
                     const progress = 30 + (i / importedEntries.length) * 60;
                     
                     try {
-                        // Validar entrada
                         if (!entry.name || !entry.category) {
                             updateImportProgress(progress, `Saltando entrada ${i + 1}: faltan datos obligatorios`, 'warning');
                             skippedCount++;
                             continue;
                         }
                         
-                        // Verificar duplicados
                         if (existingNames.has(entry.name.toLowerCase())) {
                             updateImportProgress(progress, `Saltando entrada "${entry.name}": ya existe`, 'warning');
                             skippedCount++;
                             continue;
                         }
                         
-                        // Crear nueva entrada
                         const newEntry = {
                             id: generateId(),
                             name: entry.name,
@@ -2885,12 +2838,10 @@
                 
                 updateImportProgress(100, 'Finalizando importación...');
                 
-                // Actualizar UI
                 await loadEntries();
                 updateStats();
-                updateUsageCharts(); // Update usage charts after import
+                updateUsageCharts();
                 
-                // Mostrar resumen
                 const summary = `Importación completada: ${successCount} exitosas, ${skippedCount} omitidas, ${errorCount} con errores`;
                 updateImportProgress(100, summary, successCount > 0 ? 'success' : 'warning');
                 
@@ -2900,7 +2851,6 @@
                     showNotification('No se importaron entradas nuevas', 'warning');
                 }
                 
-                // Limpiar input solo si se usó el input de archivo
                 if (!fileToImport) {
                     fileInput.value = '';
                 }
@@ -2912,12 +2862,10 @@
             }
         }
 
-        // Función para parsear archivo JSON
         async function parseJSONFile(text) {
             try {
                 const data = JSON.parse(text);
                 
-                // Soporte para diferentes formatos de JSON
                 if (Array.isArray(data)) {
                     return data;
                 } else if (data.entries && Array.isArray(data.entries)) {
@@ -2932,10 +2880,8 @@
             }
         }
 
-        // Función para parsear archivo CSV
         async function parseCSVFile(text) {
             try {
-                // Eliminar BOM si existe
                 const bom = '\uFEFF';
                 if (text.startsWith(bom)) {
                     text = text.substr(bom.length);
@@ -2958,7 +2904,6 @@
                         const normalizedHeader = header.toLowerCase().trim();
                         let value = values[index] || '';
                         
-                        // Mapear headers comunes
                         if (normalizedHeader.includes('nombre') || normalizedHeader.includes('name')) {
                             entry.name = value;
                         } else if (normalizedHeader.includes('categoría') || normalizedHeader.includes('category')) {
@@ -2985,7 +2930,6 @@
             }
         }
 
-        // Función para parsear línea CSV
         function parseCSVLine(line) {
             const result = [];
             let current = '';
@@ -3010,12 +2954,10 @@
             return result;
         }
 
-        // Función para validar categoría
         function validateCategory(category) {
             const validCategories = ['faucet', 'mining', 'staking', 'defi', 'trading', 'shorlin', 'other'];
             const normalizedCategory = category.toLowerCase();
             
-            // Mapear categorías comunes
             const categoryMap = {
                 'faucets': 'faucet',
                 'minería': 'mining',
@@ -3046,7 +2988,7 @@
                 }
                 
                 window.open(entry.url, '_blank');
-                trackPageUsage(entry.url, entry.name); // Track page usage when opened
+                trackPageUsage(entry.url, entry.name);
             } catch (error) {
                 console.error('Error opening mining page:', error);
                 showNotification('Error al abrir la página de minería', 'error');
@@ -3132,21 +3074,26 @@
             }
         });
 
-        // Service Worker and PWA
+        // --- MEJORA: Registro del Service Worker ---
+        // Se registra el archivo sw.js que se encargará del cache y la funcionalidad offline.
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(err => {
-                    console.log('Service Worker registration failed:', err);
-                });
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado con éxito:', registration);
+                    })
+                    .catch(err => {
+                        console.error('Error en el registro del Service Worker:', err);
+                    });
             });
         }
 
-        // Manifest for PWA capabilities including file handling
+        // --- MEJORA: Manifiesto de la PWA con file_handlers ---
         const manifest = {
             name: 'Lunaria Mining Premium',
             short_name: 'Lunaria Premium',
             description: 'Gestión avanzada de entradas de minería con estadísticas y categorías',
-            start_url: '/',
+            start_url: '.', // Usar ruta relativa para compatibilidad
             display: 'standalone',
             background_color: '#0f172a',
             theme_color: '#0ea5e9',
@@ -3154,42 +3101,26 @@
                 {
                     src: 'https://i.postimg.cc/GpPsSmmX/4491470.png',
                     sizes: '192x192',
-                    type: 'image/png'
+                    type: 'image/png',
+                    purpose: 'any maskable' // Añadido para mejor adaptabilidad de iconos
                 },
                 {
                     src: 'https://i.postimg.cc/GpPsSmmX/4491470.png',
                     sizes: '512x512',
-                    type: 'image/png'
+                    type: 'image/png',
+                    purpose: 'any maskable'
                 }
             ],
-            // Configuración para la función "Compartir con" (Web Share Target API)
-            share_target: {
-                action: "/", // La página principal manejará el archivo compartido
-                method: "GET", // Para compartir texto/URL, para archivos suele ser POST
-                // Para compartir archivos con POST, necesitarías un backend.
-                // Aquí se define para GET, que es más para compartir texto/URL.
-                // La File Handling API es la forma principal de abrir archivos directamente.
-                params: {
-                    title: "title",
-                    text: "text",
-                    url: "url",
-                    files: [ // Define los tipos de archivos que puede recibir
-                        {
-                            name: "file",
-                            accept: ["application/json", "text/csv"]
-                        }
-                    ]
-                }
-            },
             // Configuración para la función "Abrir con" (File Handling API)
             file_handlers: [
                 {
-                    action: "/", // La página principal manejará el archivo abierto
+                    action: '.', // La página principal manejará el archivo abierto
                     accept: {
                         "application/json": [".json"],
                         "text/csv": [".csv"]
                     },
-                    icons: [ // Icono que se mostrará en el diálogo "Abrir con"
+                    launch_type: 'single-client', // Evita abrir múltiples ventanas
+                    icons: [
                         {
                             src: 'https://i.postimg.cc/GpPsSmmX/4491470.png',
                             sizes: '192x192',
