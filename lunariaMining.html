@@ -1260,6 +1260,14 @@
     <!-- Tooltip -->
     <div id="tooltip" class="tooltip"></div>
 
+    <!-- FaucetPay Iframe Modal -->
+    <div id="faucetPayModal" class="fullscreen-modal" style="background: rgba(0,0,0,0.95);">
+        <button class="close-menu-btn" onclick="closeFaucetPayModal()" style="z-index: 2001;">
+           <i class="fas fa-times"></i>
+       </button>
+       <iframe id="faucetPayFrame" src="" style="width: 95%; height: 95%; border: none; border-radius: 12px;"></iframe>
+   </div>
+
     <!-- Add/Edit Modal -->
     <div id="addModal" class="modal">
         <div class="modal-content">
@@ -1345,9 +1353,12 @@
                     <i class="fas fa-eye mr-2"></i>
                     Detalles de la Entrada
                 </h2>
-                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <div class="flex items-center gap-4">
+                    <img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="Abrir FaucetPay" class="cursor-pointer h-8 w-8 hover:opacity-80 transition-opacity" onclick="openFaucetPayModal()" data-tooltip="Abrir FaucetPay">
+                    <button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
             <div id="viewContent"></div>
         </div>
@@ -2252,6 +2263,27 @@
         function closeViewModal() {
             document.getElementById('viewModal').classList.remove('active');
         }
+        
+        // FaucetPay Modal Functions
+        function openFaucetPayModal() {
+            const faucetPayModal = document.getElementById('faucetPayModal');
+            const faucetPayFrame = document.getElementById('faucetPayFrame');
+            // Cargar el iframe solo si no está ya cargado para evitar recargas innecesarias
+            if (faucetPayFrame.src === '' || faucetPayFrame.src === 'about:blank') {
+                faucetPayFrame.src = 'https://faucetpay.io/';
+            }
+            faucetPayModal.classList.add('active');
+        }
+
+        function closeFaucetPayModal() {
+            const faucetPayModal = document.getElementById('faucetPayModal');
+            const faucetPayFrame = document.getElementById('faucetPayFrame');
+            faucetPayModal.classList.remove('active');
+            // Retrasar la limpieza del src para permitir que la transición de cierre finalice
+            setTimeout(() => {
+                 faucetPayFrame.src = 'about:blank';
+            }, 300);
+        }
 
         function showDeleteConfirmation(id) {
             confirmCallback = () => performDelete(id);
@@ -3071,6 +3103,7 @@
                 closeShareModal();
                 closeUpdateNotification();
                 closeMainMenu();
+                closeFaucetPayModal(); // <-- AÑADIDO
             }
         });
 
