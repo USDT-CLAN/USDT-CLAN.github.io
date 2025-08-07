@@ -447,7 +447,7 @@
             border-radius: 12px;
             color: white;
             font-weight: 600;
-            z-index: 2000;
+            z-index: 5100; /* High z-index */
             transform: translateX(100%);
             transition: transform 0.3s ease;
             display: flex;
@@ -734,6 +734,7 @@
         .menu-button.faucet-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            padding: 1rem;
         }
 
         .menu-button.add-button {
@@ -745,12 +746,17 @@
             background: var(--success);
             color: white;
         }
+        
+        .menu-button.delete-button {
+            background: var(--danger);
+            color: white;
+        }
 
         .faucet-logo {
-            width: 80px;
+            width: 120px;
             height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
+            border-radius: 8px;
+            object-fit: contain; /* Shows full logo */
         }
 
         .close-menu-btn {
@@ -921,6 +927,77 @@
                 opacity: 1;
             }
         }
+        
+        /* In-App Browser Styles */
+        #inAppBrowserModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--primary-bg);
+            z-index: 4000;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.4s ease-in-out;
+        }
+
+        #inAppBrowserModal.active {
+            transform: translateY(0);
+        }
+        
+        .browser-nav {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: var(--secondary-bg);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        
+        .browser-nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+        
+        .browser-nav-btn:hover {
+            background-color: var(--card-bg);
+        }
+        
+        .browser-faucet-logo {
+            height: 28px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .browser-faucet-logo:hover {
+            opacity: 0.8;
+        }
+
+        .browser-title {
+            flex-grow: 1;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin: 0 1rem;
+        }
+        
+        #browserFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            flex-grow: 1;
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -948,7 +1025,6 @@
                 height: 50px;
             }
             
-            /* Adjust games button for mobile */
             .games-button {
                 top: 1rem;
                 left: 1rem;
@@ -983,7 +1059,7 @@
             }
 
             .faucet-logo {
-                width: 60px;
+                width: 100px;
                 height: 60px;
             }
             
@@ -1077,8 +1153,8 @@
         </h2>
         
         <div class="flex flex-wrap justify-center gap-8">
-            <button class="menu-button faucet-button" onclick="openFaucetPay()">
-                <img src="https://i.postimg.cc/DzTsDH2r/Picsart-25-07-12-19-06-59-338.png" alt="FaucetPay" class="faucet-logo">
+            <button class="menu-button faucet-button" onclick="openInAppBrowser('https://faucetpay.io/', 'FaucetPay'); closeMainMenu();">
+                <img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="FaucetPay" class="faucet-logo">
                 <span>FaucetPay</span>
             </button>
             
@@ -1091,7 +1167,24 @@
                 <i class="fas fa-download" style="font-size: 3rem;"></i>
                 <span>Exportar/Importar</span>
             </button>
+            
+            <button class="menu-button delete-button" onclick="showDeleteAllConfirmation(); closeMainMenu()">
+                <i class="fas fa-trash-alt" style="font-size: 3rem;"></i>
+                <span>Borrar Todo</span>
+            </button>
         </div>
+    </div>
+
+    <!-- In-App Browser Modal -->
+    <div id="inAppBrowserModal">
+        <nav class="browser-nav">
+            <button class="browser-nav-btn" onclick="closeInAppBrowser()" data-tooltip="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+            <span id="browserTitle" class="browser-title">Cargando...</span>
+            <img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="Abrir FaucetPay" class="browser-faucet-logo" onclick="loadFaucetPayInBrowser()" data-tooltip="Abrir FaucetPay">
+        </nav>
+        <iframe id="browserFrame" src="about:blank"></iframe>
     </div>
 
     <!-- Update Notification -->
@@ -1260,14 +1353,6 @@
     <!-- Tooltip -->
     <div id="tooltip" class="tooltip"></div>
 
-    <!-- FaucetPay Iframe Modal -->
-    <div id="faucetPayModal" class="fullscreen-modal" style="background: rgba(0,0,0,0.95);">
-        <button class="close-menu-btn" onclick="closeFaucetPayModal()" style="z-index: 2001;">
-           <i class="fas fa-times"></i>
-       </button>
-       <iframe id="faucetPayFrame" src="" style="width: 95%; height: 95%; border: none; border-radius: 12px;"></iframe>
-   </div>
-
     <!-- Add/Edit Modal -->
     <div id="addModal" class="modal">
         <div class="modal-content">
@@ -1353,12 +1438,9 @@
                     <i class="fas fa-eye mr-2"></i>
                     Detalles de la Entrada
                 </h2>
-                <div class="flex items-center gap-4">
-                    <img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="Abrir FaucetPay" class="cursor-pointer h-8 w-8 hover:opacity-80 transition-opacity" onclick="openFaucetPayModal()" data-tooltip="Abrir FaucetPay">
-                    <button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div id="viewContent"></div>
         </div>
@@ -1379,7 +1461,7 @@
                     <i class="fas fa-times"></i>
                     Cancelar
                     </button>
-                <button class="btn btn-danger" onclick="confirmAction()">
+                <button id="confirmActionButton" class="btn btn-danger" onclick="confirmAction()">
                     <i class="fas fa-check"></i>
                     Confirmar
                 </button>
@@ -1609,14 +1691,16 @@
             const tooltip = document.getElementById('tooltip');
             
             document.addEventListener('mouseover', (e) => {
-                const target = e.target;
-                if (target.hasAttribute('data-tooltip')) {
+                const target = e.target.closest('[data-tooltip]');
+                if (target) {
                     const tooltipText = target.getAttribute('data-tooltip');
                     tooltip.textContent = tooltipText;
                     
                     const rect = target.getBoundingClientRect();
-                    tooltip.style.top = `${rect.top - tooltip.offsetHeight - 5}px`;
-                    tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
+                    
+                    tooltip.style.left = `${rect.left + rect.width / 2}px`;
+                    tooltip.style.top = `${rect.top}px`;
+                    tooltip.style.transform = 'translate(-50%, -110%)';
                     
                     clearTimeout(tooltipTimeout);
                     tooltipTimeout = setTimeout(() => {
@@ -1625,9 +1709,12 @@
                 }
             });
             
-            document.addEventListener('mouseout', () => {
-                clearTimeout(tooltipTimeout);
-                tooltip.classList.remove('visible');
+            document.addEventListener('mouseout', (e) => {
+                const target = e.target.closest('[data-tooltip]');
+                if (target) {
+                    clearTimeout(tooltipTimeout);
+                    tooltip.classList.remove('visible');
+                }
             });
         }
 
@@ -1704,11 +1791,6 @@
 
         function closeMainMenu() {
             document.getElementById('mainMenuModal').classList.remove('active');
-        }
-
-        function openFaucetPay() {
-            window.open('https://faucetpay.io/', '_blank');
-            closeMainMenu();
         }
 
         async function checkAppUpdates() {
@@ -2234,7 +2316,7 @@
                         
                         ${entry.description ? `<div><strong>Descripción:</strong><p class="mt-2 text-gray-400">${escapeHtml(entry.description)}</p></div>` : ''}
                         
-                        ${entry.url ? `<div><strong>URL:</strong><p class="mt-2"><a href="${entry.url}" target="_blank" class="text-blue-400 hover:underline">${escapeHtml(entry.url)}</a></p></div>` : ''}
+                        ${entry.url ? `<div><strong>URL:</strong><p class="mt-2"><a href="#" onclick="openInAppBrowser('${entry.url}', '${escapeHtml(entry.name)}'); return false;" class="text-blue-400 hover:underline">${escapeHtml(entry.url)}</a></p></div>` : ''}
                         
                         ${entry.tags && entry.tags.length > 0 ? `<div><strong>Etiquetas:</strong><div class="flex flex-wrap gap-2 mt-2">${entry.tags.map(tag => `<span class="bg-gray-700 px-3 py-1 rounded-full text-sm">${escapeHtml(tag)}</span>`).join('')}</div></div>` : ''}
                         
@@ -2264,30 +2346,17 @@
             document.getElementById('viewModal').classList.remove('active');
         }
         
-        // FaucetPay Modal Functions
-        function openFaucetPayModal() {
-            const faucetPayModal = document.getElementById('faucetPayModal');
-            const faucetPayFrame = document.getElementById('faucetPayFrame');
-            // Cargar el iframe solo si no está ya cargado para evitar recargas innecesarias
-            if (faucetPayFrame.src === '' || faucetPayFrame.src === 'about:blank') {
-                faucetPayFrame.src = 'https://faucetpay.io/';
-            }
-            faucetPayModal.classList.add('active');
-        }
-
-        function closeFaucetPayModal() {
-            const faucetPayModal = document.getElementById('faucetPayModal');
-            const faucetPayFrame = document.getElementById('faucetPayFrame');
-            faucetPayModal.classList.remove('active');
-            // Retrasar la limpieza del src para permitir que la transición de cierre finalice
-            setTimeout(() => {
-                 faucetPayFrame.src = 'about:blank';
-            }, 300);
-        }
-
         function showDeleteConfirmation(id) {
             confirmCallback = () => performDelete(id);
-            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas eliminar esta entrada de minería? Esta acción no se puede deshacer.';
+            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas eliminar esta entrada? Esta acción no se puede deshacer.';
+            document.getElementById('confirmActionButton').innerHTML = '<i class="fas fa-check"></i> Confirmar';
+            document.getElementById('confirmModal').classList.add('active');
+        }
+        
+        function showDeleteAllConfirmation() {
+            confirmCallback = () => performDeleteAll();
+            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas formatear la aplicación? Se borrarán todas las entradas de forma permanente. Esta acción no se puede deshacer.';
+            document.getElementById('confirmActionButton').innerHTML = '<i class="fas fa-trash-alt"></i> Formatear';
             document.getElementById('confirmModal').classList.add('active');
         }
 
@@ -2304,10 +2373,33 @@
                 showNotification('Error al eliminar la entrada', 'error');
             }
         }
+        
+        async function performDeleteAll() {
+            try {
+                const transaction = db.transaction(['entries', 'pageUsage', 'categoryUsage'], 'readwrite');
+                await Promise.all([
+                    transaction.objectStore('entries').clear(),
+                    transaction.objectStore('pageUsage').clear(),
+                    transaction.objectStore('categoryUsage').clear()
+                ]);
+                
+                await new Promise(resolve => transaction.oncomplete = resolve);
+
+                await loadEntries();
+                updateStats();
+                updateUsageCharts();
+                showNotification('Todos los datos han sido borrados.', 'success');
+                closeConfirmModal();
+            } catch (error) {
+                console.error('Error deleting all data:', error);
+                showNotification('Error al borrar los datos.', 'error');
+            }
+        }
 
         function closeConfirmModal() {
             document.getElementById('confirmModal').classList.remove('active');
             confirmCallback = null;
+            document.getElementById('confirmActionButton').innerHTML = '<i class="fas fa-check"></i> Confirmar';
         }
 
         function confirmAction() {
@@ -2383,6 +2475,10 @@
             }
             
             return isValid;
+        }
+
+        function showFieldError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
         }
 
         function clearErrors() {
@@ -2791,10 +2887,8 @@
             }
         }
 
-        // --- MEJORA: Función de importación optimizada para manejar archivos externos ---
         async function importData(fileToImport = null) {
             const fileInput = document.getElementById('importFile');
-            // Usa el archivo pasado como argumento (desde Launch Queue) o el del input.
             const file = fileToImport || fileInput.files[0];
             
             if (!file) {
@@ -2972,7 +3066,7 @@
                 
                 if (char === '"' && (i === 0 || line[i-1] === ',' || line[i-1] === '\r')) {
                     inQuotes = true;
-                } else if (char === '"' && inQuotes && (i === line.length - 1 || line[i+1] === ',' || line[i+1] === '\r')) {
+                } else if (char === '"' && inQuotes && (i === line.length - 1 || line[i+1] === '\r' || line[i+1] === ',')) {
                     inQuotes = false;
                 } else if (char === ',' && !inQuotes) {
                     result.push(current.trim().replace(/^"(.*)"$/, '$1'));
@@ -3008,31 +3102,51 @@
             return categoryMap[normalizedCategory] || (validCategories.includes(normalizedCategory) ? normalizedCategory : 'other');
         }
 
-        // Mining page functions
+        // In-App Browser Functions
+        function openInAppBrowser(url, title) {
+            const browserModal = document.getElementById('inAppBrowserModal');
+            const browserFrame = document.getElementById('browserFrame');
+            const browserTitle = document.getElementById('browserTitle');
+
+            browserTitle.textContent = title;
+            browserFrame.src = url;
+            browserModal.classList.add('active');
+        }
+
+        function closeInAppBrowser() {
+            const browserModal = document.getElementById('inAppBrowserModal');
+            const browserFrame = document.getElementById('browserFrame');
+            
+            browserModal.classList.remove('active');
+            // Reset iframe src after transition to stop loading/scripts
+            setTimeout(() => {
+                browserFrame.src = 'about:blank';
+            }, 400);
+        }
+        
+        function loadFaucetPayInBrowser() {
+            const browserFrame = document.getElementById('browserFrame');
+            const browserTitle = document.getElementById('browserTitle');
+            browserTitle.textContent = 'FaucetPay';
+            browserFrame.src = 'https://faucetpay.io/';
+        }
+
+        // Modified openMiningPage to use the in-app browser
         async function openMiningPage(id) {
             try {
-                const entries = await getEntries();
-                const entry = entries.find(e => e.id === id);
+                const entry = await getEntryById(id);
                 
                 if (!entry || !entry.url) {
                     showNotification('URL no disponible para esta entrada', 'error');
                     return;
                 }
                 
-                window.open(entry.url, '_blank');
+                openInAppBrowser(entry.url, entry.name);
                 trackPageUsage(entry.url, entry.name);
             } catch (error) {
                 console.error('Error opening mining page:', error);
                 showNotification('Error al abrir la página de minería', 'error');
             }
-        }
-
-        // Feedback form function
-        function showFeedbackForm() {
-            const subject = encodeURIComponent('Feedback sobre Lunaria Mining Premium');
-            const body = encodeURIComponent('Hola,\n\nQuisiera compartir mi opinión sobre la aplicación Lunaria Mining Premium:\n\n[Tu mensaje aquí]\n\nInformación de mi dispositivo:\n- Navegador: ' + navigator.userAgent + '\n- Plataforma: ' + navigator.platform);
-            
-            window.open(`mailto:contacto@sneyderstudio.com?subject=${subject}&body=${body}`, '_blank');
         }
 
         // Utility functions
@@ -3096,14 +3210,17 @@
             }
             
             if (e.key === 'Escape') {
-                closeAddModal();
-                closeViewModal();
-                closeConfirmModal();
-                closeExportModal();
-                closeShareModal();
-                closeUpdateNotification();
-                closeMainMenu();
-                closeFaucetPayModal(); // <-- AÑADIDO
+                if (document.getElementById('inAppBrowserModal').classList.contains('active')) {
+                    closeInAppBrowser();
+                } else {
+                    closeAddModal();
+                    closeViewModal();
+                    closeConfirmModal();
+                    closeExportModal();
+                    closeShareModal();
+                    closeUpdateNotification();
+                    closeMainMenu();
+                }
             }
         });
 
